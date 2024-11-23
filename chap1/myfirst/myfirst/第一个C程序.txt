@@ -1,0 +1,57 @@
+#include<stdio.h>
+int main()
+{
+	//打印hello word, 需要使用双引号
+	printf("hello word\n");
+	/*这是多行注释
+	输出多行文本需要手动给转义字符*/
+	printf("hello word2\a");
+	printf("hello word3");
+	//等待输入
+	getchar();
+	return 0;
+}
+
+
+	/*
+	\'：表示单引号，用于在字符串中插入单引号而不结束字符串。
+	示例：printf("It\'s a test."); 输出：It's a test.
+
+	\"：表示双引号，用于在字符串中插入双引号而不结束字符串。
+	示例：printf("\"Hello, World!\""); 输出："Hello, World!"
+
+	\\：表示反斜杠，用于在字符串中插入反斜杠。
+	示例：printf("C:\\Program Files\\"); 输出：C:\Program Files\
+
+	\n：换行符，用于在输出中插入换行。
+	示例：printf("Hello\nWorld"); 输出：
+	Hello
+	World
+
+	\t：水平制表符，用于在输出中插入制表符，通常用于对齐文本。
+	示例：printf("Column1\tColumn2"); 输出：Column1 Column2
+
+	\r：回车符，将光标移动到行首。
+	示例：printf("Hello\rWorld"); 输出：World（Hello被覆盖）
+
+	\b：退格符，删除光标前的字符。
+	示例：printf("Hello\b World"); 输出：Hell World
+
+	\f：换页符，用于文本中的换页，通常在打印时使用。
+	示例：printf("Page 1\fPage 2"); （效果在打印中可见）
+
+	\a：警报符，通常用于发出声音（响铃）。
+	示例：printf("\a"); （在支持的系统中会发出响铃声）
+
+	\v：垂直制表符，产生垂直空格。
+	示例：printf("Hello\vWorld"); （效果在不同环境中可能有所不同）
+
+	\0：空字符，表示字符串的结束标志。
+	示例：char str[] = "Hello\0World"; （在字符串处理中，"World"不会被处理）
+
+	\xxx：八进制字符，表示对应的ASCII字符，其中xxx为三位八进制数。
+	示例：printf("\101"); 输出：A（因为101是八进制的65）
+
+	\xhh：十六进制字符，表示对应的ASCII字符，其中hh为两位十六进制数。
+	示例：printf("\x41"); 输出：A（因为41是十六进制的65）
+	*/

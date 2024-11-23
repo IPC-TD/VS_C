@@ -1,0 +1,1623 @@
+# define _CRT_SECURE_NO_WARNINGS
+# include <stdio.h>
+//# include<stdio.h>
+//int main()
+//{
+//	/*
+//	s：字符串（str）
+//	d：整数（int）
+//	f：浮点数（float）
+//	x：十六进制整数（小写字母）
+//	x：十六进制整数（大写字母）
+//	o：八进制整数*/
+//	int a = 10;
+//	unsigned int b = 20;
+//	int c = 11, d = 22, e = 200;
+//	const short cs = 11;
+//	/*printf("变量a的值是%d   变量c的值是:%d\n", a, c);
+//	printf("a+b的值是%d \n", a+b);
+//	printf("常量cs %d \n", cs);*/
+//	printf("int占用空间为: %d \n", sizeof(int));  //dword
+//	printf("short占用空间为: %d \n", sizeof(short));  //word
+//	printf("long占用空间为: %d \n", sizeof(long)); //dword
+//	int num1 = 0;
+//	scanf("%d", &num1);
+//	printf("%d", num1);
+//	getchar();  // 读取字符并存储在变量中
+//	return 0;
+//}
+//int main()
+//{
+//	char arr1[] = "abcdef";
+//	char arr2[] = { 'a', 'b', 'c', 'd', 'e', 'f' };
+//	printf("%s\n", arr1);
+//	printf("%s\n", arr2);
+//	printf("\0");
+//	printf("\\0");
+//	printf("\n%d\n", strlen("abc"));
+//	printf("123");
+//	printf("abc");
+//	printf("\a\a\a\a\a");
+//	return 0;
+////}
+//int main()
+//{	
+//	int input = 0;
+//	printf("要加入杜冥鸦吗?\n");
+//	printf("要好好学习吗(1/0)?");
+//	scanf("%d", &input);
+//
+//	if (input == 1)
+//	{
+//		printf("好结局\n");
+//	}
+//	else
+//	{
+//		printf("卖红薯\n");
+//	}
+//
+//}
+
+//int main()
+//{
+//	int line = 0;
+//	printf("加入杜冥鸦\n");
+//
+//	while (line < 20000)
+//	{
+//		printf("写代码:%d\n", line);
+//		line++;//每次line的值都+1
+//	}
+//	if (line >= 20000)
+//	{
+//		printf("毕业了\n");
+//	}
+//	else
+//	{
+//		printf("继续加油");
+//	}
+//	return 0;
+//}
+
+//int Add(n1, n2)
+//{
+//	//int z = 0;
+//	//z = n1 + n2;
+//	//return z;
+//	//可以用下面这种简洁的, 不加括号括起来也行
+//	return (n1 + n2);
+//}
+
+//int main()
+//{
+//	int n1 = 0;
+//	int n2 = 0;
+//	//输入
+//	scanf("%d %d", &n1, &n2);
+//	//求和
+//	// int sum = n1 + n2;
+//	int sum = Add(n1, n2);
+//	
+//	//打印
+//	printf("%d\n", sum);
+//	return 0;
+//}
+//
+//int main()
+//{
+//	char arr[4] = { 2,3,4 };
+//	printf("%d\n", strlen(arr));
+//	int m = 10;
+//	//char arr2[m];
+//	char arr3[10]="hello";
+//	return 0;
+//}
+
+//int main()
+//{
+//	//int a = 7 / 2;
+//	//int b = 7 % 2;
+//	//printf("%d\n", a);
+//	//printf("%d\n", b);
+//	// / 除号两端都是整数的时候, 执行的时整数除法, 如果两端有一个是浮点数就执行浮点数的除法
+//	float a = 7 / 2.0;
+//	int b = 7 % 2;
+//	printf("%f\n", a);
+//	printf("%d\n", b);
+//	return 0;
+//}
+//int main()
+//{
+	//int flag = 0;
+	//if (!flag)
+	//{
+	//	printf("呵呵\n");
+	//}
+	// 
+	//sizeof是操作符, 是单目操作符
+	//int arr[10] = { 0 };
+	//printf("%d\n", sizeof(arr));
+	//printf("%d\n", sizeof arr);
+//	return 0;
+//}
+
+//int main()
+//{
+//	//int a = 10;
+//	//int b = a++; //后置++, 先执行b=a, 再执行a++, a++ = a+1
+//	//printf("%d\n", b); //10
+//	//printf("%d\n", a); //11
+//
+//	//int a = 10;
+//	//int b = ++a; //先执行++, 后执行b=a
+//	//printf("%d\n", b); //11
+//	//printf("%d\n", a); //11
+//
+//	int a = (int)3.14;
+//	// int b = int(3.14) python 写法不行
+//	printf("%d\n", a);
+//	return 0;
+//}
+
+//int main()
+//{
+//	// &&逻辑与 - 并且 等同and
+//	// ||逻辑或 - 或者  等同or
+//	int a = 10;
+//	int b = 20;
+//	if (a && b) //等同于py中的and
+//	{
+//		printf("都是真的");
+//	}
+//	if (a || b);  // 等同于py中的or
+//	{
+//		printf("有一个是真的");
+//	}
+//	return 0;
+//}
+
+//int main()
+//{
+//	int a = 20;
+//	int b = 30;
+//	int r = a > b ? a : b; 
+//	printf("%d\n", r);
+//	return 0;
+//}
+//extern int g_val;
+//void main()
+//{
+//	printf("%d\n", g_val);
+//}
+
+//extern Add(int x, int y);
+//int main()
+//{
+//	int a = 10;
+//	register int b = 20;//建议将该变量放到寄存器中存储
+//
+//	int z = Add(a, b);
+//	printf("%d\n", z);
+//	return 0;
+//}
+
+// static 静态修饰关键字
+
+//# define NUM 100; //定义标识常量
+//int main();
+//{
+//	printf("%d\n", NUM);
+//	int a = NUM;
+//	printf("%d\n", a);
+//	int arr[NUM] = { 0 };
+//
+//	return 0;
+//}
+
+//int main()
+//{
+//	int a = 10;//向内存申请4个字节, 储存10
+//	//&a;//取地址操作符
+//	printf("%p\n", &a);//000000A7380FFBA4
+//	int* p = &a;
+//	//p就是指针, 
+//	*p = 20; //解引用操作符, 意思是通过p中存放的地址, 找到p所指向的对象, *p就是p指向的对象
+//
+//	printf("%d\n", a);
+//
+//	char ch = 'w';
+//	char* pc = &ch;
+//
+//	return 0;
+//}
+
+//int main()
+//{
+//	printf("%zu\n", sizeof(char*));
+//	printf("%zu\n", sizeof(short*));
+//	printf("%zu\n", sizeof(int*));
+//	printf("%zu\n", sizeof(float*));
+//	printf("%zu\n", sizeof(long long*));
+//	printf("%zu\n", sizeof(double*));
+//	return 0;
+//}
+
+////结构体, 学生
+//struct Stu
+//{
+//	//成员
+//	char name[20];
+//	int age;
+//	char sex[10];
+//	char tele[12];
+//};
+//
+//void print(struct Stu* pc)
+//{
+//	printf("%s %d %s %s\n", (*pc).name, (*pc).age, (*pc).sex, (*pc).tele);
+//	//->
+//	//结构体指针变量->成员名
+//	printf("%s %d %s %s\n", pc->name, pc->age, pc->sex, pc->tele);
+//}
+//
+//int main()
+//{
+//	struct Stu s = { "dumingya", 18, "nv", "12345678912" };
+//	printf("%s %d %s %s\n", s.name, s.age, s.sex, s.tele);
+//
+//	print(&s);
+//	return 0;
+//}
+
+//# include <stdio.h>
+//
+//int main()
+//{
+//	int a = 0;
+//	int b = 0;
+//	scanf("%d %d", &a, &b);
+//	int z = a / b;
+//	int y = a % b;
+//	printf("%d %d", z, y);
+//	return 0;
+//}
+
+
+//# include <stdio.h>
+//int main()
+//{
+//	if (3 == 5)
+//	{
+//		printf("hehe\n");
+//		printf("xixi\n");
+//	};
+//
+//	if (3 == 3)
+//	{
+//		printf("haha\n");
+//	}
+//	return 0;
+//}
+
+
+//int main()
+//{
+//	int a = 10;
+//	if (a < 10)
+//		printf("成功输出\n");
+//	else if (a > 10, a < 30) //会导致他只检查逗号右边的表达式, 应该使用&&
+//		printf("10-30");
+//	else if (a > 30, a < 50) //会导致他只检查逗号右边的表达式, 应该使用&&
+//		printf("30-50");
+//	return 0;
+//}
+
+//int main()
+//{
+//	int a = 1;
+//	while (a <= 100)
+//	{
+//		if (a%2== 1)
+//			printf("%d ", a);
+//		a++;
+//	}
+//}
+
+//
+//int main()
+//{
+//	int day = 0;
+//	scanf("%d", &day);
+//	switch(day)//day 必须是整形
+//	{
+//		case 1://这里的1必须是常量整形
+//			printf("星期一\n");
+//			break;
+//		case 2:
+//			printf("星期二\n");
+//			break;
+//		case 3:
+//			printf("星期三\n");
+//			break;
+//		default:
+//			printf("输入错误");
+//			break;
+//	}
+//	return 0;
+//}
+
+//int main()
+//{
+//	//int ch = getchar();
+//	//printf("%d %c\n", ch, ch);
+//	//putchar(ch);
+//	int ch = 0;
+//	while ((ch = getchar()) != EOF)//#EOF 是end of file 文件结束标志的意思, 
+//		//如果获取的字符错误也返回这个
+//		putchar(ch);
+//	return 0;
+//}
+
+//int main()
+//{
+//	for (int i = 1; i <= 10; i++) //太老的编译器不支持在for里面创建变量i, 需要在循环外提前创建好
+//		printf("%d ", i);
+//	return 0;
+//}
+
+//int main()
+//{
+//	int i = 1;
+//	do
+//	{
+//		i++;
+//		if (i == 5)
+//			break;	
+//		printf("%d ", i);
+//	}
+//	while (i <= 10);
+//
+//	return 0;
+//}
+
+//int main()
+//{
+//	int i = 0;
+//	int n = 0;
+//	int y = 1;
+//	int z = 0;
+//	scanf("%d", &n);
+//
+//	for (i = 1; i <= n; i++)
+//	{
+//		y = y * i;
+//		z += y;
+//	}
+//
+//	printf("%d\n", y);
+//	printf("%d", z);
+//
+//	return 0;
+//}
+
+//int main()
+//{
+//	int arr[] = { 1,2,3,4,5,6,7,8,9,10 };
+//	int k = 100;
+//	//在一个有序的数组中查找具体的数字n
+//	int i = 0;
+//	int n = sizeof(arr) / sizeof(arr[0]);
+//	for (i = 0; i < n; i++)
+//	{
+//		if (arr[i] == k)
+//			printf("找到了, 下标是:%d", i);
+//		break;
+//	}
+//	if (i = n)
+//		printf("没找到\n");
+//	return 0;
+//}
+
+
+//int main()
+//{
+//	int arr[] = { 1,2,3,4,5,6,7,8,9,10 };
+//	//在一个有序的数组中查找具体的数字k
+//	int k = 11;
+//	//scanf("%d", &k);
+//
+//	int i = 0;//初始化下标
+//	int left = 0;//初始化左边界
+//	int right = sizeof(arr) / sizeof(arr[0]);//初始化右边界
+//	for (i = (left + right) / 2; arr[i] != k; i = (left + right) / 2)
+//	{
+//		if (arr[i] < k)
+//		{
+//			left = ++i;
+//			if (left > right)
+//			{
+//				printf("没找到");
+//				break;
+//			}
+//		}
+//
+//		else if (arr[i] > k)
+//		{
+//			right = --i;
+//			if (left > right)
+//			{
+//				printf("没找到");
+//				break;
+//			}
+//		}
+//	}
+//	if (arr[i] == k)
+//		printf("%d", i);
+//	return 0;
+//}
+
+//int main()
+//{
+//	int arr[] = { 1,2,3,4,5,6,7,8,9,10 };
+//	//在一个有序的数组中查找具体的数字k
+//	int k = 0;//初始化待查找数字
+//	scanf("%d", &k);//输入待查找数字
+//
+//	int i = 0;//初始化索引下标
+//	int left = 0;//初始化左边界
+//	int right = sizeof(arr) / sizeof(arr[0])-1;//初始化右边界
+//	for (i = (left + right) / 2; left <= right; i = (left + right) / 2)
+//	{
+//		if (arr[i] < k)
+//		{
+//			left = ++i;
+//		}
+//
+//		else if (arr[i] > k)
+//		{
+//			right = --i;
+//		}
+//		else
+//		{
+//			printf("找到了, 待查找数字下标是:%d", i);
+//			break;
+//		}
+//
+//	}
+//	if (left > right)
+//		printf("没找到");
+//	return 0;
+//}
+//
+//# include <string.h> //调用strlen
+//# include <windows.h> //调用Sleep
+//# include <stdlib.h> //调用system
+//
+//int main()
+//{
+//	char arr1[] = "welcome to school";
+//	char arr2[] = "#################";
+//
+//	int left = 0;
+//	int right = strlen(arr2)-1;
+//
+//	while (left <= right)
+//	{
+//		arr2[left] = arr1[left];
+//		arr2[right] = arr1[right];
+//		left++;
+//		right--;
+//		printf("%s\n", arr2);
+//		Sleep(1000);//休眠1秒
+//		//清空屏幕
+//		system("cls");//system是一个库函数, 可以执行系统命令
+//	}
+//	printf("%s\n", arr2);
+//
+//	return 0;
+//}
+
+//# include <string.h> //调用strcmp比较字符串
+//头文件用过一次后, 如果被注释掉了, 缓存里还有, 还能用
+//int main()
+//{
+//	char pass_word[] = "12345678";
+//	char pass_word2[18] = { 0 };
+//
+//	int i = 0;
+//	while (i < 3)
+//	{
+//		printf("请输入密码>:");
+//		scanf("%s", pass_word2);
+//		if (strcmp(pass_word2, pass_word)==0)
+//		{
+//			printf("密码输入正确!");
+//			break;
+//		}
+//		else
+//		{
+//			printf("密码错误\n");
+//			printf("你还有%d次机会\n", 2 - i);
+//			printf("-----------------\n");
+//		}
+//		i++;
+//	}
+//
+//	return 0;
+//}
+
+//# include <>
+
+
+//
+//void menu()
+//{
+//	printf("---------------------------------\n");
+//	printf("-----------  1.猜数字   ---------\n");
+//	printf("-----------  0.退出游戏 ---------\n");
+//	printf("---------------------------------\n");
+//
+//}
+//
+//# include <stdlib.h>
+//void play_game() {
+//	int guess = -1;
+//	int ret = rand()%100+1;//rand()生成0到RAND_MAX
+//	//printf("%d\n", ret);
+//	while (guess != ret)
+//	{
+//		printf("请输入你猜测的数字:>");
+//		scanf("%d", &guess);
+//		if (guess == ret)
+//		{
+//			printf("猜对了\n");
+//			printf("程序已结束, 请重新选择菜单\n");
+//			menu();
+//		}
+//		else if (guess < ret)
+//			printf("小了\n");
+//		else
+//			printf("大了\n");
+//	}
+//}
+//# include <time.h>
+//int main()
+//{
+//	//srand();
+//	int input = 0;
+//	menu();
+//	srand((unsigned)time(NULL));
+//
+//	do {
+//		printf("请输入你要执行的操作:>");
+//		scanf("%d", &input);
+//		switch (input) {
+//		case 1: {
+//			//准备实现游戏线程
+//			printf("开始游戏\n");
+//			play_game();
+//			break;
+//		}
+//		case 0: {
+//			printf("已退出游戏\n");
+//			break;
+//		}
+//		default: {
+//			printf("你输入有误\n");
+//			break;
+//		}
+//		}
+//
+//	} while (input);
+//
+//	return 0;
+//}
+
+
+//# include <windows.h>
+//int main() {
+//again:
+//	printf("hehe\n");
+//	printf("haha\n");
+//	Sleep(300);
+//	goto again;
+//	return 0;
+//}
+
+//# include <stdlib.h> //导入system
+//# include <string.h> //导入strcmp
+//int main() {
+//	char input[20] = { 0 };
+//	system("shutdown -s -t 300");
+//again:
+//	printf("请注意, 你的电脑将在300秒内关机, 请输入: 我是猪, 就取消关机\n");
+//	scanf("%s", input);
+//	if (strcmp(input, "我是猪") == 0)
+//		system("shutdown -a");
+//	else {
+//		printf("你输入有误\n");
+//		goto again;
+//	}
+//	return 0;
+//}
+
+//# include <string.h>
+//int main() {
+//	char arr[20] = { 0 };
+//	char arr2[] = "hello world";
+//	strcpy(arr, arr2);
+//	printf("%s\n", arr);
+//
+//	char arr3[] = "hello world";
+//	memset(arr3, 'x', 5);
+//	printf(arr3);
+//	return 0;
+//}
+
+//int get_max(int a, int b)
+//{
+//	return (a > b ? a : b);
+//}
+//int main() {
+//	int x = 0;
+//	int y = 0;
+//	scanf("%d %d", &x, &y);
+//	//调用函数
+//	int m = get_max(x, y);
+//	printf("%d\n", m);
+//	return 0;
+//}
+
+//void Swap(int* x, int* y)
+//{
+//	int z = 0;
+//	z = *x;
+//	*x = *y;
+//	*y = z;
+//}
+//// 当实参传递给形参的时候, 形参是实参的一份临时拷贝
+//// 对形参的修改不能改变实参
+//int main() {
+//	int a = 0;
+//	int b = 0;
+//	scanf("%d %d", &a, &b);
+//	printf("a = %d, b = %d \n", a, b);
+//	Swap(&a, &b);
+//	printf("a = %d, b = %d \n", a, b);
+//
+//	return 0;
+//}
+
+// 判断素数的函数
+//int judgment(int x)
+//{
+//	int z = 0;
+//	for (z = 2; z < x; z++)
+//	{
+//		if (x % z == 0)
+//		{
+//			return 0;
+//		}
+//	}
+//	return 1;
+//}
+//int main() {
+//	//产生素数
+//	int i = 0;
+//	int count = 0;
+//	for (i = 100; i <= 200; i++)
+//	{
+//		if (judgment(i) == 1)
+//		{
+//			printf("%d ", i);
+//			count++;
+//		}
+//	}
+//	printf("\n素数的个数为:%d", count);
+//	//判断素数
+//	//输出素数
+//	return 0;
+//}
+
+//# include <math.h>
+//// 这是一个数学函数库
+////double sqrt(double x);
+////参数：x 是一个非负的实数（浮点数）。
+////返回值：返回 x 的平方根，如果 x < 0，结果为 未定义（可能返回 NaN，即“非数”）。
+//// 传入整形会帮我转换成浮点型
+////如果你把整型（int）变量传递给 sqrt() 函数，它会自动将整型转换为浮点型（double），以符合函数的参数类型要求。
+//int judgment(int x)
+//{
+//	int z = 0;
+//	for (z = 2; z < sqrt(x); z++)//square root 开平方根
+//	{
+//		if (x % z == 0)
+//		{
+//			return 0;
+//		}
+//	}
+//	return 1;
+//}
+//int main() {
+//	//产生素数
+//	int i = 0;
+//	int count = 0;
+//	for (i = 101; i <= 200; i+=2)//偶数不会输素数
+//	{
+//		if (judgment(i) == 1)// 函数名 可以起为"is_prime", prime在数学中是质数的意思;
+//		{
+//			printf("%d ", i);
+//			count++;
+//		}
+//	}
+//	printf("\n素数的个数为:%d", count);
+//	//判断素数
+//	//输出素数
+//	return 0;
+//}
+
+////闰年判断
+//int target_year(int n) {
+//	if ((n % 100 != 0 && n % 4 == 0) || (n % 400 == 0 ))
+//		return 1;
+//	return 0;
+//}
+//int main() {
+//	int i = 0;
+//	int count = 0;
+//	for (i = 1000; i <= 2000; i++) {
+//		if (target_year(i) == 1) { //闰年是leap year, 函数可以叫 is_leap_year
+//			printf("%d ", i);
+//			count++;
+//		}
+//	}
+//	printf("\n闰年个数为:%d", count);
+//	return 0;
+//}
+
+
+//int target_num(int*x, int size, int y) {
+//	int left = 0;
+//	int right = size - 1;
+//	while (right >= left) {
+//		int mid = (left + (right-left)) / 2; // 防止内存溢出
+//		if (x[mid] > y) {
+//			right = mid -1;
+//		}
+//		else if (x[mid] < y) {
+//			left = mid + 1;
+//		}
+//		else {
+//			return mid;
+//		}
+//	}
+//	return -1;
+//}
+//int main() {
+//	int arr [] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+//	int n = 1;
+//	int size = sizeof(arr) / sizeof(arr[0]);
+//
+//	int result = target_num(arr, size, n);
+//	if (result == -1) {
+//		printf("未找到目标值");
+//	}
+//	else {
+//		printf("n在arr数组的第%d位", result + 1);
+//	}
+//	return 0;
+//}
+
+//# include "add.h"
+//# include "sub.h"
+//# pragma comment(lib, "add.lib")
+//int main() {
+//	int a = 0;
+//	int b = 0;
+//	scanf("%d %d", &a, &b);
+//	printf("%d\n", Add(a, b));
+//	printf("%d\n", Sub(a, b));
+//
+//	return 0;
+//}
+
+////函数的递归
+//void print(unsigned int n) {
+//	if (n > 9) {
+//		print(n / 10);
+//	}
+//	printf("%d ", n % 10);
+//}
+//
+//int main() {
+//	unsigned int num = 0;
+//	scanf("%d", &num);
+//	print(num);
+//	return 0;
+//}
+
+//# include <string.h>
+//int guess(char* str) {
+//	int count = 0;
+//	while (*str != '\0') {
+//		count++;
+//		str++;
+//	}
+//	return count;
+//}
+//
+//int main() {
+//	char word[] = "猜猜我是谁?";
+//	printf("字符串长度为: %d \n", guess(word));
+//	printf("字符串长度为: %d \n", strlen(word));
+//	return 0;
+//}
+
+
+//int my_strlen(char* str) {
+//	if (*str != '\0')
+//		return 1 + my_strlen(str + 1); // 如果写成++str, 会修改原指针(外部指针)变量
+//	else
+//		return 0;
+//}
+//int main() {
+//	char arr[] = "abcd";
+//	printf("%d", my_strlen(arr));
+//	return 0;
+//}
+
+
+//int count = 0;
+//int Fib(int n) {
+//	if (n == 3)
+//		count++;
+//	if (n <= 2)
+//		return 1;
+//	else
+//		return Fib(n - 1) + Fib(n - 2);
+//}
+//int count = 0;
+//int Fib(int n) {
+//	int i = 0;
+//	int ret = 0;
+//	int a = 1;
+//	int b = 1;
+//	if (n <= 2)
+//		return 1;
+//	else {
+//		for (i = 3; i <= n; i++) {
+//			ret = a + b;
+//			a = b;
+//			b = ret;
+//			count++;
+//		}
+//		return ret;
+//	}
+//}
+//int main() {
+//	int n = 0;
+//	scanf("%d", &n);
+//	printf("结果: %d\n统计次数: %d\n", Fib(n), count);
+//	return 0;
+//}
+
+
+//int main() {
+//	int a = 0;
+//	int b = 0;
+//	int c = 0;
+//	scanf("%d %d %d", &a, &b, &c);
+//	if (a > b && a > c) {
+//		if (b > c)
+//			printf("%d %d %d", a, b, c);
+//		else 
+//			printf("%d %d %d", a, c, b);
+//	}
+//	else if (b > c) {
+//		if (a > c)
+//			printf("%d %d %d", b, a, c);
+//		else
+//			printf("%d %d %d", b, c, a);
+//	}
+//	else {
+//		if (a > b)
+//			printf("%d %d %d", c, a, b);
+//		else
+//			printf("%d %d %d", c, b, a);
+//	}
+//	return 0;
+//}
+
+//int main() {
+//	int a = 0;
+//	int b = 0;
+//	int c = 0;
+//	int tmp = 0;
+//	scanf("%d %d %d", &a, &b, &c);
+//	if (a < b) {
+//		tmp = a;
+//		a = b;
+//		b = tmp;
+//	}
+//	if (a < c) {
+//		tmp = a;
+//		a = c;
+//		c = tmp;
+//	}
+//	if (b < c) {
+//		tmp = b;
+//		b = c;
+//		c = tmp;
+//	}
+//	printf("%d %d %d", a, b, c);
+//	return 0;
+//}
+
+//int main() {
+//	int i = 0;
+//	// 输出3的倍数
+//	for (i = 3; i < 100; i += 3) {
+//		printf("%d ", i);
+//	}
+//}
+
+//int main() {
+//	int a = 0;
+//	int b = 0;
+//	int i = 0;
+//	scanf("%d %d", &a, &b);
+//	//if (a > b) {
+//	//	int tmp = a;
+//	//	a = b;
+//	//	b = tmp;
+//	//}
+//	a = (a > b) ? b : a;
+//
+//	for (i = a; i >= 1; i--) {
+//		if (a % i == 0 && b % i == 0) {
+//			printf("二者最大公约数是: %d", i);
+//			break;
+//		}
+//	}
+//return 0;
+//}
+
+//// 辗转相除法
+//int main() {
+//	int a = 0;
+//	int b = 0;
+//	scanf("%d %d", &a, &b);
+//
+//	a = (a > b) ? b : a;
+//	int min = a;
+//	while (1) {
+//		if (a % min == 0 && b % min == 0) {
+//			printf("二者最大公约数是: %d", min);
+//			break;
+//		}
+//		else {
+//			int tmp = a;
+//			a = b % a;
+//			b = tmp;
+//			min = a;
+//		}
+//	}
+//
+//	return 0;
+//}
+
+//// 优化辗转相除法
+//int main() {
+//	int a = 0;
+//	int b = 0;
+//	int c = 0;
+//	scanf("%d %d", &a, &b);// 18 24
+//	while (c = a % b) {
+//		a = b;
+//		b = c;
+//	}
+//	printf("二者最大公约数是: % d", b);
+//	return 0;
+//}
+
+//int main() {
+//	int i = 0;
+//	int count = 0;
+//	for (i = 1; i <= 100; i++)
+//	{
+//		if (i % 10 == 9)//判断个位数
+//			count++;
+//		if (i / 10 == 9)//判断十位数
+//			count++;
+//	}
+//	printf("%d", count);
+//	return 0;
+//}
+
+//int main() {
+//	int i = 0;
+//	double sum = 0;
+//	int flag = 1;
+//	for (i = 1; i <= 100; i++)
+//	{
+//		sum =sum + flag*(1.0 / i);
+//		flag = -flag;
+//	}
+//	printf("%lf", sum);
+//}
+
+
+//void bubble_sort(int arr[], int sz)
+//{
+//	int i = 0;
+//	for (i = 0; i < sz - 1; i++)//需要排列的元素个数 = 总个数 -1
+//	{
+//		int j = 0;
+//		for (j = 0; j < sz - 1 - i; j++) // 每个元素需要对比几次
+//		{
+//			if (arr[j] > arr[j + 1])
+//			{
+//				int tmp = arr[j + 1];
+//				arr[j + 1] = arr[j];
+//				arr[j] = tmp;
+//			}
+//		}
+//	}
+//}
+//int main()
+//{
+//	int arr[] = { 4, 5, 1, 6, 4, 3, 74, 5, 1, 47, 3, 4 };
+//	int sz = sizeof(arr) / sizeof(arr[0]);
+//	bubble_sort(arr, sz);
+//	int i = 0;
+//	for (i = 0; i < sz; i++)
+//		printf("%d ", arr[i]);
+//	return 0;
+//}
+
+//void print(int arr[][3], int row, int column)
+//{
+//	int i = 0;
+//	int j = 0;
+//	for (i = 0; i < row; i++)
+//	{
+//		for (; i < column; i++)
+//		{
+//			printf("%d ", arr[i][j]);
+//		}
+//	}
+//}
+//
+//int main()
+//{
+//	int arr[][3] = { 3,3,3,4,4,4,5,5,5 };
+//	print(arr, 3, 3);
+//	return 0;
+//}
+
+////递归方式，打印函数的每一位
+//int rezult(int n)
+//{
+//	if (n > 9)
+//	{
+//		rezult(n / 10);
+//		printf("%d ", n % 10);
+//	}
+//	else
+//		printf("%d ", n);
+//}
+//int main()
+//{
+//	int a = 0;
+//	printf("请输入数据:");
+//	scanf("%d", &a);
+//	rezult(a);
+//}
+
+//// 非递归求阶乘
+//void rezult(int a)
+//{
+//	int i = 0;
+//	int product = 1;
+//	for (i = a; i >= 1; i--)
+//	{
+//		product = product * i;
+//	}
+//	printf("%d", product);
+//}
+// 递归方式求阶乘
+//int rezult(int a)
+//{
+//	if (a == 1)
+//	return 1;
+//	else
+//	return a * rezult(a - 1);
+//	
+//}
+//
+//int main()
+//{
+//	int a = 0;
+//	printf("请输入数据：");
+//	scanf("%d", &a);
+//	printf("%d", rezult(a));
+//  return 0;
+//}
+
+//# include <string.h>
+//void process(char arr[], const int len)
+//{
+//	char temporary[len] = 0;
+//
+//
+//}
+//int main()
+//{
+//	char arr[] = "abcdef";
+//	int length = strlen(arr) / strlen(arr[0]);
+//	process(arr, length);
+//	int i = 0;
+//	for (i = 0; i < length; i++)
+//	{
+//		printf("%c", arr[i]);
+//	}
+//	return 0;
+//}
+
+//void rezult(char* arr)
+//{
+//	printf("%c", arr[02]);
+//}
+//int main()
+//{
+//	char arr[][3] = { 's', 'y', 'o', 'a'};
+//	rezult(arr);
+//	return 0;
+//}
+
+
+////非递归实现字符串逆序
+//void reverse_string(char arr[], int left, int right)
+//{
+//	char temporary = 0;
+//	for (left = 0; left < right; left++, right--)
+//	{
+//		temporary = arr[left];
+//		arr[left] = arr[right];
+//		arr[right] = temporary;
+//	}
+//}
+//// 递归实现字符串逆序
+//void reverse_string(char arr[], int left, int right)
+//{
+//	char temporary = 0;
+//	if (left < right)
+//	{
+//		temporary = arr[left];
+//		arr[left] = arr[right];
+//		arr[right] = temporary;
+//		left++;
+//		right--;
+//		reverse_string(arr, left, right);
+//	}
+//}
+//int main()
+//{
+//	char arr[] = "abcdef";
+//	int left = 0;
+//	int right = sizeof(arr) / sizeof(arr[0]) - 2;
+//	reverse_string(arr, left, right);
+//	int i = 0;
+//	for (; arr[i] != '\0';i++)
+//		printf("%c", arr[i]);
+//	return 0;
+//}
+
+//// 递归实现字符串逆序2
+//int string_length(char* str)
+//{
+//	int count = 0;
+//	while (*str != '\0')
+//	{
+//		count++;
+//		str++;
+//	}
+//	return count;
+//}
+//void reverse_string(char* arr)
+//{
+//	int length = string_length(arr);
+//	char temporary = *arr;
+//	*arr = *(arr + length - 1);
+//	*(arr + length - 1) = '\0';
+//	if (*(arr + 1) != '\0')
+//		reverse_string(arr + 1);
+//	*(arr + length - 1) = temporary;
+//}
+//int main()
+//{
+//	char arr[] = "abcdef";
+//	reverse_string(arr);
+//	int i = 0;
+//	printf("%s", arr);
+//	return 0;
+//}
+
+////递归方式计算一个数每位之和
+//int Calculate_cumulative_sum(int sum)
+//{
+//	if (sum > 9)
+//	{
+//		return (sum % 10) + Calculate_cumulative_sum(sum / 10);
+//	}
+//	else
+//		return sum;
+//}
+//
+//int main()
+//{
+//	int num = 0;
+//	printf("请输入一个正整数：");
+//	scanf("%d", &num);
+//	printf("计算结果为：%d", Calculate_cumulative_sum(num));
+//	return 0;
+//}
+
+////递归方式计算一个数每位之和2
+//int digitsum(unsigned int sum)
+//{
+//	if (sum > 9)
+//	{
+//		return (sum % 10) + digitsum(sum / 10);
+//	}
+//	else
+//		return sum;
+//}
+//
+//int main()
+//{
+//	unsigned int num = 0;
+//	printf("请输入一个正整数：");
+//	scanf("%u", &num);
+//	printf("计算结果为：%d", digitsum(num));
+//	return 0;
+//}
+
+////递归实现n的k次方
+//int exponentiation(int num, int k)
+//{
+//	if (k > 1)
+//	{
+//		return num * (exponentiation(num, k - 1));
+//	}
+//	else
+//		return num;
+//}
+//
+//int main()
+//{
+//	int num = 0;
+//	int k = 0;
+//	printf("请输入数据：");
+//	scanf("%d %d", &num, &k);
+//	printf("幂运算结果：%d", exponentiation(num, k));
+//	return 0;
+//}
+
+//int main()
+//{
+//	char arr[] = "hello world";
+//	char arr2[20] = { 'h' };
+//	float arr3[20] = { 1.0 };
+//	printf("%s %d\n", arr, sizeof(arr));
+//	printf("%c\n", arr2[3]);
+//	return 0;
+//}
+
+//int main()
+//{
+//	int arr[10] = { 1,2,3,4,5 };
+//	printf("%p\n", arr);
+//	printf("%p\n", &arr[0]);
+//	printf("%d\n", *arr);
+//	//输出结果
+//	return 0;
+//}
+
+//// 连个数组之间互相交换内容，数组一样大
+//void data_exchange(int arr1[], int arr2[], int strlen)
+//{
+//	int i = 0;
+//	for (i = 0; i < strlen; i++)
+//	{
+//		int temporary = arr1[i];
+//		arr1[i] = arr2[i];
+//		arr2[i] = temporary;
+//	}
+//
+//	
+//}
+//int main()
+//{
+//	int arr1[] = { 1, 3, 5, 7, 9 };
+//	int arr2[] = { 2, 4, 6, 8, 10 };
+//	int strlen = sizeof(arr1) >= sizeof(arr2) ? sizeof(arr1) / sizeof(arr1[0]) : sizeof(arr2) / sizeof(arr2[0]);
+//	data_exchange(arr1, arr2, strlen);
+//	int i = 0;
+//	for (i = 0; i < strlen; i++)
+//	{
+//		printf("%d ", arr1[i]);
+//	}
+//	printf("\n");
+//	for (i = 0; i < strlen; i++)
+//	{
+//		printf("%d ", arr2[i]);
+//	}
+//	
+//	return 0;
+//}
+
+//int main()
+//{
+//	char arr[] = "hello world";
+//	printf("%p\n", arr); // 输出首元素地址
+//	printf("%p\n", &arr[0]); // 输出首元素地址
+//
+//	printf("%c\n", *arr); // 输出首元素
+//	printf("%c\n", arr[0]); // 输出首元素
+//
+//	printf("%s\n", arr); // 输出字符串
+//	printf("%s\n", &arr[0]); // 输出字符串
+//
+//	//输出结果
+//	return 0;
+//}
+
+////写一个函数，实现整数数组的初始化init，整数数组的输出功能print，和逆置功能reverse
+//void reverse(int arr[], int sz)
+//{
+//	int left = 0;
+//	int right = sz - 1;
+//	int i = 0;
+//	for (;left < right; left++, right--)
+//	{
+//		int temporary = arr[left];
+//		arr[left] = arr[right];
+//		arr[right] = temporary;
+//	}
+//}
+//
+//void print(int arr[], int sz)
+//{
+//	int i = 0;
+//	for (i = 0; i < sz; i++)
+//	{
+//		printf("%d ", arr[i]);
+//	}
+//	printf("\n");
+//}
+//
+//void init(int arr[], int sz)
+//{
+//	int i = 0;
+//	for (i = 0; i < sz; i++)
+//	{
+//		arr[i] = 0;
+//	}
+//	printf("\n");
+//}
+//int main()
+//{
+//	int arr[] = { 1, 3, 5, 7, 9, 11 };
+//	int sz = sizeof(arr) / sizeof(arr[0]);
+//	reverse(arr, sz);
+//	print(arr, sz);
+//	init(arr, sz);
+//	print(arr, sz);
+//	return 0;
+//}
+
+//int main()
+//{
+//	// 举例
+//	int a = 7;
+//	int b = -7;
+//
+//	// 对整数a和b，各右移1位
+//	a = a >> 1;
+//	b = b >> 1;
+//	printf("%d %d", a, b); // 输出？
+//	return 0;
+//}
+
+//struct Stu
+//{
+//	char name[10];
+//	int age;
+//	char sex[5];
+//	double score;
+//};
+//
+//void set_age1(struct Stu stu)
+//{
+//	stu.age = 18;
+//}
+//void set_age2(struct Stu* pStu)
+//{
+//	pStu->age = 18;//结构成员访问
+//}
+//int main()
+//{
+//	struct Stu stu;
+//	struct Stu* pStu = &stu;//结构成员访问
+//	stu.age = 20;//结构成员访问
+//	set_age1(stu);
+//	pStu->age = 20;//结构成员访问
+//	set_age2(pStu);
+//	return 0;
+//}
+
+//struct Student1
+//{
+//	char name[20]; // 名字
+//	int age; // 年龄
+//	char sex[5]; // 性别
+//	char id[20]; // 学号
+//}Stu1, Stu2 = { "zhangsan", 20, "男", "123456" }; // 分号不能丢 
+//
+//
+//int main()
+//{
+//	printf("%s %d %s %s", Stu2.name, Stu2.age, Stu2.sex, Stu2.id);
+//}
+
+//// 结构体过大，使用地址传参会更好
+//struct S
+//{
+//	int data[1000];
+//	int num;
+//};
+//struct S s = { {1,2,3,4}, 1000 };
+////结构体传参
+//void print1(struct S s)
+//{
+//	printf("%d\n", s.num);
+//}
+////结构体地址传参
+//void print2(struct S* ps)
+//{
+//	printf("%d\n", ps->num);
+//}
+//int main()
+//{
+//	print1(s);  //传结构体
+//	print2(&s); //传地址
+//	return 0;
+//}
+
+//// 写一个函数返回参数中1的个数
+//int numof1(int n)
+//{
+//	int i = 0;
+//	int count = 0;
+//	if (n < 0)
+//	{
+//		n -= 1;
+//		n = ~n;
+//
+//	}
+//	for (i = 0; i < 32; i++)
+//	{
+//		if (n & 1 == 1)
+//		{
+//			count++;
+//		}
+//		n >>= 1;
+//	
+//	}
+//	return count;
+//}
+//int main()
+//{
+//	int n = 0;
+//	scanf("%d", &n); // 0000 1111
+//	printf("%d", numof1(n));
+//	return 0;
+//}
+
+//// 两个整形，二进制数，多少位不同
+//int numof1(int n, int m)
+//{
+//	int i = 0;
+//	int count = 0;
+//	int tmp = n ^ m;
+//	while (tmp)
+//	{
+//		tmp &= tmp - 1;
+//		count++;
+//	}
+//	return count;
+//}
+//int main()
+//{
+//	int n, m = 0;
+//	scanf("%d %d", &n, &m); // 0000 1111
+//	printf("%d", numof1(n, m));
+//	return 0;
+//}
+
+//// 打印两个*组成的字母X
+//void print(int n)
+//{
+//	int i = 0;
+//	int j = 0;
+//	for (i = 0; i < n; i++)
+//	{
+//		for (j = 0; j < n; j++)
+//		{
+//			if (i == j || i == n - 1 - j)
+//			{
+//				printf("*");
+//			}
+//			else
+//			{
+//				printf(" ");
+//			}
+//		}
+//		printf("\n");
+//	}
+//}
+//int main()
+//{
+//	int n = 0;
+//	scanf("%d", &n);
+//	print(n);
+//	return 0;
+//}
+
+//// 判断某一年某一月有多少天
+//int isLeapYear(int y)
+//{
+//	return ((y % 4 == 0) && (y % 100 != 0)) || (y % 400 == 0);
+//}
+//int main()
+//{
+//	int year = 0;
+//	int month = 0;
+//	int day = 0;
+//	int days[13] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+//	while (scanf("%d %d", &year, &month) == 2)
+//	{
+//		day = days[month];
+//		if (isLeapYear(year) && day == 2)
+//			day++;
+//		printf("%d", day);
+//	}
+//	return 0;
+//}
+
+
+
+# include <assert.h>
+char* my_strcpy(char* p1, const char* p2)
+{
+	char* tmp = p1;
+	assert(p1 && p2); // p1和p2都为真（即非空指针），才会继续执行;
+	while (*p1++ = *p2++)
+	{
+		;
+	}
+	return tmp;
+}
+
+int main()
+{
+	char arr[20] = "你好我是莉莉";
+	char arr2[20] = "大家好";
+	char* arr3 = NULL;
+
+	printf("%s\n", my_strcpy(arr, arr2));
+	printf("%s\n", my_strcpy(arr, arr3));
+
+	return 0;
+}
