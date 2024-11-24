@@ -1598,26 +1598,251 @@
 
 
 
-# include <assert.h>
-char* my_strcpy(char* p1, const char* p2)
-{
-	char* tmp = p1;
-	assert(p1 && p2); // p1和p2都为真（即非空指针），才会继续执行;
-	while (*p1++ = *p2++)
-	{
-		;
-	}
-	return tmp;
-}
+//# include <assert.h>
+//char* my_strcpy(char* p1, const char* p2)
+//{
+//	char* tmp = p1;
+//	assert(p1 && p2); // p1和p2都为真（即非空指针），才会继续执行;
+//	while (*p1++ = *p2++)
+//	{
+//		;
+//	}
+//	return tmp;
+//}
+//
+//int main()
+//{
+//	char arr[20] = "你好我是莉莉";
+//	char arr2[20] = "大家好";
+//	char* arr3 = NULL;
+//
+//	printf("%s\n", my_strcpy(arr, arr2));
+//	printf("%s\n", my_strcpy(arr, arr3));
+//
+//	return 0;
+//}
+
+//// 判断是否构成三角形
+//int main()
+//{
+//	int a = 0, b = 0, c = 0;
+//	while (scanf("%d %d %d", &a, &b, &c) == 3)
+//	{
+//		if (a + b > c && a + c > b && b + c > a)
+//		{
+//			if (a == b && a == c)
+//			{
+//				printf("Equilateral triangle!\n");
+//			}
+//			else if (a == b || a == c || b == c)
+//			{
+//				printf("Isosceles triangle!\n");
+//
+//			}
+//			else
+//			{
+//				printf("Ordinary triangle!\n");
+//			}
+//		}
+//		else
+//		{
+//			printf("Not a triangle!\n");
+//		}
+//	}
+//	return 0;
+//}
+
+//// 使用指针的形式，打印数组内容
+//void print(int* p, int sz)
+//{
+//	int i = 0;
+//	for (i = 0; i < sz; i++)
+//	{
+//		printf("%d ", *(p + i));
+//	}
+//	printf("\n");
+//}
+//
+//int main()
+//{
+//	int arr[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+//	int* p = arr;
+//	int sz = sizeof(arr) / sizeof(arr[0]);
+//	print(p, sz);
+//
+//	return 0;
+//}
+
+//// 逆序字符串
+//# include <string.h>
+//void string_reverse(char arr[], int str)
+//{
+//	int left = 0;
+//	int right = str - 1;
+//	char tmp = 0;
+//	while (left < right)
+//	{
+//		tmp = arr[left];
+//		arr[left] = arr[right];
+//		arr[right] = tmp;
+//		left++;
+//		right--;
+//	}
+//}
+//
+//// 递归的方法
+//void string_reverse2(char arr[], int right)
+//{
+//	if (right > 0) 
+//	{
+//		int left = 0;
+//		char tmp = 0;
+//		tmp = arr[left];
+//		arr[left] = arr[right];
+//		arr[right] = tmp;
+//		string_reverse2(arr + 1, right - 2);
+//	}
+//
+//}
+//
+//int main()
+//{
+//	// 测试字符：I am a student
+//	char arr[100] = { 0 };
+//	gets(arr);
+//	printf("%s\n", arr);
+//	string_reverse(arr, strlen(arr));
+//	printf("%s\n", arr);
+//	string_reverse2(arr, strlen(arr) - 1);
+//	printf("%s\n", arr);
+//	return 0;
+//}
+//
+//// 练习S2 = 2+22+222+2222+22222
+//// 递归
+//int Sn(int a, int n)
+//{
+//	if (n > 0)
+//	{
+//		return a + Sn(a * 10 + 2, n - 1);
+//	}
+//	else
+//	{
+//		return 0;
+//	}
+//}
+//// 迭代
+//int Sn2(int a, int n)
+//{
+//	int sum = 0;
+//	int ret = 0;
+//	int i = 0;
+//
+//	//// 产生前N项
+//	//int j = 0;
+//	//for (i = 0; i < n; i++)
+//	//{
+//	//	ret = 0;
+//	//	// 产生每一项
+//	//	for (j = 0; j <= i; j++)
+//	//	{
+//	//		ret = a + ret*10;
+//	//	}
+//	//	sum += ret;
+//	//}
+//	// 简化
+//	for (i = 0; i < n; i++)
+//	{
+//		ret = a + ret * 10;
+//		sum += ret;
+//	}
+//	return sum;
+//}
+//
+//int main()
+//{
+//	int a = 2;
+//	int sum = Sn(a, 5);
+//	printf("%d\n", sum);
+//	printf("%d\n", Sn2(2, 5));
+//	return 0;
+//}
+
+
+//练习，10000以内的水仙花数
+# include <math.h>
+
+//// 过于暴力，简化一下
+//int main()
+//{
+//	int i = 0;
+//	for (i = 0; i < 10001; i++)
+//	{
+//		if (i < 10)
+//		{
+//			if (i == pow(i, 1))
+//			{
+//				printf("%d ", i);
+//			}
+//		}
+//		else if (i < 100)
+//		{
+//			if (i == pow(i % 10, 2) + pow(i / 10, 2))
+//			{
+//				printf("%d ", i);
+//			}
+//		}
+//		else if (i < 1000)
+//		{
+//			if (i == pow(i % 10, 3) + pow((i / 10) % 10, 3) + pow(i / 100, 3))
+//			{
+//				printf("%d ", i);
+//			}
+//		}
+//		else
+//		{
+//			if ((i == pow(i % 10, 4) + pow((i / 10) % 10, 4) + pow((i / 100) % 10, 4) + pow(i / 1000, 4)) && i != 10000)
+//			{
+//				printf("%d ", i);
+//			}
+//		}
+//	}
+//	return 0;
+//}
+//// 技巧性解法
+//int main()
+//{
+//	int i = 0;
+//	for (i = 0; i < 10000; i++)
+//	{
+//		//判断几位数
+//		int count = 1;
+//		int tmp = i;
+//		while (tmp /= 10)
+//		{
+//			count++;
+//		}
+//		// 求每一位数count次方之和
+//		tmp = i;
+//		int sum = 0;
+//		while (tmp)
+//		{
+//			sum += pow(tmp % 10, count);
+//			tmp /= 10;
+//		}
+//		// 判断水仙花
+//		if (i == sum)
+//		{
+//			printf("%d ", i);
+//		}
+//	}
+//	return 0;
+//}
 
 int main()
 {
-	char arr[20] = "你好我是莉莉";
-	char arr2[20] = "大家好";
-	char* arr3 = NULL;
-
-	printf("%s\n", my_strcpy(arr, arr2));
-	printf("%s\n", my_strcpy(arr, arr3));
+	int n = 0;
+	scanf("%d", &n);
 
 	return 0;
 }
