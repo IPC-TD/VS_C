@@ -1770,7 +1770,7 @@
 
 
 //练习，10000以内的水仙花数
-# include <math.h>
+//# include <math.h>
 
 //// 过于暴力，简化一下
 //int main()
@@ -1839,10 +1839,151 @@
 //	return 0;
 //}
 
+
+//喝汽水，1瓶汽水1元，2个空瓶可以换一瓶汽水，给20元，可以多少汽水
+//int Number(int n)
+//{
+//	if (n > 0)
+//	{
+//		int count = 0;
+//		count = n + Number(n / 2);
+//		return count;
+//	}
+//	else 
+//	{
+//		return 0;
+//	}
+//	
+//}
+//int main()
+//{
+//	int n = 0;
+//	scanf("%d", &n);
+//	// 迭代实现
+//	int count = 0;
+//	while (n)
+//	{
+//		count += n / 1;
+//		n = n / 2;
+//	}
+//	printf("%d\n", count);
+//	// 递归实现
+//	printf("%d\n", Number(20));
+//	return 0;
+//}
+
+//// 需要考虑除法导致的空瓶丢失问题
+//int Number(int m, int tmp) // m是瓶子数，tmp是空瓶
+//{
+//	if (m > 0)
+//	{
+//		//递归有问题，先跳过了
+//		return m + tmp / 2 + Number(m / 2, tmp += m % 2 - tmp / 2);
+//	}
+//	else
+//	{
+//		return 0;
+//	}
+//}
+//
+//int main()
+//{
+//	int m = 20;
+//	int empty = m / 1; // 空瓶
+//	int count = m / 1; // 总瓶数
+//
+//	while (empty >= 2)
+//	{
+//		count += empty / 2;
+//		empty = empty / 2 + empty % 2;
+//	}
+//	printf("%d\n", count);
+//	printf("%d\n", Number(m, 0));//递归
+//
+//	return 0;
+//}
+
+//// 求两个数的最小公倍数
+//int main()
+//{
+//	int n = 0;
+//	int m = 0;
+//	int tmp = 0;
+//	while (1)
+//	{
+//		printf("请输入：");
+//		scanf("%d %d", &n, &m);
+//		// n > m ? n, m : (tmp = n, n = m, m = tmp); // 优化一下
+//		n = n > m ? n : m;
+//
+//		int i = 0;
+//		while (1)
+//		{
+//			i += n;
+//			if (i % n == 0 && i % m == 0)
+//			{
+//				break;
+//			}
+//		}
+//		printf("%d\n", i);
+//	}
+//	return 0;
+//}
+
+// 逆序字符串
+# include <string.h>
+void string_reverse(char arr[], int left, int right)
+{
+	while (left < right)
+	{
+		int tmp = arr[left];
+		arr[left] = arr[right];
+		arr[right] = tmp;
+		left++;
+		right--;
+	}
+}
+
+// 要求：逆序字符串，但单词不逆序，标点符号不逆序
+// 输入：i like beijing.
+// 输出：beijing. like i
 int main()
 {
-	int n = 0;
-	scanf("%d", &n);
+	char arr[101] = { 0 };
+	gets(arr);
 
+	// 倒置单词和符号（跳过空格）
+	int i = 0; // 数组下标
+	int count = 0; // 单词+符号长度计数
+	int tmp1;
+	int left1 = 0;
+	int right1 = 0;
+	while (arr[i] != '\0')
+	{
+		while (arr[i] == ' ')
+		{
+			i++;
+		}
+
+		count = 0; //一个单词含标点的长度
+		tmp1 = i;
+		while (arr[tmp1 + 1] != ' ' && arr[tmp1+1] != '\0')
+		{
+			count++;
+			tmp1++;
+		}
+
+		left1 = i;
+		right1 = i + count;
+		string_reverse(arr, left1, right1);
+		i += count + 1;
+	}
+
+	int left = 0;
+	int right = strlen(arr) - 1;
+	char tmp = 0;
+	string_reverse(arr, left, right);
+	printf("%s\n", arr);
 	return 0;
 }
+
