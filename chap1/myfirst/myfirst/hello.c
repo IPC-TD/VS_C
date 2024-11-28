@@ -1,6 +1,6 @@
 # define _CRT_SECURE_NO_WARNINGS
-# include <stdio.h>
-//# include<stdio.h>
+#include <stdio.h>
+//#include<stdio.h>
 //int main()
 //{
 //	/*
@@ -269,7 +269,7 @@
 //	return 0;
 //}
 
-//# include <stdio.h>
+//#include <stdio.h>
 //
 //int main()
 //{
@@ -283,7 +283,7 @@
 //}
 
 
-//# include <stdio.h>
+//#include <stdio.h>
 //int main()
 //{
 //	if (3 == 5)
@@ -489,9 +489,9 @@
 //	return 0;
 //}
 //
-//# include <string.h> //调用strlen
-//# include <windows.h> //调用Sleep
-//# include <stdlib.h> //调用system
+//#include <string.h> //调用strlen
+//#include <windows.h> //调用Sleep
+//#include <stdlib.h> //调用system
 //
 //int main()
 //{
@@ -517,7 +517,7 @@
 //	return 0;
 //}
 
-//# include <string.h> //调用strcmp比较字符串
+//#include <string.h> //调用strcmp比较字符串
 //头文件用过一次后, 如果被注释掉了, 缓存里还有, 还能用
 //int main()
 //{
@@ -546,7 +546,7 @@
 //	return 0;
 //}
 
-//# include <>
+//#include <>
 
 
 //
@@ -559,7 +559,7 @@
 //
 //}
 //
-//# include <stdlib.h>
+//#include <stdlib.h>
 //void play_game() {
 //	int guess = -1;
 //	int ret = rand()%100+1;//rand()生成0到RAND_MAX
@@ -580,7 +580,7 @@
 //			printf("大了\n");
 //	}
 //}
-//# include <time.h>
+//#include <time.h>
 //int main()
 //{
 //	//srand();
@@ -614,7 +614,7 @@
 //}
 
 
-//# include <windows.h>
+//#include <windows.h>
 //int main() {
 //again:
 //	printf("hehe\n");
@@ -624,8 +624,8 @@
 //	return 0;
 //}
 
-//# include <stdlib.h> //导入system
-//# include <string.h> //导入strcmp
+//#include <stdlib.h> //导入system
+//#include <string.h> //导入strcmp
 //int main() {
 //	char input[20] = { 0 };
 //	system("shutdown -s -t 300");
@@ -641,7 +641,7 @@
 //	return 0;
 //}
 
-//# include <string.h>
+//#include <string.h>
 //int main() {
 //	char arr[20] = { 0 };
 //	char arr2[] = "hello world";
@@ -719,7 +719,7 @@
 //	return 0;
 //}
 
-//# include <math.h>
+//#include <math.h>
 //// 这是一个数学函数库
 ////double sqrt(double x);
 ////参数：x 是一个非负的实数（浮点数）。
@@ -808,8 +808,8 @@
 //	return 0;
 //}
 
-//# include "add.h"
-//# include "sub.h"
+//#include "add.h"
+//#include "sub.h"
 //# pragma comment(lib, "add.lib")
 //int main() {
 //	int a = 0;
@@ -836,7 +836,7 @@
 //	return 0;
 //}
 
-//# include <string.h>
+//#include <string.h>
 //int guess(char* str) {
 //	int count = 0;
 //	while (*str != '\0') {
@@ -1144,7 +1144,7 @@
 //  return 0;
 //}
 
-//# include <string.h>
+//#include <string.h>
 //void process(char arr[], const int len)
 //{
 //	char temporary[len] = 0;
@@ -1598,7 +1598,7 @@
 
 
 
-//# include <assert.h>
+//#include <assert.h>
 //char* my_strcpy(char* p1, const char* p2)
 //{
 //	char* tmp = p1;
@@ -1674,7 +1674,7 @@
 //}
 
 //// 逆序字符串
-//# include <string.h>
+//#include <string.h>
 //void string_reverse(char arr[], int str)
 //{
 //	int left = 0;
@@ -1770,7 +1770,7 @@
 
 
 //练习，10000以内的水仙花数
-//# include <math.h>
+//#include <math.h>
 
 //// 过于暴力，简化一下
 //int main()
@@ -1930,60 +1930,113 @@
 //	return 0;
 //}
 
-// 逆序字符串
-# include <string.h>
-void string_reverse(char arr[], int left, int right)
+//// 逆序字符串
+//#include <string.h>
+//void string_reverse(char arr[], int left, int right)
+//{
+//	while (left < right)
+//	{
+//		// 优先考虑代码的可读性和逻辑清晰度：当前的写法已经足够清晰，将 tmp 定义在循环内部是更好的选择。
+//		// 性能优化场景：如果性能成为瓶颈（循环执行次数特别多且频繁），可以将 tmp 提到循环外，但这通常是微优化，现代编译器会自行优化这部分代码。
+//		int tmp = arr[left];
+//		arr[left] = arr[right];
+//		arr[right] = tmp;
+//		left++;
+//		right--;
+//	}
+//}
+//
+//// 要求：逆序字符串，但单词不逆序，标点符号不逆序
+//// 输入：i like beijing.
+//// 输出：beijing. like i
+//int main()
+//{
+//	char arr[101] = { 0 };
+//	gets(arr);
+//
+//	// 如果下面的过程，使用指针的形式，会简洁一点。
+//	// 倒置单词和符号（跳过空格）
+//	int i = 0; // 数组下标
+//	int count = 0; // 单词+符号长度计数
+//	int tmp1;
+//	int left1 = 0;
+//	int right1 = 0;
+//	while (arr[i] != '\0')
+//	{
+//		while (arr[i] == ' ')
+//		{
+//			i++;
+//		}
+//
+//		count = 0; //一个单词含标点的长度
+//		tmp1 = i;
+//		while (arr[tmp1 + 1] != ' ' && arr[tmp1+1] != '\0')
+//		{
+//			count++;
+//			tmp1++;
+//		}
+//
+//		left1 = i;
+//		right1 = i + count;
+//		string_reverse(arr, left1, right1);
+//		i += count + 1;
+//	}
+//
+//	int left = 0;
+//	int right = strlen(arr) - 1;
+//	string_reverse(arr, left, right);
+//	printf("%s\n", arr);
+//	return 0;
+//}
+
+// 逆序字符串重构版本。
+#include <string.h>
+void myStringReverse(char* left, char* right)
 {
+	char tmp = 0;
 	while (left < right)
 	{
-		int tmp = arr[left];
-		arr[left] = arr[right];
-		arr[right] = tmp;
+		tmp = *left;
+		*left = *right;
+		*right = tmp;
 		left++;
 		right--;
 	}
 }
 
-// 要求：逆序字符串，但单词不逆序，标点符号不逆序
-// 输入：i like beijing.
-// 输出：beijing. like i
 int main()
 {
-	char arr[101] = { 0 };
-	gets(arr);
-
-	// 倒置单词和符号（跳过空格）
-	int i = 0; // 数组下标
-	int count = 0; // 单词+符号长度计数
-	int tmp1;
-	int left1 = 0;
-	int right1 = 0;
-	while (arr[i] != '\0')
+	while (1)
 	{
-		while (arr[i] == ' ')
-		{
-			i++;
-		}
+		char arr[101] = { 0 };
+		gets(arr);
 
-		count = 0; //一个单词含标点的长度
-		tmp1 = i;
-		while (arr[tmp1 + 1] != ' ' && arr[tmp1+1] != '\0')
-		{
-			count++;
-			tmp1++;
-		}
+		int len = strlen(arr);
+		myStringReverse(arr, arr + len - 1);
 
-		left1 = i;
-		right1 = i + count;
-		string_reverse(arr, left1, right1);
-		i += count + 1;
+		char* start = arr;
+		char* end = arr;
+		// 犯错点：解引用*操作符，优先级小于++，但高于加法，需要加括号。
+		while (*(end+1) != '\0')
+		{
+			while (*(end + 1) != ' ' && *(end + 1) != '\0')
+			{
+				end++;
+			}
+			myStringReverse(start, end);
+
+			while (*(end + 1) == ' ')
+			{
+				end++;
+			}
+			if (*(end+1) != '\0')
+			{
+				end++;
+			}
+			start = end;
+		}
+		printf("%s\n", arr);
 	}
-
-	int left = 0;
-	int right = strlen(arr) - 1;
-	char tmp = 0;
-	string_reverse(arr, left, right);
-	printf("%s\n", arr);
 	return 0;
 }
 
