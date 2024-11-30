@@ -1989,54 +1989,55 @@
 //	return 0;
 //}
 
-// 逆序字符串重构版本。
-#include <string.h>
-void myStringReverse(char* left, char* right)
-{
-	char tmp = 0;
-	while (left < right)
-	{
-		tmp = *left;
-		*left = *right;
-		*right = tmp;
-		left++;
-		right--;
-	}
-}
+//// 逆序字符串重构版本。
+//#include <string.h>
+//void myStringReverse(char* left, char* right)
+//{
+//	char tmp = 0;
+//	while (left < right)
+//	{
+//		tmp = *left;
+//		*left = *right;
+//		*right = tmp;
+//		left++;
+//		right--;
+//	}
+//}
+//
+//int main()
+//{
+//	while (1)
+//	{
+//		char arr[101] = { 0 };
+//		gets(arr);
+//
+//		int len = strlen(arr);
+//		myStringReverse(arr, arr + len - 1);
+//
+//		char* start = arr;
+//		char* end = arr;
+//		// 犯错点：解引用*操作符，优先级小于++，但高于加法，需要加括号。
+//		while (*(end+1) != '\0')
+//		{
+//			while (*(end + 1) != ' ' && *(end + 1) != '\0')
+//			{
+//				end++;
+//			}
+//			myStringReverse(start, end);
+//
+//			while (*(end + 1) == ' ')
+//			{
+//				end++;
+//			}
+//			if (*(end+1) != '\0')
+//			{
+//				end++;
+//			}
+//			start = end;
+//		}
+//		printf("%s\n", arr);
+//	}
+//	return 0;
+//}
 
-int main()
-{
-	while (1)
-	{
-		char arr[101] = { 0 };
-		gets(arr);
-
-		int len = strlen(arr);
-		myStringReverse(arr, arr + len - 1);
-
-		char* start = arr;
-		char* end = arr;
-		// 犯错点：解引用*操作符，优先级小于++，但高于加法，需要加括号。
-		while (*(end+1) != '\0')
-		{
-			while (*(end + 1) != ' ' && *(end + 1) != '\0')
-			{
-				end++;
-			}
-			myStringReverse(start, end);
-
-			while (*(end + 1) == ' ')
-			{
-				end++;
-			}
-			if (*(end+1) != '\0')
-			{
-				end++;
-			}
-			start = end;
-		}
-		printf("%s\n", arr);
-	}
-	return 0;
-}
 
