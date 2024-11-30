@@ -2040,4 +2040,90 @@
 //	return 0;
 //}
 
+// 输入一个数组，实现一个函数，调整数据，使奇数位于数组前半部分，偶数于数组后半部分。
+// 冒泡思路
+void bubbleSort(int* p, int n)
+{
+	int* tmpp = p;
+	int i = 0;
+	int j = 0;
+	int count = 0;
+	while (*p != 0 && count <= n)
+	{
+		count++;
+		p++;
+	}
+	p = tmpp;
+
+	for (i = 0; i < count - 1; i++)
+	{
+		for (j = i + 1; j < count - 1; j++)
+		{
+			if (*(p + i) % 2 == 1)
+			{
+				break;
+			}
+			else if (*(p + j ) % 2 == 1)
+			{
+				int tmp = *(p + i);
+				*(p + i) = *(p + j);
+				*(p + j) = tmp;
+				break;
+			}
+		}
+	}
+}
+
+//左右下标思路
+void arrSort(int arr[], int n)
+{
+	int left = 0;
+	int right = n - 1;
+	while (left < right)
+	{
+		while (arr[left] % 2 == 1 && left < right)
+		{
+			left++;
+		}
+		while (arr[right] % 2 == 0 && left < right)
+		{
+			right--;
+		}
+		if (left < right)
+		{
+			int tmp = arr[left];
+			arr[left] = arr[right];
+			arr[right] = tmp;
+			left++;
+			right--;
+		}
+	}
+}
+
+int main()
+{
+	int arr[100] = { 0 };
+	int i = 0;
+	while (1)
+	{
+		printf("请输入数据：");
+		while (scanf("%d", arr + i) == 1)
+		{
+			if (arr[i] == 0) //约定0作为结束条件
+				break;
+			i++;
+		}
+		printf("输入完毕\n结果为：");
+		// bubbleSort(arr, sizeof(arr) / sizeof(arr[0]));
+		arrSort(arr, sizeof(arr) / sizeof(arr[0]));
+		i = 0;
+		while (arr[i] != 0 && i < 100)
+		{
+			printf("%d ", arr[i]);
+			i++;
+		}
+		printf("\n");
+	}
+	return 0;
+}
 
