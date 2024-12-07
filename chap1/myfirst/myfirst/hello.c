@@ -2040,90 +2040,209 @@
 //	return 0;
 //}
 
-// 输入一个数组，实现一个函数，调整数据，使奇数位于数组前半部分，偶数于数组后半部分。
-// 冒泡思路
-void bubbleSort(int* p, int n)
+//// 输入一个数组，实现一个函数，调整数据，使奇数位于数组前半部分，偶数于数组后半部分。
+//// 冒泡思路
+//void bubbleSort(int* p, int n)
+//{
+//	int* tmpp = p;
+//	int i = 0;
+//	int j = 0;
+//	int count = 0;
+//	while (*p != 0 && count <= n)
+//	{
+//		count++;
+//		p++;
+//	}
+//	p = tmpp;
+//
+//	for (i = 0; i < count - 1; i++)
+//	{
+//		for (j = i + 1; j < count - 1; j++)
+//		{
+//			if (*(p + i) % 2 == 1)
+//			{
+//				break;
+//			}
+//			else if (*(p + j ) % 2 == 1)
+//			{
+//				int tmp = *(p + i);
+//				*(p + i) = *(p + j);
+//				*(p + j) = tmp;
+//				break;
+//			}
+//		}
+//	}
+//}
+//
+////左右下标思路
+//void arrSort(int arr[], int n)
+//{
+//	int left = 0;
+//	int right = n - 1;
+//	while (left < right)
+//	{
+//		while (arr[left] % 2 == 1 && left < right)
+//		{
+//			left++;
+//		}
+//		while (arr[right] % 2 == 0 && left < right)
+//		{
+//			right--;
+//		}
+//		if (left < right)
+//		{
+//			int tmp = arr[left];
+//			arr[left] = arr[right];
+//			arr[right] = tmp;
+//			left++;
+//			right--;
+//		}
+//	}
+//}
+//
+//int main()
+//{
+//	int arr[100] = { 0 };
+//	int i = 0;
+//	while (1)
+//	{
+//		printf("请输入数据：");
+//		while (scanf("%d", arr + i) == 1)
+//		{
+//			if (arr[i] == 0) //约定0作为结束条件
+//				break;
+//			i++;
+//		}
+//		printf("输入完毕\n结果为：");
+//		// bubbleSort(arr, sizeof(arr) / sizeof(arr[0]));
+//		arrSort(arr, sizeof(arr) / sizeof(arr[0]));
+//		i = 0;
+//		while (arr[i] != 0 && i < 100)
+//		{
+//			printf("%d ", arr[i]);
+//			i++;
+//		}
+//		printf("\n");
+//	}
+//	return 0;
+//}
+
+
+//// 输入两个升序排列的序列，将两个序列合并为一个有序序列并输出。
+//// 输入第一行：1 3 7 9 22
+//// 输出第二行：2 8 10 17 33 44
+//// 预期结果：1 2 3 7 8 9 10 17 22 33 44
+//#define NN 5
+//#define MM 6
+//int main() {
+//    int n = NN;
+//    int m = MM;
+//    int arrn[NN];
+//    int arrm[MM];
+//    //scanf("%d %d", &n, &m);
+//
+//    int i = 0, j = 0;
+//    for (i = 0; i < n; i++) {
+//        scanf("%d", arrn + i);
+//    }
+//
+//    for (j = 0; j < m; j++) {
+//        scanf("%d", arrm + j);
+//    }
+//
+//    int arr[NN + MM];
+//    i = 0, j = 0;
+//    int z = 0;
+//    while (i < n && j < m) {
+//        if (arrn[i] < arrm[j])
+//        {
+//            arr[z++] = arrn[i++];
+//        }
+//        else
+//        {
+//            arr[z++] = arrm[j++];
+//        }
+//    }
+//
+//    if (i == n)
+//    {
+//        for (; j < m;)
+//        {
+//            arr[z++] = arrm[j++];
+//        }
+//    }
+//    else {
+//        for (; i < n;)
+//        {
+//            arr[z++] = arrn[i++];
+//        }
+//    }
+//
+//    z = 0;
+//    for (z = 0; z < n + m; z++)
+//    {
+//        printf("%d ", arr[z]);
+//    }
+//    return 0;
+//}
+
+
+//  模拟实现qsort
+// 整数元素对比函数
+int int_cmp(const void* e1, const void* e2)
 {
-	int* tmpp = p;
+	return *(int*)e1 - *(int*)e2;
+}
+// 元素交换函数
+void _swap(char* e1, char* e2, int width)
+{
+	int i = 0;
+	for (i = 0; i < width; i++)
+	{
+		char tmp = *e1;
+		*e1 = *e2;
+		*e2 = tmp;
+		e1++;
+		e2++;
+	}
+}
+// 冒泡法模拟qort
+void bubble_qort(void* base, int sz, int width, int (*cmp)(void*, void*))
+{
 	int i = 0;
 	int j = 0;
-	int count = 0;
-	while (*p != 0 && count <= n)
+	int folg = 1;
+	for (i = 0; i < sz - 1; i++)
 	{
-		count++;
-		p++;
-	}
-	p = tmpp;
-
-	for (i = 0; i < count - 1; i++)
-	{
-		for (j = i + 1; j < count - 1; j++)
+		for (j = 0; j < sz - 1 - i; j++)
 		{
-			if (*(p + i) % 2 == 1)
+			if (cmp((char*)base + width * j, (char*)base + width * (j + 1)) > 0)
 			{
-				break;
+				_swap((char*)base + width * j, (char*)base + width * (j + 1), width);
+				folg = 0;
 			}
-			else if (*(p + j ) % 2 == 1)
-			{
-				int tmp = *(p + i);
-				*(p + i) = *(p + j);
-				*(p + j) = tmp;
-				break;
-			}
+		}
+		if (folg == 1)
+		{
+			break;
 		}
 	}
 }
-
-//左右下标思路
-void arrSort(int arr[], int n)
+// 整数数组排列测试函数
+void test()
 {
-	int left = 0;
-	int right = n - 1;
-	while (left < right)
+	int arr[] = { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
+	int sz = sizeof(arr) / sizeof(arr[0]);
+	bubble_qort(arr, sz, sizeof(arr[0]), int_cmp);
+	int i = 0;
+	for (i = 0; i < sz; i++)
 	{
-		while (arr[left] % 2 == 1 && left < right)
-		{
-			left++;
-		}
-		while (arr[right] % 2 == 0 && left < right)
-		{
-			right--;
-		}
-		if (left < right)
-		{
-			int tmp = arr[left];
-			arr[left] = arr[right];
-			arr[right] = tmp;
-			left++;
-			right--;
-		}
+		printf("%d ", arr[i]);
 	}
 }
 
 int main()
 {
-	int arr[100] = { 0 };
-	int i = 0;
-	while (1)
-	{
-		printf("请输入数据：");
-		while (scanf("%d", arr + i) == 1)
-		{
-			if (arr[i] == 0) //约定0作为结束条件
-				break;
-			i++;
-		}
-		printf("输入完毕\n结果为：");
-		// bubbleSort(arr, sizeof(arr) / sizeof(arr[0]));
-		arrSort(arr, sizeof(arr) / sizeof(arr[0]));
-		i = 0;
-		while (arr[i] != 0 && i < 100)
-		{
-			printf("%d ", arr[i]);
-			i++;
-		}
-		printf("\n");
-	}
+	test();
 	return 0;
 }
-
