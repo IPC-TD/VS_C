@@ -2187,62 +2187,298 @@
 //}
 
 
-//  模拟实现qsort
-// 整数元素对比函数
-int int_cmp(const void* e1, const void* e2)
-{
-	return *(int*)e1 - *(int*)e2;
-}
-// 元素交换函数
-void _swap(char* e1, char* e2, int width)
-{
-	int i = 0;
-	for (i = 0; i < width; i++)
-	{
-		char tmp = *e1;
-		*e1 = *e2;
-		*e2 = tmp;
-		e1++;
-		e2++;
-	}
-}
-// 冒泡法模拟qort
-void bubble_qort(void* base, int sz, int width, int (*cmp)(void*, void*))
-{
-	int i = 0;
-	int j = 0;
-	int folg = 1;
-	for (i = 0; i < sz - 1; i++)
-	{
-		for (j = 0; j < sz - 1 - i; j++)
-		{
-			if (cmp((char*)base + width * j, (char*)base + width * (j + 1)) > 0)
-			{
-				_swap((char*)base + width * j, (char*)base + width * (j + 1), width);
-				folg = 0;
-			}
-		}
-		if (folg == 1)
-		{
-			break;
-		}
-	}
-}
-// 整数数组排列测试函数
-void test()
-{
-	int arr[] = { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
-	int sz = sizeof(arr) / sizeof(arr[0]);
-	bubble_qort(arr, sz, sizeof(arr[0]), int_cmp);
-	int i = 0;
-	for (i = 0; i < sz; i++)
-	{
-		printf("%d ", arr[i]);
-	}
-}
+////  模拟实现qsort
+//// 整数元素对比函数
+//int int_cmp(const void* e1, const void* e2)
+//{
+//	return *(int*)e1 - *(int*)e2;
+//}
+//// 元素交换函数
+//void _swap(char* e1, char* e2, int width)
+//{
+//	int i = 0;
+//	for (i = 0; i < width; i++)
+//	{
+//		char tmp = *e1;
+//		*e1 = *e2;
+//		*e2 = tmp;
+//		e1++;
+//		e2++;
+//	}
+//}
+//// 冒泡法模拟qort
+//void bubble_qort(void* base, int sz, int width, int (*cmp)(void*, void*))
+//{
+//	int i = 0;
+//	int j = 0;
+//	int folg = 1;
+//	for (i = 0; i < sz - 1; i++)
+//	{
+//		for (j = 0; j < sz - 1 - i; j++)
+//		{
+//			if (cmp((char*)base + width * j, (char*)base + width * (j + 1)) > 0)
+//			{
+//				_swap((char*)base + width * j, (char*)base + width * (j + 1), width);
+//				folg = 0;
+//			}
+//		}
+//		if (folg == 1)
+//		{
+//			break;
+//		}
+//	}
+//}
+//// 整数数组排列测试函数
+//void test()
+//{
+//	int arr[] = { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
+//	int sz = sizeof(arr) / sizeof(arr[0]);
+//	bubble_qort(arr, sz, sizeof(arr[0]), int_cmp);
+//	int i = 0;
+//	for (i = 0; i < sz; i++)
+//	{
+//		printf("%d ", arr[i]);
+//	}
+//}
+//
+//int main()
+//{
+//	test();
+//	return 0;
+//}
 
-int main()
-{
-	test();
-	return 0;
-}
+
+//// 模拟实现strcpy练习
+//#include <assert.h>
+//
+//char* my_strcpy(char* p1, const char* p2)
+//{
+//	// char* tmp = p1;
+//	//assert(p1);
+//	//assert(p2);
+//	//while (*p2 != '\0')
+//	//{
+//	//	*p1++ = *p2++;
+//	//}
+//	//p1 = '\0';
+//
+//	assert(p1 && p2);
+//	char* tmp = p1;
+//	while (*p1++ = *p2++) // 先赋值，后判断，再++
+//	{
+//		; // 大括号去掉也行：while（xxx）;
+//	}
+//	return tmp;
+//}
+//
+//int main()
+//{
+//	char arr1[] = "abcdef";
+//	char arr2[20] = { 0 };
+//	printf("%s", my_strcpy(arr2, arr1));
+//	
+//	return 0;
+//}
+
+
+//// 模拟实现strlen
+//#include <assert.h>
+//// 计数器方式
+//size_t my_strlen_1(const char* str)
+//{
+//	assert(str);
+//	size_t count = 0;
+//	while (*str != '\0')
+//	{
+//		count++;
+//		str++;
+//	}
+//	return count;
+//}
+//// 指针模式
+//size_t my_strlen_2(const char* str)
+//{
+//	assert(str);
+//	char* temporary = str;
+//	while (*str != '\0')
+//	{
+//		str++;
+//	}
+//	return (size_t)(str - temporary);
+//}
+//// 递归模式
+//size_t my_strlen_3(const char* str)
+//{
+//	assert(str);
+//	if (*str != '\0')
+//	{
+//		return 1 + my_strlen_3(++str);
+//	}
+//	else
+//		return 0;
+//}
+//
+//// 
+//int main()
+//{
+//	char arr[] = "abcdef";
+//	int ret1 = my_strlen_1(arr);
+//	int ret2 = my_strlen_2(arr);
+//	int ret3 = my_strlen_3(arr);
+//
+//	printf("%d\n%d\n%d\n", ret1, ret2, ret3);
+//	return 0;
+//}
+
+
+////  模拟实现strcpy
+//#include <assert.h>
+//char* my_strcpy(char* destination, const char* sourse)
+//{
+//	assert(destination && sourse);
+//	char* tmp = destination;
+//	//while (*destination = *sourse)
+//	//{
+//	//	destination++;
+//	//	sourse++;
+//	//}
+//	while (*destination++ = *sourse++) // 这样写也行，先赋值运算，后对指针++
+//	{
+//		;
+//	}
+//	return tmp;
+//}
+//int main()
+//{
+//	char arr1[] = "abcdef";
+//	char arr2[20] = { 0 };
+//	printf("%s", my_strcpy(arr2, arr1));
+//	return 0;
+//}
+
+
+//// 模拟实现strcat
+//#include <assert.h>
+//char* my_strcat(char* destination, const char* sourse)
+//{
+//	assert(destination && sourse);
+//	char* temporary = destination;
+//	while (*destination != '\0')
+//	{
+//		destination++;
+//	}
+//	while (*destination++ = *sourse++)
+//		;
+//	return temporary;
+//}
+//int main()
+//{
+//	char arr1[] = "abcdef";
+//	char arr2[20] = "hello ";
+//	printf("%s", my_strcat(arr2, arr1));
+//	return 0;
+//}
+
+
+//// 模拟实现strcmp
+//#include <assert.h>
+//
+//int my_strcmp(const char* str1, const char* str2)
+//{
+//	assert(str1 && str2);
+//	while (*str1 && *str2)
+//	{
+//		if (*str1 == *str2)
+//		{
+//			str1++;
+//			str2++;
+//			
+//		}
+//		else if (*str1 < *str2)
+//		{
+//			return -1;
+//		}
+//		else
+//			return 1;
+//	}
+//	return 0;
+//}
+//int main()
+//{
+//	char arr1[] = "abcdef";
+//	char arr2[] = "abcdef";
+//	int ret = my_strcmp(arr1, arr2);
+//
+//	if (ret > 0)
+//	{
+//		printf("arr1 > arr2");
+//	}
+//	else if (ret == 0)
+//	{
+//		printf("arr1 == arr2");
+//	}
+//	else
+//		printf("arr1 < arr2");
+//	return 0;
+//}
+
+
+
+//// 模拟实现memcpy
+//#include <assert.h>
+//
+//void* my_memcpy(void* dest, const void* src, size_t num)
+//{
+//	assert(dest && src);
+//	void* temporary = dest;
+//	while (num--)
+//	{
+//		*(char*)dest = *(char*)src;
+//		dest = (char*)dest + 1;
+//		src = (char*)src + 1;
+//	}
+//	return temporary;
+//}
+//
+//int main()
+//{
+//	int arr1[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+//	char arr2[50] = { 0 };
+//	my_memcpy(arr2, arr1, 5 * 4);
+//
+//	int i = 0;
+//	for (i = 0; i < sizeof(arr2); i++)
+//	{
+//		printf("%c ", arr2[i] + 48);
+//	}
+//	return 0;
+//}
+
+
+//// 模拟实现strncpy
+//#include <assert.h>
+//char* my_strncpy(char* dest, char* src, size_t num)
+//{
+//	assert(dest && src);
+//	char* temporary = dest;
+//	while (num--)
+//	{
+//		if (*src)
+//		{
+//			*dest++ = *src++;
+//		}
+//		else
+//		{
+//			*dest++ = '\0';
+//		}
+//	}
+//	return temporary;
+//}
+//
+//int main()
+//{
+//	char arr1[] = "abcdef";
+//	char arr2[20] = "xxxxxxxxxxxxxx";
+//	printf("%s", my_strncpy(arr2, arr1, sizeof(arr1) + 1));
+//	return 0;
+//}
