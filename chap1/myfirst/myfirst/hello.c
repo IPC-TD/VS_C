@@ -2333,16 +2333,16 @@
 
 ////  模拟实现strcpy
 //#include <assert.h>
-//char* my_strcpy(char* destination, const char* sourse)
+//char* my_strcpy(char* destination, const char* source)
 //{
-//	assert(destination && sourse);
+//	assert(destination && source);
 //	char* tmp = destination;
-//	//while (*destination = *sourse)
+//	//while (*destination = *source)
 //	//{
 //	//	destination++;
-//	//	sourse++;
+//	//	source++;
 //	//}
-//	while (*destination++ = *sourse++) // 这样写也行，先赋值运算，后对指针++
+//	while (*destination++ = *source++) // 这样写也行，先赋值运算，后对指针++
 //	{
 //		;
 //	}
@@ -2359,15 +2359,15 @@
 
 //// 模拟实现strcat
 //#include <assert.h>
-//char* my_strcat(char* destination, const char* sourse)
+//char* my_strcat(char* destination, const char* source)
 //{
-//	assert(destination && sourse);
+//	assert(destination && source);
 //	char* temporary = destination;
 //	while (*destination != '\0')
 //	{
 //		destination++;
 //	}
-//	while (*destination++ = *sourse++)
+//	while (*destination++ = *source++)
 //		;
 //	return temporary;
 //}
@@ -2482,3 +2482,766 @@
 //	printf("%s", my_strncpy(arr2, arr1, sizeof(arr1) + 1));
 //	return 0;
 //}
+
+
+//// 模拟实现strncat
+//#include <assert.h>
+//char* my_strncat(char* destination, const char* source, size_t num)
+//{
+//	assert(destination && source);
+//	char* temporary = destination;
+//	while (*destination)
+//	{
+//		destination++;
+//	}
+//	while (num-- && *source)
+//	{
+//		*destination++ = *source++;
+//	}
+//	*destination = '\0';
+//	return temporary;
+//}
+//int main()
+//{
+//	char arr1[] = "world";
+//	char arr2[20] = "hello ";
+//	printf("%s", my_strncat(arr2, arr1, 2));
+//	return 0;
+//}
+
+
+//// 模拟实现strncmp
+//#include <assert.h>
+//int my_strncmp(const char* str1, const char* str2, size_t num)
+//{
+//	assert(str1 && str2);
+//	while (*str1 == *str2 && *str1 != '\0' && --num)
+//	{
+//		str1++;
+//		str2++;
+//	}
+//	if (*str1 > *str2)
+//		return 1;
+//	else if (*str1 == *str2)
+//		return 0;
+//	else
+//		return -1;
+//	
+//}
+//int main()
+//{
+//	char arr1[] = "abcdefg";
+//	char arr2[] = "abcdef";
+//	int ret = my_strncmp(arr1, arr2, 10);
+//	if (ret < 0)
+//		printf("str1 < str2");
+//	else if (ret == 0)
+//		printf("str1 == str2");
+//	else
+//		printf("str1 > str2");
+//	return 0;
+//}
+
+
+//// 模拟实现strstr
+//#include <assert.h>
+//char* my_strstr(const char* str1, const char* str2)
+//{
+//	assert(str1 && str2);
+//	char* strp = str1;
+//	while (*str1)
+//	{
+//		while (*str1 != *str2)
+//		{
+//			str1++;
+//			strp++;
+//			if (*str1 == '\0')
+//				return NULL;
+//		}
+//		while (*str1 == *str2)
+//		{
+//			str1++;
+//			str2++;
+//			if (*str2 == '\0')
+//			{
+//				return strp;
+//			}
+//		}
+//		str2 -= (str1 - strp);
+//		str1 = ++strp;
+//	}
+//	return NULL;
+//}
+//// 额外思考题：实现KMP算法优化
+//
+//
+//int main()
+//{
+//	char arr1[] = "abbcdef";
+//	char arr2[] = "bbcdeg";
+//	char* ret = my_strstr(arr1, arr2);
+//	if (ret != NULL)
+//		printf("%s", ret);
+//	else
+//		printf("非子串关系");
+//	return 0;
+//}
+
+// 模拟实现strstr（代码重构）
+//// 模拟实现strncmp
+//#include <assert.h>
+//int my_strncmp(const char* str1, const char* str2, size_t num)
+//{
+//	assert(str1 && str2);
+//	while (*str1 == *str2 && *str1 != '\0' && --num)
+//	{
+//		str1++;
+//		str2++;
+//	}
+//	if (*str1 > *str2)
+//		return 1;
+//	else if (*str1 == *str2)
+//		return 0;
+//	else
+//		return -1;
+//	
+//}
+//int main()
+//{
+//	char arr1[] = "abcdefg";
+//	char arr2[] = "abcdef";
+//	int ret = my_strncmp(arr1, arr2, 10);
+//	if (ret < 0)
+//		printf("str1 < str2");
+//	else if (ret == 0)
+//		printf("str1 == str2");
+//	else
+//		printf("str1 > str2");
+//	return 0;
+//}
+
+// 简化代码逻辑
+//// 模拟实现strstr
+//#include <assert.h>
+//char* my_strstr(const char* str1, const char* str2)
+//{
+//	assert(str1 && str2);
+//	if (*str2 == '\0')
+//	{
+//		return str1;
+//	}
+//
+//	const char* strp1 = str1;
+//	const char* strp2 = str2;
+//
+//	while (*str1)
+//	{
+//		if (*str1 == *str2)
+//		{
+//			str1++;
+//			str2++;
+//			if (*str2 == '\0')
+//				return (char*)strp1;
+//		}
+//		else
+//		{
+//			str1 = ++strp1;
+//			str2 = strp2;
+//		}
+//	}
+//	return NULL;
+//}
+//
+//int main()
+//{
+//	char arr1[] = "abbcdef";
+//	char arr2[] = "bbcde";
+//	char* ret = my_strstr(arr1, arr2);
+//	// 额外思考题：实现KMP算法优化
+//	if (ret != NULL)
+//		printf("%s", ret);
+//	else
+//		printf("非子串关系");
+//	return 0;
+//}
+
+//// 常规使用strtok
+//#include <string.h>
+//int main()
+//{
+//	char arr1[] = "abcdefg@gmail.com";
+//	char* ret = NULL;
+//	for (ret = strtok(arr1, "@."); ret != NULL; ret = strtok(NULL, "@."))
+//	{
+//		printf("%s\n", ret);
+//	}
+//	return 0;
+//}
+
+
+//// 尝试使用strerror
+//#include <errno.h> // 定义了变量errno
+//#include <string.h> // 定义了函数strerror
+//int main()
+//{
+//	FILE* pFile;
+//	pFile = fopen("text.txt", "r");
+//	if (pFile == NULL)
+//	{
+//		printf("错误码信息：%s\n", strerror(errno));
+//		printf("文件不存在，或打开失败\n");
+//	}
+//	return 0;
+//}
+
+
+//// 尝试使用字符判断函数
+//#include <string.h>
+//#include <ctype.h>
+//int main()
+//{
+//	printf("'a'是否为控制字符：%s\n", iscntrl('a') ? "True" : "False");
+//	printf("'换行符'是否为控制字符：%s\n", iscntrl('\n') ? "True" : "False");
+//	return 0;
+//}
+
+
+//// 尝试使用大小写转换函数
+//#include <ctype.h>
+//int main()
+//{
+//	char arr[] = "Test String.\n";
+//	char c;
+//	int i = 0;
+//	while (arr[i])
+//	{
+//		c = arr[i];
+//		if (isupper(c))
+//		{
+//			c = toupper(c);
+//		}
+//		putchar(c); // 字符输出函数
+//		i++;
+//	}
+//	return 0;
+//}
+
+//// 模拟实现memmove
+//#include <assert.h>
+//#include <string.h>
+//void* my_memmove(void* dest, void* src, size_t num)
+//{
+//	assert(dest && src);
+//	if (dest == src)
+//	{
+//		return dest;
+//	}
+//	void* temporary = dest;
+//	if (dest < src)
+//	{
+//		while (num--)
+//		{
+//			*(char*)dest = *(char*)src;
+//			dest = (char*)dest + 1;
+//			src = (char*)src + 1;
+//		}
+//	}
+//	else
+//	{
+//		while (num--)
+//		{
+//
+//			*((char*)dest + num) = *((char*)src + num);
+//		}
+//	}
+//}
+//
+//int main()
+//{
+//	char str[] = "memmove can be very useful......";
+//	char str2[40];
+//	memcpy(str2, str, strlen(str) + 1); // 复制str数组的内容
+//
+//	my_memmove(str + 20, str + 15, 11); // 模拟实现memmove函数
+//	memmove(str2 + 20, str2 + 15, 11); // memmove库函数对照结果
+//	printf("%s\n", str); // 标准输出
+//	puts(str2); // 输出字符串并换行
+//	return 0;
+//}
+
+
+//// memcmp使用实例
+//#include <string.h>
+//// 与strcmp的区别是：memcmp能对比所有类型的数据，而strcmp只能对比字符串。
+//int main()
+//{
+//	char str1[] = "abcdef";
+//	char str2[] = "bcde";
+//	if (memcmp(str1 + 1, str2, 4) == 0)
+//		printf("对比内容相同\n");
+//	if (memcmp(str1 + 1, str2, 5) > 0)
+//		printf("前者更大\n");
+//	return 0;
+//}
+
+
+//// 练习题，输入一个数，这个数的每一位判断奇偶，奇数1，偶数0；
+//// 例如：123，打印：101
+//#include <stdio.h>
+//#include <math.h>
+//
+//int main() {
+//    int a;
+//    while (scanf("%d", &a) != EOF) { // 注意 while 处理多个 case
+//        // 64 位输出请用 printf("%lld") to 
+//        int ret = 0;
+//        int tmp = 0;
+//        while (a / 10 && a % 10)
+//        {
+//            if ((a % 10) % 2 == 1)
+//            {
+//                ret += pow(10, tmp);
+//                tmp++;
+//                a /= 10;
+//            }
+//            else
+//            {
+//                tmp++;
+//                a /= 10;
+//            }
+//        }
+//        printf("%d\n", ret);
+//
+//    }
+//    return 0;
+//}
+
+
+//// 练习题，打印打空格的直接三角形
+////_ _ _ _ *
+////_ _ _ * *
+////_ _ * * *
+////_*  * * *
+////* * * * *
+//int main() {
+//    int a;
+//    while (scanf("%d", &a) != EOF) { // 注意 while 处理多个 case
+//        // 64 位输出请用 printf("%lld") to 
+//        int i = 1;
+//        int j = 1;
+//        for (i = 0; i < a; i++)
+//        {
+//            for (j = 0; j < a - 1 - i; j++)
+//            {
+//                printf("  ");
+//            }
+//            for (j = 0; j < i + 1; j++)
+//            {
+//                printf("%c ", '*');
+//            }
+//            printf("\n");
+//        }
+//
+//    }
+//    return 0;
+//}
+
+//// 练习题：输入四个数，第一个数是浮点数，表示价格，第三第四表示日期，第四表示优惠券有无；
+//// 双十一，打7折，双十二，打8折，1表示有券可以减50，0表示没券。
+//// 期望输出：一行，小明实际花的钱数（保留两位小数）。（提示：不要指望商家倒找你钱）
+//// 
+//// 例如输入：1000.0 11 11 1，表示衣服1000块钱，双十一买的，有优惠券。
+//// 输出价格：650.00
+//# include <stdio.h>
+//
+//int main() {
+//	float price = 0.0;
+//	int month = 0;
+//	int date = 0;
+//	int coupon = 0;
+//	while (scanf("%f %d %d %d", &price, &month, &date, &coupon) == 4) {
+//		if ((month == 11 && date == 11)) {
+//			//if (coupon) {
+//			//	price *= 0.7;
+//			//	price -= 50;
+//			//}
+//			//else {
+//			//	price *= 0.7;
+//			//}
+//			// 代码优化
+//			price = price * 0.7 - 50 * coupon;
+//		}
+//		else if ((month == 12 && date == 12)) {
+//			if (coupon) {
+//				price *= 0.8;
+//				price -= 50;
+//			}
+//			else {
+//				price *= 0.8;
+//			}
+//		}
+//		printf("%.2f", price >= 0 ? price : 0.0);
+//	}
+//	return 0;
+//}
+
+
+// 编程题，4名嫌疑犯只有一人是凶手，根据供词锁定凶手
+// 已知3人说真话，1人说假话。
+//int main()
+//{
+//	int a = 0;
+//	int b = 0;
+//	int c = 0;
+//	int d = 0;
+//	for (a = 0; a <= 1; a++)
+//	{
+//		for (b = 0; b <= 1; b++)
+//		{
+//			for (c = 0; c <= 1; c++)
+//			{
+//				for (d = 0; d <= 1; d++)
+//				{
+//					if ((a == 0) + (c == 1) + (d == 1) + (d == 0) == 3) // 嫌犯供词
+//					{
+//						if (a + b + c + d == 1)
+//							printf("a=%d b=%d c=%d d=%d\n", a, b, c, d);
+//
+//					}
+//				}
+//			}
+//		}
+//	}
+//	return 0;
+//}
+//// 另一种解题思路：
+//int main() 
+//{
+//	int killer = 0;
+//	for (killer = 'a'; killer <= 'd'; killer++)
+//	{
+//		if ((killer != 'a') + (killer == 'c') + (killer == 'd') + (killer != 'd') == 3)
+//		{
+//			printf("嫌疑犯为：%c", killer);
+//		}
+//	}
+//	return 0;
+//}
+
+
+// 打印杨辉三角形
+/*
+1
+1 1
+1 2 1
+1 3 3 1
+1 4 6 4 1
+*/
+//int main()
+//{
+//	int arr[10][10] = { 0 };
+//	int i = 0;
+//	int j = 0;
+//	for (i = 0; i < 10; i++)
+//	{
+//		for (j = 0; j <= i; j++)
+//		{
+//			if (j == 0)
+//			{
+//				arr[i][j] = 1;
+//			}
+//			if (i == j)
+//			{
+//				arr[i][j] = 1;
+//			}
+//			if (i >= 2 && i != j)
+//			{
+//				arr[i][j] = arr[i - 1][j - 1] + arr[i - 1][j];
+//			}
+//		}
+//	}
+//
+//	for (i = 0; i < 10; i++)
+//	{
+//		for (j = 9 - i; j >= 0; j--)
+//		{
+//			printf(" ");
+//		}
+//		for (j = 0; j <= i; j++)
+//		{
+//			printf("%d ", arr[i][j]);
+//		}
+//		printf("\n");
+//	}
+//	return 0;
+//}
+
+
+// 实现一个函数，可以左旋字符串中k个字符
+// 例如：ABCDEF  左旋连个字符->> CDEFAB;
+#include <string.h>
+#include <assert.h>
+//char* revolve(char* str, size_t num)
+//{
+//	assert(str);
+//	if (!num)
+//	{
+//		return str;
+//	}
+//	int len = strlen(str);
+//	int i = 0;
+//	int j = 0;
+//	for (i = 0; i < num; i++)
+//	{
+//		//for (j = 0; j < len - 1; j++)
+//		//{
+//		//	char tmp = *(str + j);
+//		//	*(str + j) = *(str + j + 1);
+//		//	*(str + j + 1) = tmp;
+//		//}
+//
+//		// 其他写法：
+//		char temporary = *str;
+//		for (j = 0; j < len - 1; j++)
+//		{
+//			str[j] = str[j + 1];
+//		}
+//		str[len - 1] = temporary;
+//	}
+//	return str;
+//}
+//// 其他思路2：
+//void reverse(char* n, char* m)
+//{
+//	for (; n < m; n++, m--)
+//	{
+//		char tmp = *n;
+//		*n = *m;
+//		*m = tmp;
+//	}
+//}
+//char* revolve(char* str, size_t num)
+//{
+//	assert(str);
+//	int len = strlen(str);
+//	//if (num && num == len)
+//	//{
+//	//	return str;
+//	//}
+//	num %= len;
+//	reverse(str, str + num - 1);
+//	reverse(str + num, str + len - 1);
+//	reverse(str, str + len - 1);
+//	return str;
+//}
+//int main()
+//{
+//	char str[] = "ABCDEF";
+//	
+//	printf("%s", revolve(str, 3));
+//	return 0;
+//}
+
+
+//// 杨氏矩阵
+//// 有一个数字矩阵，矩阵的每行从左到右是递增的，矩阵从上到下是递增的
+//// 请编写程序在这样的矩阵中查找某个数字是否存在。
+//// 要求 : 时间复杂度小于0(N);
+//int find_num(int arr[3][3], int row, int column, int num)// vs提示函数可能为静态函数
+//// 可以改成：static int find_num(int arr[3][3], int row, int column, int num)
+//// static修饰后，函数只在当前文件生效，无法被其他文件调用
+//{
+//	if (row < 1 || column < 1)
+//	{
+//		return 0;
+//	} // 不写这个判断会受到警告：
+//	// vs提示，”if (arr[i][column - 1] >= num)“这行代码：“正在从arr[i]中读取无效数据
+//	// 编译器判断可能会存在越界
+//	int i = 0;
+//	int j = 0;
+//	for (i = 0; i < row; i++)
+//	{
+//		if (arr[i][column - 1] >= num)
+//		{
+//			for (j = 0; j < column; j++)
+//			{
+//				if (arr[i][j] == num)
+//				{
+//					return 1;
+//				}
+//			}
+//		}
+//	}
+//	return 0;
+//}
+//
+//int main()
+//{
+//	int arr[3][3] = { {1, 2, 3}, {4, 5, 6}, {7, 8, 9} };
+//	if (find_num(arr, 3, 3, 4))
+//	{
+//		printf("yes");
+//	}
+//	else
+//	{
+//		printf("no");
+//	}
+//	return 0;
+//}
+
+//// 返回值，设计成数组的下标
+//// 设计一个结构体，来记录坐标。
+//struct point
+//{
+//	int x;
+//	int y;
+//};
+//struct point find_num(int arr[3][3], int row, int column, int num)
+//{
+//	int i = 0;
+//	int j = 0;
+//	struct point p = { -1, -1 };
+//	if (row < 1 || column < 1)
+//	{
+//		return p;
+//	}
+//	for (i = 0; i < row; i++)
+//	{
+//		if (arr[i][column - 1] >= num)
+//		{
+//			for (j = 0; j < column; j++)
+//			{
+//				if (arr[i][j] == num)
+//				{
+//					p.x = i;
+//					p.y = j;
+//					return p;
+//				}
+//			}
+//		}
+//	}
+//	return p;
+//}
+//
+//int main()
+//{
+//	int arr[3][3] = { {1, 2, 3}, {4, 5, 6}, {7, 8, 9} };
+//	if (find_num(arr, 3, 3, 4).x >= 0)
+//	{
+//		printf("yes");
+//	}
+//	else
+//	{
+//		printf("no");
+//	}
+//	return 0;
+//}
+
+//// 使用返回型参数，也就是指针的形式，带回坐标值
+//int find_num(int arr[3][3], int* row, int* column, int num)
+//{
+//	int i = 0;
+//	int j = 0;
+//	if (*row < 1 || *column < 1)
+//	{
+//		*row = -1;
+//		*column = -1;
+//		return 0;
+//	}
+//	for (i = 0; i < *row; i++)
+//	{
+//		if (arr[i][*column - 1] >= num)
+//		{
+//			for (j = 0; j < column; j++)
+//			{
+//				if (arr[i][j] == num)
+//				{
+//					*row = i;
+//					*column = j;
+//					return 1;
+//				}
+//			}
+//		}
+//	}
+//	*row = -1;
+//	*column = -1;
+//	return 0;
+//}
+//
+//int main()
+//{
+//	int arr[3][3] = { {1, 2, 3}, {4, 5, 6}, {7, 8, 9} };
+//	int x = 3;
+//	int y = 3;
+//	if (find_num(arr, &x, &y, 4))
+//	{
+//		printf("yes\n");
+//		printf("位置是：%d，%d", x, y);
+//	}
+//	else
+//	{
+//		printf("no");
+//	}
+//	return 0;
+//}
+
+// 题目：判断一个字符串是否为另一个字符串的旋转之后的的字符串。
+/*
+例如:给定S1=AABCD和s2-BCDAA，返回1
+给定s1=abcd和s2=ACBD，返回0.
+AABCD左旋一个字符得到ABCDA
+AABCD左旋两个字符得到BCDAA
+AABCD右旋一个字符得到DAABC
+*/
+#include <string.h>
+#include <ctype.h>
+#include <assert.h>
+// 穷举法
+int is_reverse(char* str1, char* str2)
+{
+	assert(str1 && str2);
+	if (*str1 == '\0' && *str2 == '\0')
+	{
+		return -1;
+	}
+	int len = strlen(str1);
+	if (len != strlen(str2))
+	{
+		return 0;
+	}
+	int i = 0;
+	int j = 0;
+	for (i = 0; i < len; i++)
+	{
+		islower(str1[i]) ? str1[i] : (str1[i] = tolower(str1[i])); // 需要加括号
+	}
+	for (j = 0; j < len; j++)
+	{
+		// islower(str2[j]) ? str2[j] : (str2[j] = tolower(str2[j])); // 否则是islower的赋值。
+		// 或者干脆这样写：
+		str2[j] = islower(str2[j]) ? str2[j] : tolower(str2[j]);
+	}
+
+	for (i = 0; i < len; i++)
+	{
+		char tmp = str1[0];
+		for (j = 0; j < len - 1; j++)
+		{
+			str1[j] = str1[j + 1];
+		}
+		str1[len - 1] = tmp;
+		if (strcmp(str1, str2) == 0)
+		{
+			return 1;
+		}
+	}
+	return 0;
+}
+int main()
+{
+	char str[] = "AABCD";
+	char str2[] = "BCDAA"; // 其他测试用例：BCdAA  DAABC
+	int ret = is_reverse(str, str2);
+	printf("%d", ret);
+	return 0;
+}
