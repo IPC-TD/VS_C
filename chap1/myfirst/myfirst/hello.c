@@ -3196,52 +3196,350 @@ AABCD右旋一个字符得到DAABC
 #include <string.h>
 #include <ctype.h>
 #include <assert.h>
-// 穷举法
-int is_reverse(char* str1, char* str2)
-{
-	assert(str1 && str2);
-	if (*str1 == '\0' && *str2 == '\0')
-	{
-		return -1;
-	}
-	int len = strlen(str1);
-	if (len != strlen(str2))
-	{
-		return 0;
-	}
-	int i = 0;
-	int j = 0;
-	for (i = 0; i < len; i++)
-	{
-		islower(str1[i]) ? str1[i] : (str1[i] = tolower(str1[i])); // 需要加括号
-	}
-	for (j = 0; j < len; j++)
-	{
-		// islower(str2[j]) ? str2[j] : (str2[j] = tolower(str2[j])); // 否则是islower的赋值。
-		// 或者干脆这样写：
-		str2[j] = islower(str2[j]) ? str2[j] : tolower(str2[j]);
-	}
+//// 穷举法
+//int is_reverse(char* str1, char* str2)
+//{
+//	assert(str1 && str2);
+//	if (*str1 == '\0' && *str2 == '\0')
+//	{
+//		return -1;
+//	}
+//	int len = strlen(str1);
+//	if (len != strlen(str2))
+//	{
+//		return 0;
+//	}
+//	int i = 0;
+//	int j = 0;
+//	// 如果不分大小写的话，先对两个字符串，进行转换操作。
+//	for (i = 0; i < len; i++)
+//	{
+//		islower(str1[i]) ? str1[i] : (str1[i] = tolower(str1[i])); // 需要加括号
+//	}
+//	for (j = 0; j < len; j++)
+//	{
+//		// islower(str2[j]) ? str2[j] : (str2[j] = tolower(str2[j])); // 否则是islower的赋值。
+//		// 或者干脆这样写：
+//		str2[j] = islower(str2[j]) ? str2[j] : tolower(str2[j]);
+//	}
+//
+//	for (i = 0; i < len; i++)
+//	{
+//		char tmp = str1[0];
+//		for (j = 0; j < len - 1; j++)
+//		{
+//			str1[j] = str1[j + 1];
+//		}
+//		str1[len - 1] = tmp;
+//		if (strcmp(str1, str2) == 0)
+//		{
+//			return 1;
+//		}
+//	}
+//	return 0;
+//}
 
-	for (i = 0; i < len; i++)
-	{
-		char tmp = str1[0];
-		for (j = 0; j < len - 1; j++)
-		{
-			str1[j] = str1[j + 1];
-		}
-		str1[len - 1] = tmp;
-		if (strcmp(str1, str2) == 0)
-		{
-			return 1;
-		}
-	}
-	return 0;
-}
-int main()
-{
-	char str[] = "AABCD";
-	char str2[] = "BCDAA"; // 其他测试用例：BCdAA  DAABC
-	int ret = is_reverse(str, str2);
-	printf("%d", ret);
-	return 0;
-}
+//// 技巧性解法：字符串拼接对比,需要str1空间足够大
+//int is_reverse(char* str1, char* str2)
+//{
+//	assert(str1 && str2);
+//	int len1 = strlen(str1);
+//	int len2 = strlen(str2);
+//	if (len1 != len2) // 字符串字符数要相等，不然下面有逻辑错误，例如：abc会判定为abcdef的旋转字符串。
+//	{
+//		return 0;
+//	}
+//	strncat(str1, str1, len1);
+//	if (strstr(str1, str2) != NULL)
+//	{
+//		return 1;
+//	}
+//	else
+//		return 0;
+//}
+//int main()
+//{
+//	char str[40] = "AABCD";
+//	char str2[] = "DAABC"; // 测试用例："BCDAA BCdAA  DAABC
+//	int ret = is_reverse(str, str2);
+//	printf("%d", ret);
+//	return 0;
+//}
+
+
+/*
+描述
+KiKi有一个矩阵，他想知道转置后的矩阵（将矩阵的行列互换得到的新矩阵称为转置矩阵），请编程帮他解答。
+
+输入描述：
+第一行包含两个整数n和m，表示一个矩阵包含n行m列，用空格分隔。(1≤n≤10, 1≤m≤10)
+
+从2到n + 1行，每行输入m个整数（范围 - 231~231 - 1），用空格分隔，共输入n * m个数，表示第一个矩阵中的元素。
+
+输出描述：
+输出m行n列，为矩阵转置后的结果。每个数后面有一个空格。
+
+输入：
+2 3
+1 2 3
+4 5 6
+
+输出：
+1 4
+2 5
+3 6
+
+*/
+
+// // 技巧性解法：
+// int main()
+// {
+//     int n;
+//     int m;
+//     int arr[10][10];
+//     scanf("%d %d ", &n, &m);
+//     int k = 0;
+//     int i;
+//     int j;
+//     for (i = 0; i < n; i++)
+//     {
+//         for (j = 0; j < m; j++)
+//         {
+//             scanf("%d ", &arr[j][i]);
+//         }
+//     }
+//     for (i = 0; i < m; i++)
+//     {
+//         for (j = 0; j < n; j++)
+//         {
+//             printf("%d ", arr[i][j]);      
+//         }
+//         printf("\n");
+//     }
+//     return 0;
+// }
+
+// 旋转二维数组内容解法：
+
+//int main()
+//{
+//    int n = 0;
+//    int m = 0;
+//    scanf("%d%d", &n, &m);
+//    int arr[10][10];
+//    int i = 0;
+//    int j = 0;
+//    for (i = 0; i < n; i++)
+//    {
+//        for (j = 0; j < m; j++)
+//        {
+//            scanf("%d", &arr[i][j]);
+//        }
+//    }
+//
+//    for (i = 0; i < 10; i++)
+//    {
+//        for (j = i; j < 10; j++)
+//        {
+//            if (i != j)
+//            {
+//                int tmp = arr[i][j];
+//                arr[i][j] = arr[j][i];
+//                arr[j][i] = tmp;
+//            }
+//        }
+//    }
+//
+//    for (i = 0; i < m; i++)
+//    {
+//        for (j = 0; j < n; j++)
+//        {
+//            printf("%d ", arr[i][j]);
+//        }
+//        printf("\n");
+//    }
+//    return 0;
+//}
+
+/*
+* 
+描述
+KiKi想知道一个n阶方矩是否为上三角矩阵，请帮他编程判定。上三角矩阵即主对角线以下的元素都为0的矩阵，主对角线为从矩阵的左上角至右下角的连线。
+
+输入描述：
+第一行包含一个整数n，表示一个方阵包含n行n列，用空格分隔。 (2≤n≤10)
+
+从2到n+1行，每行输入n个整数（范围-231~231-1），用空格分隔，共输入n*n个数。
+
+输出描述：
+一行，如果输入方阵是上三角矩阵输出"YES"并换行，否则输出"NO"并换行。
+
+示例1
+输入：
+3
+1 2 3
+0 4 5
+0 0 6
+输出：
+YES
+
+
+实例2：
+输入：
+4
+1 2 3 4
+5 6 7 8
+9 0 11 12
+13 0 0 16
+输出：
+NO
+*/
+//
+//int main()
+//{
+//    int n = 0;
+//    int m = 0;
+//    scanf("%d", &n);
+//    m = n;
+//    int i = 0;
+//    int j = 0;
+//    int arr[10][10];
+//    for (i = 0; i < n; i++)
+//    {
+//        for (j = 0; j < m; j++)
+//        {
+//            scanf("%d", &arr[i][j]);
+//        }
+//    }
+//    int flag = 1;
+//    for (i = 0; i < n; i++)
+//    {
+//        for (j = 0; j < i; j++)
+//        {
+//            if (arr[i][j] != 0)
+//            {
+//                flag = 0;
+//                // goto label; // 这可直接跳转两层循环
+//                break;
+//            }
+//            // 或者这加个判断，再次break；（考虑到多次if可能增加时间，所以我没用）
+//            if (flag == 0)
+//            {
+//                break;
+//            }
+//        }
+//    }
+//    // label:
+//    if (flag == 1)
+//    {
+//        printf("YES");
+//    }
+//    else
+//    {
+//        printf("NO");
+//    }
+//
+//    return 0;
+//}
+
+/*
+
+描述
+输入一个整数序列，判断是否是有序序列，有序，指序列中的整数从小到大排序或者从大到小排序(相同元素也视为有序)。
+
+数据范围：3≤n≤50 序列中的值都满足1≤val≤100
+
+输入描述：
+第一行输入一个整数N(3≤N≤50)。
+第二行输入N个整数，用空格分隔N个整数。
+输出描述：
+输出为一行，如果序列有序输出sorted，否则输出unsorted。
+*/
+
+// int main() {
+//     int n = 0;
+//     scanf("%d", &n);
+//     int arr[50];
+//     int i = 0;
+//     for (i = 0; i < n; i++)
+//     {
+//         scanf("%d", &arr[i]);
+//     }
+
+//     int start = 0;
+//     int flag = 1;
+//     for (i = 0; i < n; i++)
+//     {
+//         if (arr[i] >= start)
+//         {
+//             start = arr[i];
+//         }
+//         else
+//         {
+//             flag = 0;
+//             break;
+//         }
+//     }
+
+//     if (flag == 0)
+//     {
+//         flag = 1;
+//         start = 100;
+//         for (i = 0; i < n; i++)
+//         {
+//             if (arr[i] <= start)
+//             {
+//                 start = arr[i];
+//             }
+//             else
+//             {
+//                 flag = 0;
+//                 break;
+//             }
+//         }
+//     }
+
+//     if (flag == 1)
+//     {
+//         printf("sorted");
+//     }
+//     else 
+//     {
+//         printf("unsorted");
+//     }
+//     return 0;
+// }
+
+//// 思路2：
+//int main()
+//{
+//    int n = 0;
+//    int arr[50] = { 0 };
+//    scanf("%d", &n);
+//    int i = 0;
+//    int flag1 = 0;
+//    int flag2 = 0;
+//    scanf("%d", &arr[i]);
+//    for (i = 1; i < n; i++)
+//    {
+//        scanf("%d", &arr[i]);
+//        if (arr[i] > arr[i - 1])
+//        {
+//            flag1 = 1;
+//        }
+//        else if (arr[i] < arr[i - 1])
+//        {
+//            flag2 = 1;
+//        }
+//    }
+//    if (flag1 + flag2 <= 1)
+//    {
+//        printf("sorted");
+//    }
+//    else
+//    {
+//        printf("unsorted");
+//    }
+//    return 0;
+//}
+
