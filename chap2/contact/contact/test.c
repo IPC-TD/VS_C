@@ -11,7 +11,59 @@ void menu(void)
 	printf("*********  0. 退出系统                      **********\n");
 	printf("******************************************************\n");
 }
+enum Menu
+{
+	EXIT = 0,
+	SHOW = 1,
+	ADD = 2,
+	FIND_CON = 3,
+	DEL = 4,
+	MODIFY = 5,
+	SORT_CON = 6
+};
 
+//int main()
+//{
+//	struct Contact con;
+//	initialization_contact(&con);
+//
+//	int input;
+//	do {
+//		menu();
+//		printf("请输入：>");
+//		scanf("%d", &input);
+//		switch (input)
+//		{
+//		case 1:
+//			show_contact(&con);
+//			break;
+//		case 2:
+//			add_contact(&con);
+//			break;
+//		case 3:
+//			find_contact(&con);
+//			break;
+//		case 4:
+//			del_contact(&con);
+//			break;
+//		case 5:
+//			modify_contact(&con);
+//			break;
+//		case 6:
+//			sort_contact(&con);
+//			break;
+//		case 0:
+//			printf("已经退出系统");
+//			break;
+//		default:
+//			printf("输入有误\n");
+//		}
+//
+//	} while (input);
+//	return 0;
+//}
+
+// 使用枚举来优化代码，使用分支逻辑更清晰直观
 int main()
 {
 	struct Contact con;
@@ -22,27 +74,28 @@ int main()
 		menu();
 		printf("请输入：>");
 		scanf("%d", &input);
+
 		switch (input)
 		{
-		case 1:
+		case SHOW:
 			show_contact(&con);
 			break;
-		case 2:
+		case ADD:
 			add_contact(&con);
 			break;
-		case 3:
+		case FIND_CON:
 			find_contact(&con);
 			break;
-		case 4:
+		case DEL:
 			del_contact(&con);
 			break;
-		case 5:
+		case MODIFY:
 			modify_contact(&con);
 			break;
-		case 6:
+		case SORT_CON:
 			sort_contact(&con);
 			break;
-		case 0:
+		case EXIT:
 			printf("已经退出系统");
 			break;
 		default:

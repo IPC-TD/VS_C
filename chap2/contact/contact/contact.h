@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #define NAME_MAX 20
 #define GENDER_MAX 10
+#define TELEPHONE 12
 #define ADDRESS_MAX 40
 #define MAX 100
 
@@ -13,6 +14,7 @@ struct Peo
 	char name[NAME_MAX];
 	char gender[GENDER_MAX];
 	int age;
+	char telephone[TELEPHONE];
 	char address[ADDRESS_MAX];
 };
 

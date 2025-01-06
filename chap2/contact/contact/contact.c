@@ -11,6 +11,16 @@ void initialization_contact(struct Contact* con)
 	con->count = 0;
 }
 
+static void print_title(void)
+{
+	printf("姓名\t 性别\t 年龄\t 电话号码\t 地址\n");
+}
+
+static void print_info(struct Contact* con, int i)
+{
+	printf("%s\t %s\t %d\t %s\t\t %s\n", con->data[i].name, con->data[i].gender, con->data[i].age, con->data[i].telephone, con->data[i].address);
+}
+
 void show_contact(struct Contact* con)
 {
 	assert(con);
@@ -21,10 +31,10 @@ void show_contact(struct Contact* con)
 	}
 
 	int i = 0;
-	printf("姓名\t性别\t年龄\t地址\n");
+	print_title();
 	for (i = 0; i < con->count; i++)
 	{
-		printf("%s\t%s\t%d\t%s\n", con->data[i].name, con->data[i].gender, con->data[i].age, con->data[i].address);
+		print_info(con, i);
 	}
 
 }
@@ -36,6 +46,8 @@ static void info_input(struct Contact* con, size_t num)
 	scanf("%s", con->data[num].gender);
 	printf("请输入年龄：>");
 	scanf("%d", &(con->data[num].age));
+	printf("请输入电话：>");
+	scanf("%s", con->data[num].telephone);
 	printf("请输入地址：>");
 	scanf("%s", con->data[num].address);
 }
@@ -62,7 +74,7 @@ void del_contact(struct Contact* con)
 	assert(con);
 	if (con->count <= 0)
 	{
-		printf("通讯录为空，无法联系人可删除");
+		printf("通讯录为空，无法联系人可删除\n");
 		return;
 	}
 	int i = 0;
@@ -91,7 +103,7 @@ void find_contact(struct Contact* con)
 	assert(con);
 	if (con->count <= 0)
 	{
-		printf("通讯录为空，无联系人可查找");
+		printf("通讯录为空，无联系人可查找\n");
 		return;
 	}
 	int i = 0;
@@ -105,8 +117,8 @@ void find_contact(struct Contact* con)
 		{
 			flag = 1;
 			printf("查找成功该! 联系人信息为：\n");
-			printf("姓名\t性别\t年龄\t地址\n");
-			printf("%s\t%s\t%d\t%s\n", con->data[i].name, con->data[i].gender, con->data[i].age, con->data[i].address);
+			print_title();
+			print_info(con, i);
 		}
 	}
 	if (flag == 0)
@@ -121,7 +133,7 @@ void modify_contact(struct Contact* con)
 	assert(con);
 	if (con->count <= 0)
 	{
-		printf("通讯录为空，无联系人可修改");
+		printf("通讯录为空，无联系人可修改\n");
 		return;
 	}
 	int i = 0;
@@ -135,8 +147,8 @@ void modify_contact(struct Contact* con)
 		{
 			flag = 1;
 			printf("当前找到姓名为\"%s\"的联系人信息为：\n", con->data[i].name);
-			printf("姓名\t性别\t年龄\t地址\n");
-			printf("%s\t%s\t%d\t%s\n", con->data[i].name, con->data[i].gender, con->data[i].age, con->data[i].address);
+			print_title();
+			print_info(con, i);
 			printf("请问该联系人是否修改？（回答1为修改，回答0不修改）：>");
 			int tmp = 0;
 			scanf("%d", &tmp);
@@ -174,6 +186,16 @@ int contact_cmp4(const void* p1, const void* p2)
 void sort_contact(struct Contact* con)
 {
 	assert(con);
+	if (con->count == 0)
+	{
+		printf("通讯录为空，无联系人可排序\n");
+		return;
+	}
+	else if (con->count == 1)
+	{
+		printf("仅有1个联系人，无需排序！\n");
+		return;
+	}
 	int input;
 	printf("请问以什么方式排序？\n");
 	printf("请回答（1.按姓名排序，2.按性别排序，3.按年龄排序，4.按地址排序）\n");

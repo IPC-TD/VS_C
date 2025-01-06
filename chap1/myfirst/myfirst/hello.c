@@ -3362,7 +3362,7 @@ KiKi有一个矩阵，他想知道转置后的矩阵（将矩阵的行列互换得到的新矩阵称为转置矩阵）
 //}
 
 /*
-* 
+*
 描述
 KiKi想知道一个n阶方矩是否为上三角矩阵，请帮他编程判定。上三角矩阵即主对角线以下的元素都为0的矩阵，主对角线为从矩阵的左上角至右下角的连线。
 
@@ -3542,6 +3542,182 @@ NO
 //    }
 //    return 0;
 //}
+
+//#include <stdlib.h>
+//#include <string.h>
+//#include <errno.h>
+//
+//int main()
+//{
+//	// 动态开辟一块内存空间
+//	int* p = (int*)malloc(40);
+//	// malloc有可能开辟失败，所以判断一下p是否为空，防止对空指针解引用
+//	if (p = NULL)
+//	{
+//		// 如果开辟失败，打印报错信息
+//		printf("%s", strerror(errno));
+//		return 1;
+//	}
+//	// 具体业务逻辑
+//	int i = 0;
+//	for (i = 0; i < 10; i++)
+//	{
+//		*(p + i) = i;
+//	}
+//	for (i = 0; i < 10; i++)
+//	{
+//		printf("%d ", *(p + i));
+//	}
+//	// 完成业务逻辑后，回收空间
+//	free(p);
+//	// p指向空间已经销毁，指针置空，避免野指针问题
+//	p = NULL;
+//	return 0;
+//}
+
+//#include <stdlib.h>
+//int main()
+//{
+//	int* p = (int*)calloc(10, sizeof(int));
+//	if (p == NULL)
+//	{
+//		return 1;
+//	}
+//	// 使用空间
+//
+//	// 使用完成后，进行回收
+//	free(p);
+//	p = NULL;
+//	return 0;
+//}
+
+//#include <stdlib.h>
+//#include <string.h>
+//#include <errno.h>
+//int main()
+//{
+//	int* p = (int*)malloc(40);
+//	if (p != NULL)
+//	{
+//		// 业务逻辑
+//	}
+//	else
+//	{
+//		printf("%s", strerror(errno));
+//		return 1;
+//	}
+//	// 空间扩增
+//	int* p2 = (int*)realloc(p, 80);
+//	if (p2 != NULL)
+//	{
+//		// 业务逻辑
+//	}
+//	else
+//	{
+//		printf("%s", strerror(errno));
+//		free(p);
+//		p = NULL;
+//		return 1;
+//	}
+//	// 回收空间
+//	free(p2);
+//	p = NULL;
+//	p2 = NULL;
+//
+//	return 0;
+//}
+
+//// 常见错误：对空指针的解引用
+//#include <stdlib.h>
+//int main()
+//{
+//	int* p = malloc(INT_MAX); // 不过现在电脑变聪明了，优化后，还是能给程序一个空间（2个G）
+//	*p = 20; // 如果p为空，就会出问题
+//	return 0;
+//}
+
+//// 常见错误： 越界访问动态内存空间
+//#include <stdlib.h>
+//int main()
+//{
+//	int* p = (int*)calloc(10, sizeof(int));
+//	if (p == NULL)
+//	{
+//		return 1;
+//	}
+//	int i = 0;
+//	for (i = 0; i <= 10; i++)
+//	{
+//		p[i] = i;
+//	}
+//	free(p);
+//	p = NULL;
+//	return 0;
+//}
+
+//// 常见错误：对非动态开辟的内存，进行free释放
+//#include <stdlib.h>
+//int main()
+//{
+//	int a = 10;
+//	int* p = &a;
+//	free(p);
+//	p = NULL;
+//	return 0;
+//}
+
+//// 使用动态开辟内存的非起始地址
+//#include <stdlib.h>
+//int main()
+//{
+//	int* p = (int*)malloc(40);
+//	if (p == NULL)
+//	{
+//		return 1;
+//	}
+//	int i = 0;
+//	for (i = 0; i < 5; i++)
+//	{
+//		*p = i;
+//		p++;
+//	}
+//	free(p);
+//	p = NULL;
+//	return 0;
+//}
+
+//// 对同一块动态内存多次释放
+//#include <stdlib.h>
+//int main()
+//{
+//	int* p = (int*)malloc(40);
+//	if (p == NULL)
+//	{
+//		return 1;
+//	}
+//	free(p);
+//	free(p);
+//	p = NULL;
+//	return 0;
+//}
+
+// 内存泄露
+#include <stdlib.h>
+void test(void)
+{
+	int* p = (int*)malloc(40);
+	*p = 20;
+}
+int main()
+{
+	while (1)
+	{
+		test();
+	}
+
+	return 0;
+}
+
 
 
 
