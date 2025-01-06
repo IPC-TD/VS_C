@@ -2,13 +2,31 @@
 #include "contact.h"
 // 决定将数据的管理交给主程序，本模块只负责实现功能，以加强本模块的通用性
 
+//// 初始化通讯录（静态版本）
+//void initialization_contact(struct Contact* con)
+//{
+//	assert(con);
+//	// 初始化所有联系人
+//	memset(con->data, 0, sizeof(con->data));
+//	// 通讯录联系人个数
+//	con->count = 0;
+//}
+
+// 初始化通讯录（动态版本）
 void initialization_contact(struct Contact* con)
 {
 	assert(con);
 	// 初始化所有联系人
-	memset(con->data, 0, sizeof(con->data));
+	con->data = (struct Peo*)calloc(DATA_INIT_MAK, sizeof(struct Peo));
+	if (con == NULL)
+	{
+		printf("%s", strerror(errno));
+		return 1;
+	}
 	// 通讯录联系人个数
 	con->count = 0;
+	// 当前通讯录容量
+	con->max_count = DATA_INIT_MAK;
 }
 
 static void print_title(void)
@@ -21,12 +39,13 @@ static void print_info(struct Contact* con, int i)
 	printf("%s\t %s\t %d\t %s\t\t %s\n", con->data[i].name, con->data[i].gender, con->data[i].age, con->data[i].telephone, con->data[i].address);
 }
 
+// 显示通讯录
 void show_contact(struct Contact* con)
 {
 	assert(con);
 	if (con->count <= 0)
 	{
-		printf("联系人为空\n");
+		printf("通讯录为空\n");
 		return;
 	}
 
@@ -38,6 +57,8 @@ void show_contact(struct Contact* con)
 	}
 
 }
+
+// 用户信息输出模块
 static void info_input(struct Contact* con, size_t num)
 {
 	printf("请输入姓名：>");
@@ -52,23 +73,63 @@ static void info_input(struct Contact* con, size_t num)
 	scanf("%s", con->data[num].address);
 }
 
+//// 添加联系人（静态版本）
+//void add_contact(struct Contact* con)
+//{
+//	assert(con);
+//	if (con->count == MAX)
+//	{
+//		printf("通讯录已满，无法添加联系人");
+//		return;
+//	}
+//	printf("开始添加联系人！\n");
+//	info_input(con, con->count);
+//	con->count++;
+//}
+
+// 通讯录扩容
+int data_increase(struct Contact* con, size_t _count)
+{
+	struct Peo* tmp = (struct Peo*)realloc(con->data, sizeof(struct Peo) * (con->max_count + INCREESE_NUM));
+	if (tmp == NULL)
+	{
+		return -1;
+	}
+	else
+	{
+		con->data = tmp;
+		
+	}
+	return 0;
+}
+
+// 添加联系人（动态版本）
 void add_contact(struct Contact* con)
 {
 	assert(con);
-	if (con->count == MAX)
+	// 如果当前通讯录已满，则扩容
+	if (con->count == con->max_count)
 	{
-		printf("通讯录已满，无法添加联系人");
-		return;
+		int tmp = data_increase(con, con->max_count);
+		if (tmp == -1)
+		{
+			return;
+		}
+		con->max_count += INCREESE_NUM;
+		printf("扩容成功！");
 	}
 	printf("开始添加联系人！\n");
 	info_input(con, con->count);
 	con->count++;
 }
+
+// 删除功能
 static void del_peo(struct Contact* p, int i, int size)
 {
 	assert(p);
 	memmove(p->data + i, p->data + i + 1, (p->count - i - 1) * size);
 }
+// 删除联系人
 void del_contact(struct Contact* con)
 {
 	assert(con);
@@ -98,6 +159,7 @@ void del_contact(struct Contact* con)
 	}
 }
 
+// 查找联系人
 void find_contact(struct Contact* con)
 {
 	assert(con);
@@ -127,7 +189,7 @@ void find_contact(struct Contact* con)
 	}
 }
 
-
+// 修改联系人
 void modify_contact(struct Contact* con)
 {
 	assert(con);
@@ -166,6 +228,7 @@ void modify_contact(struct Contact* con)
 	}
 }
 
+// 排序功能模块
 int contact_cmp1(const void* p1, const void* p2)
 {
 	return strcmp(((struct Peo*)p1)->name, ((struct Peo*)p2)->name);
@@ -183,6 +246,7 @@ int contact_cmp4(const void* p1, const void* p2)
 	return strcmp(((struct Peo*)p1)->address, ((struct Peo*)p2)->address);
 }
 
+// 排序通讯录
 void sort_contact(struct Contact* con)
 {
 	assert(con);

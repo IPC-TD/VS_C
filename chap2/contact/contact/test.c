@@ -5,8 +5,8 @@
 void menu(void)
 {
 	printf("******************************************************\n");
-	printf("*********  1. 显示通讯录     2.添加联系人   **********\n");
-	printf("*********  3. 查找联系人     4.删除联系人   **********\n");
+	printf("*********  1. 添加联系人     2.删除联系人   **********\n");
+	printf("*********  3. 显示通讯录     4.查找联系人   **********\n");
 	printf("*********  5. 修改联系人     6.排序通讯录   **********\n");
 	printf("*********  0. 退出系统                      **********\n");
 	printf("******************************************************\n");
@@ -14,10 +14,10 @@ void menu(void)
 enum Menu
 {
 	EXIT = 0,
-	SHOW = 1,
-	ADD = 2,
-	FIND_CON = 3,
-	DEL = 4,
+	ADD = 1,
+	DEL = 2,
+	SHOW = 3,
+	FIND_CON = 4,
 	MODIFY = 5,
 	SORT_CON = 6
 };
@@ -97,6 +97,8 @@ int main()
 			break;
 		case EXIT:
 			printf("已经退出系统");
+			free(con.data);
+			con.data = NULL;
 			break;
 		default:
 			printf("输入有误\n");

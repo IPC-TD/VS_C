@@ -3,11 +3,15 @@
 #include <string.h>
 #include <assert.h>
 #include <stdlib.h>
+#include <errno.h>
 #define NAME_MAX 20
 #define GENDER_MAX 10
 #define TELEPHONE 12
 #define ADDRESS_MAX 40
 #define MAX 100
+
+#define DATA_INIT_MAK 3
+#define INCREESE_NUM 2
 
 struct Peo
 {
@@ -17,11 +21,20 @@ struct Peo
 	char telephone[TELEPHONE];
 	char address[ADDRESS_MAX];
 };
+//
+//// 静态版本，编译后无法自由改变大小
+//struct Contact
+//{
+//	struct Peo data[MAX];
+//	int count;
+//};
 
+// 动态版本
 struct Contact
 {
-	struct Peo data[MAX];
+	struct Peo* data;
 	int count;
+	int max_count;
 };
 
 void initialization_contact(struct Contact* con);
