@@ -12,21 +12,20 @@
 //	con->count = 0;
 //}
 
-// 初始化通讯录（动态版本）
-void initialization_contact(struct Contact* con)
+// 通讯录扩容
+int data_increase(struct Contact* con, size_t add_count)
 {
-	assert(con);
-	// 初始化所有联系人
-	con->data = (struct Peo*)calloc(DATA_INIT_MAK, sizeof(struct Peo));
-	if (con == NULL)
+	struct Peo* tmp = (struct Peo*)realloc(con->data, sizeof(struct Peo) * (con->max_count + add_count));
+	if (tmp == NULL)
 	{
-		printf("%s", strerror(errno));
-		return 1;
+		return -1;
 	}
-	// 通讯录联系人个数
-	con->count = 0;
-	// 当前通讯录容量
-	con->max_count = DATA_INIT_MAK;
+	else
+	{
+		con->data = tmp;
+
+	}
+	return 0;
 }
 
 static void print_title(void)
@@ -37,6 +36,100 @@ static void print_title(void)
 static void print_info(struct Contact* con, int i)
 {
 	printf("%s\t %s\t %d\t %s\t\t %s\n", con->data[i].name, con->data[i].gender, con->data[i].age, con->data[i].telephone, con->data[i].address);
+}
+
+// 保存内存中的数据
+void Save_Contact_data(struct Contact* con)
+{
+	FILE* pf = fopen("Contact_data.txt", "w");
+	if (!pf)
+	{
+		perror("尝试写入文件Contact_data.txt");
+		return;
+	}
+	int ret = fprintf(pf, "%d %d\n", con->count, con->max_count);
+	if (ret < 0)
+	{
+		puts("数据头部信息写入文件失败");
+	}
+	int i = 0;
+	for (i = 0; i < con->count; i++)
+	{
+		ret = fprintf(pf, "%s %s %d %s %s\n", con->data[i].name, con->data[i].gender, con->data[i].age, con->data[i].telephone, con->data[i].address);
+		if (ret < 0)
+		{
+			printf("第%d条数据写入文件失败\n", i);
+			puts("该条数据内容为：");
+			print_info(con, i);
+		}
+	}
+}
+
+// 载入本地文件内的数据
+int Add_Contact_data(struct Contact* con)
+{
+	FILE* pf = fopen("Contact_data.txt", "r");
+	if (!pf)
+	{
+		perror("Contact_data.txt");
+		printf("尝试打开本地数据文件失败\n");
+		return EOF;
+	}
+	int ret = 0;
+	ret = fscanf(pf, "%d %d\n", &(con->count), &(con->max_count));
+	if (ret < 0)
+	{
+		puts("文件数据头部信息读取失败");
+		con->count = 0;
+		con->max_count = 0;
+		return EOF;
+	}
+	// 为数据分配空
+	con->data = (struct Peo*)calloc(con->max_count, sizeof(struct Peo));
+	if (NULL == con->data)
+	{
+		con->count = 0;
+		con->max_count = 0;
+		return EOF;
+	}
+	int i = 0;
+	for (i = 0; i < con->count; i++)
+	{
+		ret = fscanf(pf, "%s %s %d %s %s", con->data[i].name, con->data[i].gender, &(con->data[i].age), con->data[i].telephone, con->data[i].address);
+		if (ret < 0)
+		{
+			printf("第%d条数据读取失败\n", i);
+		}
+	}
+	return 0;
+}
+
+// 初始化通讯录（动态版本）
+void initialization_contact(struct Contact* con)
+{
+	assert(con);
+	// 尝试本地文件数据的导入
+	int ret = Add_Contact_data(con);
+	
+	// 无本地数据，则按照正常方式初始化
+	if (EOF == ret)
+	{
+		// 初始化所有联系人
+		con->data = (struct Peo*)calloc(DATA_INIT_MAK, sizeof(struct Peo));
+		if (con == NULL)
+		{
+			printf("%s", strerror(errno));
+			return;
+		}
+		// 通讯录联系人个数
+		con->count = 0;
+		// 当前通讯录容量
+		con->max_count = DATA_INIT_MAK;
+	}
+	else
+	{
+		puts("本地数据载入成功！");
+	}
 }
 
 // 显示通讯录
@@ -87,21 +180,6 @@ static void info_input(struct Contact* con, size_t num)
 //	con->count++;
 //}
 
-// 通讯录扩容
-int data_increase(struct Contact* con, size_t _count)
-{
-	struct Peo* tmp = (struct Peo*)realloc(con->data, sizeof(struct Peo) * (con->max_count + INCREESE_NUM));
-	if (tmp == NULL)
-	{
-		return -1;
-	}
-	else
-	{
-		con->data = tmp;
-		
-	}
-	return 0;
-}
 
 // 添加联系人（动态版本）
 void add_contact(struct Contact* con)
@@ -110,9 +188,10 @@ void add_contact(struct Contact* con)
 	// 如果当前通讯录已满，则扩容
 	if (con->count == con->max_count)
 	{
-		int tmp = data_increase(con, con->max_count);
+		int tmp = data_increase(con, INCREESE_NUM);
 		if (tmp == -1)
 		{
+			puts("扩容失败，无法继续");
 			return;
 		}
 		con->max_count += INCREESE_NUM;

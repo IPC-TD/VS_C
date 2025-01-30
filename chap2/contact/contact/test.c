@@ -96,9 +96,13 @@ int main()
 			sort_contact(&con);
 			break;
 		case EXIT:
-			printf("已经退出系统");
+			puts("正在将通讯录数据保存到本地");
+			Save_Contact_data(&con);
 			free(con.data);
 			con.data = NULL;
+			Sleep(500);
+			puts("数据保存完成!");
+			puts("已经退出系统");
 			break;
 		default:
 			printf("输入有误\n");

@@ -3701,30 +3701,1142 @@ NO
 //	return 0;
 //}
 
-// 内存泄露
-#include <stdlib.h>
-void test(void)
-{
-	int* p = (int*)malloc(40);
-	*p = 20;
-}
+//// 内存泄露
+//#include <stdlib.h>
+//void test(void)
+//{
+//	int* p = (int*)malloc(40);
+//	*p = 20;
+//}
+//int main()
+//{
+//	while (1)
+//	{
+//		test();
+//	}
+//
+//	return 0;
+//}
+
+//int main()
+//{
+//    long long int n = 0, m = 0;
+//    while (scanf("%lld %lld", &n, &m) == 2)
+//    {
+//        long long int n1 = n, m1 = m;
+//        long long int i = 0;
+//        while (n && m)
+//        {
+//            if (n > m)
+//            {
+//                n = n % m;
+//                i = m;
+//            }
+//            else
+//            {
+//                m = m % n;
+//                i = n;
+//            }
+//        }
+//        printf("最大公因数：%lld\n", i);
+//
+//        // 计算方式1，暴力法
+//        long long tmp = n1;
+//        while (tmp % n1 != 0 || tmp % m1 != 0)
+//        {
+//            tmp += n1;
+//        }
+//        printf("最小公倍数计算方式1:%lld\n", tmp);
+//        // 计算方式2，公式法
+//        printf("最小公倍数计算方式2：%lld\n", n1 * m1 / i);
+//
+//        printf("二者和：%lld\n", i + tmp);
+//    }
+//    
+//    return 0;
+//}
+
+
+//int main()
+//{
+//    long long n = 0;
+//    long long m = 0;
+//    while (scanf("%ld %ld", &n, &m) != EOF)
+//    {
+//        long i = n;
+//        long j = m;
+//        long r = 0;
+//        while (r = i % j)
+//        {
+//            i = j;
+//            j = r;
+//        }
+//        //printf("公因数：%ld\n", j);
+//        //printf("公倍数：%ld\n", n * m / j);
+//        printf("%lld\n", j + n  / j * m);
+//    }
+//
+//    return 0;
+//}
+
+//// 测试结构体柔性数组成员是是否进行内存对齐
+//#include <stdlib.h>
+//
+//// 测1
+//void test1(void)
+//{
+//	// 结构体1
+//	struct tag
+//	{
+//		int i;
+//		char c;
+//		int arr[0];
+//	};
+//	// 动态分配空间
+//	struct tag* p = (struct tag*)calloc(1, sizeof(struct tag) + 40);
+//	if (p == NULL)
+//	{
+//		return 1;
+//	}
+//	// 为成员赋值
+//	p->i = 0xFFFFFFFF;
+//	p->c = 0xFF;
+//	int i = 0;
+//	for (i = 0; i < 5; i++)
+//	{
+//		p->arr[i] = 0xFFFFFFFF;
+//	}
+//	// 输出检查内存情况，或者可以用vs的内存监视窗口
+//	char* pc = (char*)p;
+//	printf("%d\n", pc[8]);
+//	// 释放内存
+//	free(p);
+//	p = NULL;
+//	pc = NULL;
+//}
+//
+//// 测试2
+//void test2(void)
+//{
+//	// 结构体2
+//	typedef struct tag2
+//	{
+//		char i;
+//		int arr[0];
+//	}tag2;
+//
+//	// 动态分配空间
+//	tag2* p2 = (tag2*)calloc(1, sizeof(tag2) + 40);
+//	if (p2 == NULL)
+//	{
+//		return 1;
+//	}
+//	// 为成员赋值
+//	p2->i = 0xFF;
+//	int i = 0;
+//	for (i = 0; i < 5; i++)
+//	{
+//		p2->arr[i] = 0xFFFFFFFF;
+//	}
+//	// 输出检查内存情况，或者可以用vs的内存监视窗口
+//	char* p3 = (char*)p2;
+//	printf("%d\n", p2[1]);
+//	// 释放内存
+//	free(p2);
+//	p2 = NULL;
+//	p3 = NULL;
+//}
+//
+//int main()
+//{
+//	test1();
+//	test2();
+//	return 0;
+//}
+
+//#include <stdio.h>
+////struct str {
+////	int len;
+////	char s[]; // 如果是：char* s; 呢？
+////};
+//
+//struct str {
+//	int len;
+//	char* s;
+//};
+//
+//struct foo {
+//	struct str* a;
+//};
+//
+//int main(int argc, char** argv) {
+//	struct foo f = { 0 };
+//	if (f.a->s) {
+//		printf(f.a->s);
+//	}
+//	return 0;
+//}
+//// 提问：分析从哪一句代码开始程序crash，如果str成员的char s[];换成是是：char* s; 呢？
+
+//// 柔性数组的优势
+//#include <stdlib.h>
+//// ----------  代码1   --------------
+//void test_fun1(void)
+//{
+//	typedef struct test_tag1
+//	{
+//		int i;
+//		int a[]; //柔性数组成员
+//	}test1;
+//
+//	// 给柔性数组成员分配100个int元素大小的空间
+//	test1* p1 = (test1*)malloc(sizeof(test1) + 100 * sizeof(int));
+//	if (p1 == NULL)
+//	{
+//		return 1;
+//	}
+//	else
+//	{
+//		p1->i = 100;
+//		// 完成业务逻辑
+//		// ...... 
+//
+//	}
+//	// 回收空间
+//	free(p1);
+//	p1 = NULL;
+//}
+//
+//// ---------- 代码2    ----------------
+//void test_fun2(void)
+//{
+//	typedef struct test_tag2
+//	{
+//		int i;
+//		int* a;
+//	}test2;
+//
+//	// 给结构体分配空间
+//	test2* p2 = (test2*)malloc(sizeof(test2));
+//	if (p2 == NULL)
+//	{
+//		//....
+//		return 1;
+//	}
+//	// 再给结构体成员指针，分配所指向空间
+//	p2->i = 100;
+//	p2->a = (int*)malloc(p2->i * sizeof(int));
+//	if (p2->a = NULL)
+//	{
+//		//...
+//		return 1;
+//	}
+//	// 完成业务逻辑
+//	// ...... 
+//
+//	// 回收空间
+//	free(p2->a);
+//	free(p2);
+//	p2 = NULL;
+//}
+//
+//int main()
+//{
+//	test_fun1();
+//	test_fun2();
+//	return 0;
+//}
+
+//#include <errno.h>
+//#include <stdlib.h>
+//int main()
+//{
+//	FILE* pf = fopen("test.txt", "r");
+//	// 判断是否打开失败
+//	if (pf == NULL)
+//	{
+//		perror("test文件");
+//		return 1;
+//	}
+//	// 关闭文件
+//	fclose(pf);
+//	// 文件指针置空，防止野指针
+//	pf = NULL;
+//	return 0;
+//}
+//
+//#include <errno.h>
+//#include <stdlib.h>
+//#include <assert.h>
+//void test_fputc(FILE* pf)
+//{
+//	// 写入单个字符
+//	assert(pf);
+//	int i = 0;
+//	for (i = 'a'; i <= 'z'; i++)
+//	{
+//		fputc(i, pf);
+//		// fputc(' ', pf); // 打印空格
+//	}
+//}
+//void test_fputs(FILE* pf)
+//{
+//	// 写入字符串
+//	assert(pf);
+//	fputs("写入一个字符串", pf);
+//}
+//void test_fprintf(FILE* pf)
+//{
+//	// 格式化输出（写入）
+//	assert(pf);
+//	fprintf(pf, "字符串：%s", "还是一样写入一个字符串");
+//}
+//void test_fwrite(FILE* pf)
+//{
+//	// 二进制写入
+//	assert(pf);
+//	char arr[] = "用二进制写入一个字符串";
+//	fwrite(arr, sizeof(arr[0]), sizeof(arr), pf);
+//}
+//void test_fgetc(FILE* pf)
+//{
+//	// 读取一个字符
+//	assert(pf);
+//	int ch = fgetc(pf);
+//	printf("%c", ch);
+//}
+//void test_fgets(FILE* pf)
+//{
+//	// 读取一行
+//	char arr[40];
+//	memset(arr, 0xFF, sizeof(arr));
+//	// fget的第二个参数为最多读取的字符串长度
+//	char* parr = fgets(arr, sizeof(arr), pf);
+//	printf("%s", parr);
+//}
+//void test_fscanf(FILE* pf)
+//{
+//	// 格式化的读取
+//	assert(pf);
+//	char a = 0;
+//	char arr[30] = { 0 };
+//	// 读取pf流的第一个字符，和第二个字符开始的字符串
+//	fscanf(pf, "%c%s", &a, arr);
+//	printf("%c\n%s\n", a, arr);
+//}
+//void test_b(void)
+//{
+//	// 二进制读写
+//	FILE* pf = fopen("test.txt", "wb+");
+//	if (pf != NULL)
+//	{
+//		struct Stu
+//		{
+//			char name[20];
+//			int age;
+//			float score;
+//		}stu1 = {"张三", 20, 55.5f};
+//		// 二进制形式写入结构体stu1的数据
+//		fwrite(&stu1, sizeof(struct Stu), 1, pf);
+//
+//		// 关闭文件
+//		fclose(pf);
+//		pf = NULL;
+//	}
+//	else
+//	{
+//		perror("test.txt");
+//		return 1;
+//	}
+//	int flag = 1;
+//	if (flag == 1)
+//	{
+//		pf = fopen("test.txt", "rb+");
+//		if (pf != NULL)
+//		{
+//			struct Stu
+//			{
+//				char name[20];
+//				int age;
+//				float score;
+//			}stu2;
+//			fread(&stu2, sizeof(stu2), 1, pf);
+//			// 输出成绩时，保留2位小数
+//			printf("%s %d %.2f", stu2.name, stu2.age, stu2.score);
+//
+//			// 关闭文件
+//			fclose(pf);
+//			pf = NULL;
+//		}
+//		else
+//		{
+//			perror("test.txt");
+//			return 1;
+//		}
+//	}
+//
+//}
+//
+//int main()
+//{
+//	FILE* pf = fopen("test.txt", "w+");
+//	// 判断是否打开失败
+//	if (pf == NULL)
+//	{
+//		perror("test文件");
+//		return 1;
+//	}
+//	else
+//	{
+//		// 函数使用练习
+//		//test_fputc(pf);
+//		//test_fputs(pf);
+//		//test_fprintf(pf);
+//
+//		// 文件写入后，可能还在缓冲区，而且文件位置指针（光标）并不在文件开头
+//		// 要不就关闭文件后重新打开，要不就刷新缓冲区后，调整文件位置指针的位置
+//
+//		// 关闭文件
+//		fclose(pf);
+//		// 文件指针置空，防止野指针
+//		pf = NULL;
+//	}
+//	// 读取文件
+//	int flag = 1;
+//	if (flag == 1)
+//	{
+//		// 不能用w+，因为会覆盖
+//		pf = fopen("test.txt", "r");
+//		if (pf != NULL)
+//		{
+//			// 函数使用练习
+//			//test_fgetc(pf);
+//			//test_fgets(pf);
+//			//test_fscanf(pf);
+//
+//			// 关闭文件
+//			fclose(pf);
+//			pf = NULL;
+//		}
+//		else
+//		{
+//			perror("test文件");
+//			return 1;
+//		}
+//	}
+//
+//	// 二进制读写
+//	test_b();
+//
+//	return 0;
+//}
+
+// 使用标准流函数练习
+
+//int main()
+//{
+//	// 输入别超过数组大小
+//	// 要不就放文件内
+//	char arr[20];
+//	fscanf(stdin, "%s", arr);
+//	fprintf(stdout, "%s", arr);
+//	return 0;
+//}
+
+//// fseek
+//#include <errno.h>
+//int main()
+//{
+//	FILE* pf = fopen("test.txt", "w+");
+//	if (NULL == pf)
+//	{
+//		perror("fopen(test.txt)");
+//		return 1;
+//	}
+//	fputs("abcdefg", pf);
+//	fclose(pf);
+//	pf = NULL;
+//
+//	pf = fopen("test.txt", "r");
+//	if (NULL == pf)
+//	{
+//		perror("fopen(test.txt)");
+//		return 1;
+//	}
+//	// 当前文件内容：[a, b, c, d, e, f, g]
+//	fseek(pf, 1, SEEK_SET);
+//	char ch = fgetc(pf);
+//	fprintf(stdout, "%c\n", ch); // 输出b
+//
+//	// 当前指针指向c
+//	fseek(pf, -2, SEEK_CUR);
+//	ch = fgetc(pf);
+//	fprintf(stdout, "%c\n", ch); // 输出a
+//
+//	fseek(pf, -1, SEEK_END);
+//	ch = fgetc(pf);
+//	fprintf(stdout, "%c\n", ch); // 输出g
+//	return 0;
+//}
+
+//// ftell
+//#include <errno.h>
+//int main()
+//{
+//	// 写入数据
+//	FILE* pf = fopen("test.txt", "w+");
+//	if (NULL == pf)
+//	{
+//		perror("fopen(test.txt)");
+//		return 1;
+//	}
+//	fputs("abcdefg", pf);
+//	fclose(pf);
+//	pf = NULL;
+//
+//	// 读取
+//	pf = fopen("test.txt", "r");
+//	if (NULL == pf)
+//	{
+//		perror("fopen(test.txt)");
+//		return 1;
+//	}
+//	// 当前文件内容：[a, b, c, d, e, f, g]
+//	fseek(pf, 1, SEEK_SET);
+//	long int i = ftell(pf);
+//	fprintf(stdout, "当前文件指针位置：%ld", i); // 结果为1
+//	return 0;
+//}
+
+//// rewind
+//#include <errno.h>
+//int main()
+//{
+//	// 写入数据
+//	FILE* pf = fopen("test.txt", "w+");
+//	if (NULL == pf)
+//	{
+//		perror("fopen(test.txt)");
+//		return 1;
+//	}
+//	fputs("abcdefg", pf);
+//	fclose(pf);
+//	pf = NULL;
+//
+//	// 读取
+//	pf = fopen("test.txt", "r");
+//	if (NULL == pf)
+//	{
+//		perror("fopen(test.txt)");
+//		return 1;
+//	}
+//	// 当前文件内容：[a, b, c, d, e, f, g]
+//	int i = 0;
+//	for (i = 0; i < 3; i++)
+//	{
+//		printf("%c\n", fgetc(pf));
+//	}
+//	long int li = ftell(pf);
+//	fprintf(stdout, "当前文件指针位置：%ld\n", li); // 结果为3
+//
+//	rewind(pf);
+//	li = ftell(pf);
+//	fprintf(stdout, "当前文件指针位置：%ld\n", li); // 结果为0
+//
+//	return 0;
+//}
+
+//#include <errno.h>
+//void test1(void)
+//{
+//	int i = 10000;
+//	FILE* pf = fopen("test.txt", "w");
+//	if (NULL == pf)
+//	{
+//		perror("fopen(test.txt)");
+//		return;
+//	}
+//	fprintf(pf, "%d", i);
+//	
+//	fclose(pf);
+//	pf = NULL;
+//}
+//void test2(void)
+//{
+//	int i = 10000;
+//	FILE* pf = fopen("test.txt", "wb");
+//	if (NULL == pf)
+//	{
+//		perror("fopen(test.txt)");
+//		return;
+//	}
+//	fwrite(&i, sizeof(int), 1, pf);
+//
+//	fclose(pf);
+//	pf = NULL;
+//}
+//int main()
+//{
+//	test1();
+//	test2();
+//
+//	return 0;
+//}
+
+//// feof和ferror的使用
+//#include <errno.h>
+//int main()
+//{
+//	FILE* pf = fopen("test.txt", "r");
+//	if (!pf)
+//	{
+//		perror("fopen(test.txt)");
+//		return 1;
+//	}
+//	// 读取操作
+//	char ch = 0;
+//	while ((ch = fgetc(pf)) != EOF)
+//	{
+//		putchar(ch);
+//	}
+//	putchar('\n');
+//	// 判断文件读取结束原因
+//	if (feof(pf))
+//	{
+//		puts("文件已经到末尾"); //该函数自动添加换行符
+//	}
+//	else if (ferror(pf))
+//	{
+//		puts("文件读取错误");
+//	}
+//	fclose(pf);
+//	pf = NULL;
+//	return 0;
+//}
+
+//// feof和ferror的使用
+//// 二进制读取的例子
+//#include <errno.h>
+//int main()
+//{
+//	enum // 匿名枚举
+//	{
+//		COUNT = 5
+//	};
+//	double arr[COUNT] = { 1.0, 2.0, 3.0, 4.0, 5.0 };
+//	FILE* pf = fopen("test.bin", "wb");
+//	if (!pf)
+//	{
+//		perror("test.bin");
+//		return 1;
+//	}
+//	// 二进制方式写入数组。
+//	fwrite(arr, sizeof(*arr), COUNT, pf);
+//	if (ferror(pf))
+//	{
+//		perror("fwrite");
+//		fclose(pf); // 确保资源被释放
+//		pf = NULL;
+//		return 1;
+//	}
+//	fclose(pf);
+//	pf = NULL;
+//
+//	// 开始读取
+//	pf = fopen("test.bin", "rb");
+//	if (!pf)
+//	{
+//		perror("test.bin");
+//		return 1;
+//	}
+//	double arr2[COUNT];
+//	size_t ret_num = fread(arr2, sizeof(*arr2), COUNT, pf);
+//	if (COUNT == ret_num)
+//	{
+//		puts("成功读取完整数组，内容如下：");
+//		int i = 0;
+//		for (i = 0; i < COUNT; i++)
+//		{
+//			printf("%lf ", arr2[i]);
+//		}
+//		putchar('\n');
+//	}
+//	else
+//	{
+//		printf("读取了部分数据，共读取 %zu 个元素：\n", ret_num);
+//		for (size_t i = 0; i < ret_num; i++)
+//		{
+//			printf("%lf ", arr2[i]);
+//		}
+//		putchar('\n');
+//
+//		if (ferror(pf))
+//		{
+//			perror("读取test.bin时发生错误");
+//		}
+//		else if (feof(pf))
+//		{
+//			printf("文件结束\n");
+//		}
+//	}
+//	fclose(pf);
+//	pf = NULL;
+//
+//	return 0;
+//}
+
+//int main()
+//{
+//	printf("当前文件是：%s\n", __FILE__);
+//	printf("当前行号是：%d\n", __LINE__);
+//	printf("当前日期是：%s\n", __DATE__);
+//	printf("当前时间是：%s\n", __TIME__);
+//	// printf("当前编译器是否遵循ANSI C：%d", __STDC__);
+//
+//	return 0;
+//}
+
+//int main()
+//{
+//#define NUM1 1
+//#define NUM2 NUM1 + ADD(NUM1, NUM1)
+//#define ADD(X, Y) ((X)+(Y)) 
+//
+//	// 代码部分
+//	printf("%d", ADD(NUM1, NUM2));
+//	return 0;
+//}
+
+//// 利用紧邻字符串自动拼接的语法，宏实现字符串拼接
+//int main()
+//{
+//	// 变量的信息的输出
+//#define PRINT(mod, data) printf("这个值是"mod"\n", data)
+//	PRINT("%d", 100);
+//	return 0;
+//}
+
+//// 使用“#”将宏参数以字符串形式进行替换
+//int main()
+//{
+//#define PRINT(mod, value) \
+//	printf("输出"#value"的值是："mod"\n", value)
+//
+//	int a = 2;
+//	int b = 3;
+//	PRINT("%d", a + b);
+//	return 0;
+//}
+
+
+//// ##，将符号两边的符号合并起来
+//int main()
+//{
+//#define ADD_TO_SUM(num, value) sum##num += value;
+//	int value = 10;
+//	int sum5 = 0;
+//
+//	ADD_TO_SUM(5, 10);//作用是：给sum5增加10.
+//	return 0;
+//}
+
+//// #undef的使用
+//
+//int main()
+//{
+//#define NAME "zhangsan"
+//	printf("%s", NAME);
+//#undef NAME
+//	printf("%s", NAME); // err, NAME标识符未定义
+//}
+
+//// #define作用域
+//void test(void)
+//{
+//#define NUM 100 // 这个全局的（覆盖后面所有内容（编译器从上到下进行编译，所以需要在放在所有需要使用到的代码之前，一般放在所有所有代码开头，和头文件一起）
+//#define MAX(a, b) ((a > b) ? (a) : (b))
+//}
+//
+//int main()
+//{
+//	printf("%d\n", NUM); // 正常输出100
+//	printf("%d\n", MAX(2, 1)); // 对比大小的宏正常生效
+//	return 0;
+//}
+
+//// 模拟实现offsetof
+//#define use_offsetof(type, member) (size_t)(&(((type*)0)->member))
+//
+//int main()
+//{
+//	struct tag
+//	{
+//		int a;
+//		char b;
+//		double c;
+//		short d;
+//	};
+//	printf("%zu\n", use_offsetof(struct tag, a));
+//	printf("%zu\n", use_offsetof(struct tag, b));
+//	printf("%zu\n", use_offsetof(struct tag, c));
+//	printf("%zu\n", use_offsetof(struct tag, d));
+//
+//	return 0;
+////}
+//
+//
+///*
+//
+//公务员面试现场打分。有7位考官，从键盘输入若干组成绩，每组7个分数（百分制），去掉一个最高分和一个最低分，输出每组的平均成绩。
+//（注：本题有多组输入）
+//输入：99 45 78 67 72 88 60
+//输出：73.00
+//*/
+//#include <stdio.h>
+//#define SIZE 7
+//int main() {
+//	int score;
+//	int i = 0;
+//	int min = 100;
+//	int max = 0;
+//	double score_s = 0;
+//	while (scanf("%d", &score) != EOF)
+//	{
+//		if (score > max)
+//		{
+//			max = score;
+//		}
+//		if (score < min)
+//		{
+//			min = score;
+//		}
+//		score_s += score;
+//		i++;
+//		if (SIZE == i)
+//		{
+//			score_s -= (min + max);
+//			printf("%.2lf", score_s / (SIZE - 2));
+//			i = 0;
+//			score_s = 0;
+//			min = 100;
+//			max = 0;
+//		}
+//	}
+//}
+
+////找出数组中的两个只出现一次的数字
+//#include <stdlib.h>
+//// 排序的方法
+//int compare(void* E1, void* E2)
+//{
+//	return *((int*)E1) - *((int*)E2);
+//}
+//void find_two_num(int arr[], size_t count, size_t size, int* a, int* b)
+//{
+//	int i = 0;
+//	qsort(arr, count, size, compare);
+//	int num = 0;
+//	for (i = 0; i < count; i++)
+//	{
+//		int flag = 1;
+//		while (arr[i] == arr[i + 1])
+//		{
+//			i++;
+//			flag = 0;
+//		}
+//		if (flag == 1)
+//		{
+//			if (num == 0)
+//			{
+//				*a = arr[i];
+//				num++;
+//			}
+//			else
+//			{
+//				*b = arr[i];
+//			}
+//		}
+//	}
+//}
+//void test(void)
+//{
+//	int arr[] = { 1 ,1, 2, 3, 4, 6, 4, 5, 3, 2 };
+//	int a = 0;
+//	int b = 0;
+//	find_two_num(arr, sizeof(arr) / sizeof(arr[0]), sizeof(arr[0]), &a, &b);
+//	printf("%d %d\n", a, b);
+//}
+//// 异或分组的方法
+//void find_single_num(int arr[], size_t count, int* a, int* b)
+//{
+//	int i = 0;
+//	int ret = arr[0];
+//	// 注意位运算符的优先级比“==”低级
+//	for (i = 1; i < count; i++)
+//	{
+//		ret ^= arr[i];
+//	}
+//	int j = 0;
+//	for (j = 0; j < 32; j++)
+//	{
+//		if ((ret & 1) == 1)
+//		{
+//			break;
+//		}
+//		ret >>= 1;
+//	}
+//	for (i = 0; i < count; i++)
+//	{
+//		if (((arr[i] >> j) & 1) == 0)
+//		{
+//			*a ^= arr[i];
+//		}
+//		else
+//		{
+//			*b ^= arr[i];
+//		}
+//	}
+//}
+//void test2(void)
+//{
+//	int arr[] = { 1 ,1, 2, 3, 4, 6, 4, 5, 3, 2 };
+//	int a = 0;
+//	int b = 0;
+//	find_single_num(arr, sizeof(arr) / sizeof(arr[0]), &a, &b);
+//	printf("%d %d\n", a, b);
+//}
+//int main()
+//{
+//	test();
+//	test2();
+//	return 0;
+//}
+
+//// 模拟实现atoi
+//#include <stdio.h>
+//#include <assert.h>
+//#include <limits.h>
+//#include <stdlib.h>
+//int my_atoi(const char* str)
+//{
+//	if (!str)
+//	{
+//		return 0;
+//	}
+//	else if ('\0' == *str)
+//	{
+//		return 0;
+//	}
+//	// 排除前面的空白字符
+//	int i = 0;
+//	while (1)
+//	{
+//		if ('+' == str[i] || '-' == str[i] || (('0' <= str[i]) && ('9' >= str[i])))
+//		{
+//			break;
+//		}
+//		else if (' ' == str[i] || '\t' == str[i] || '\n' == str[i])
+//		{
+//			i++;
+//		}
+//		else
+//		{
+//			// 包含斜杠零情况
+//			return 0;
+//		}
+//	}
+//
+//	// ret接收转化的字符串数字
+//	int ret = 0;
+//
+//	// 正负符号处理
+//	int symbol = 1;
+//	if ('-' == str[i])
+//	{
+//		symbol = -1;
+//		i++;
+//	}
+//	else if ('+' == str[i])
+//	{
+//		symbol = 1;
+//		i++;
+//	}
+//
+//	// 开始逐个读取字符
+//	while (1)
+//	{
+//
+//		if (('0' <= str[i]) && ('9' >= str[i]))
+//		{
+//			// int 溢出处理
+//			if (ret >= INT_MAX / 10)
+//			{
+//				//return 0; // 
+//				// 标准库返回最大值：
+//				return INT_MAX;
+//			}
+//			ret = ret * 10 + str[i] - 48;//忘记48，也可以减去字符0
+//			i++;
+//		}
+//		else
+//		{
+//			return ret * symbol;
+//		}
+//	}
+//	return 0;
+//}
+//void test(void)
+//{
+//	char str1[] = "12345";
+//	char str2[] = "   -987";
+//	char str3[] = "abc123";
+//	char str4[] = "12345678901234567890"; // 超出 int 范围
+//
+//	printf("模拟实现: %d\n", my_atoi(str1)); // 输出：12345
+//	printf("模拟实现: %d\n", my_atoi(str2)); // 输出：-987
+//	printf("模拟实现: %d\n", my_atoi(str3)); // 输出：0
+//	printf("模拟实现: %d\n", my_atoi(str4)); // 输出：0 (或未定义行为)
+//
+//	printf("标准库实现: %d\n", atoi(str1)); // 输出：12345
+//	printf("标准库实现: %d\n", atoi(str2)); // 输出：-987
+//	printf("标准库实现: %d\n", atoi(str3)); // 输出：0
+//	printf("标准库实现: %d\n", atoi(str4)); // 输出：0 (或未定义行为)
+//}
+//void test2(void)
+//{
+//	const char* str1 = "   12345";
+//	const char* str2 = "  -6789abc";
+//	const char* str3 = "abc123";
+//	const char* str4 = "+100+200";
+//
+//	puts("test2部分：");
+//	printf("模拟实现: %d\n", my_atoi(str1));  // 输出 12345
+//	printf("模拟实现: %d\n", my_atoi(str2));  // 输出 -6789
+//	printf("模拟实现: %d\n", my_atoi(str3));  // 输出 0
+//	printf("模拟实现: %d\n", my_atoi(str4));  // 输出 
+//
+//	printf("标准库实现: %d\n", atoi(str1));  // 输出 12345
+//	printf("标准库实现: %d\n", atoi(str2));  // 输出 -6789
+//	printf("标准库实现: %d\n", atoi(str3));  // 输出 0
+//	printf("标准库实现: %d\n", atoi(str4));  // 输出 
+//}
+//int main() {
+//	// 测试
+//	test();
+//	test2();
+//	return 0;
+//}
+
+
+//// 写一个宏，可以将一个整数的二进制位的奇数位和偶数位交换。
+///*
+//原本数字：10111111111111111111111111111111
+//期望结果：01111111111111111111111111111111(7FFF FFFF)
+//*/
+//#define EXCHANGE(N) (((N & 0x55555555)<<1)+((N & 0xaaaaaaaa)>>1))
+//
+//int main()
+//{
+//	printf("%d", EXCHANGE(0XBFFFFFFF));
+//	return 0;
+//}
+
+/*
+Fibonacci数列是这样定义的：
+F[0]=0
+F[1]=1
+for each i≥ 2:F[1] =F[i-1]+F[i-2]
+因此，Fibonacci数列就形如：0，1，1，2，3，5，8，13...在Fibonacc数列中的数我们称为Fibonacci数。给你一个N，你想让其变为一个Fibonacci
+数，每一步你可以把当前数字X变为X-1或者X+1，现在给你一个数N求最少需要多少步可以变为Fibonacci数。
+
+输入描述：
+输入为一个正整数N（1≤N≤1,000，000）
+输出描述：
+输出一个最小的步数变为Fibonacci数"
+*/
+
+//#include <stdio.h>
+//int validation_function(int n);
+//int main() {
+//    int n = 0;
+//    while (scanf("%d", &n) == 1)
+//    {
+//        printf("%d", validation_function(n));
+//    }
+//    return 0;
+//}
+//
+//
+//int validation_function(int n)
+//{
+//    int a = 0;
+//    int b = 1;
+//    int i = 0;
+//    if (0 == n)
+//    {
+//        return 0;
+//    }
+//    else if (1 == n)
+//    {
+//        return 0;
+//    }
+//    else
+//    {
+//        while (i < 1000000)
+//        {
+//            i = a + b;
+//            if (i >= n)
+//            {
+//                break;
+//            }
+//            a = b;
+//            b = i;
+//
+//        }
+//    }
+//    int x = i - n;
+//    int y = n - b;
+//    return (x < y ? x : y);
+//}
+
+//// 将字符串中的空格，转化位“%20”
+//char arr[1000 * 3] = { 0 };
+//char* replaceSpace(char* s) {
+//    // write code here
+//    if (NULL == s)
+//    {
+//        return 0;
+//    }
+//    int i = 0;
+//    int j = 0;
+//    while ('\0' != s[i])
+//    {
+//        if (' ' == s[i])
+//        {
+//            arr[j] = '%';
+//            arr[j + 1] = '2';
+//            arr[j + 2] = '0';
+//            j = j + 3;
+//            i++;
+//        }
+//        else
+//        {
+//            arr[j] = s[i];
+//            j++;
+//            i++;
+//        }
+//    }
+//    arr[j] = '\0';
+//    printf("%s", arr);
+//    return arr;
+//}
+
+
+
+
 int main()
 {
-	while (1)
-	{
-		test();
-	}
-
-	return 0;
+    char* s = "We Are Happy";
+    replaceSpace(s);
+    return 0;
 }
-
-
-
-
-
-
-
-
-
-
-

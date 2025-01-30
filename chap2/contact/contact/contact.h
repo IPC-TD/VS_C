@@ -4,6 +4,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <windows.h>
 #define NAME_MAX 20
 #define GENDER_MAX 10
 #define TELEPHONE 12
@@ -50,6 +51,9 @@ void find_contact(struct Contact* con);
 void modify_contact(struct Contact* con);
 
 void sort_contact(struct Contact* con);
+
+void Save_Contact_data(struct Contact* con);
+
 
 
 
