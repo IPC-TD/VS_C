@@ -4831,12 +4831,10 @@ for each i¡Ý 2:F[1] =F[i-1]+F[i-2]
 //    return arr;
 //}
 
-
-
-
-int main()
-{
-    char* s = "We Are Happy";
-    replaceSpace(s);
-    return 0;
-}
+//
+//int main()
+//{
+//    char* s = "We Are Happy";
+//    replaceSpace(s);
+//    return 0;
+//}
