@@ -46,3 +46,25 @@ void SeqListPushFront(SL* ps, SLDataType x);
 
 // 顺序表头删
 void SeqListPopFront(SL* ps);
+
+// 顺序表在pos位置插入x，（position位置：/p??z??n/）
+void SeqListInsert(SL* ps, size_t pos, SLDataType x);
+
+// 顺序表删除pos位置的值
+void SeqListErase(SL* ps, size_t pos);
+
+// 顺序表查找
+int SeqListFind(SL* ps, SLDataType x);
+
+// 顺序表销毁
+void SeqListDestroy(SL* ps);
+
+// 检查顺序表是否已经销毁
+#define CHECK_CAPACITY_DESTROY(PS) \
+if ((PS)->capacity == 0)\
+{\
+	printf("该顺序表可能已销毁，容量为0\n"); \
+	return;\
+}\
+else{}
+
