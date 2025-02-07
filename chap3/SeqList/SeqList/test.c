@@ -58,15 +58,10 @@ void TestSeqList1(void)
 	// Ïú»Ùºó³¢ÊÔ·ÃÎÊ
 	SeqListPushBack(&s, 0);
 	
+}
 
-}
-void Testif(void)
-{
-	;
-}
 int main()
 {
 	TestSeqList1();
-	Testif();
 	return 0;
 }

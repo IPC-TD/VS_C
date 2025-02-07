@@ -7,6 +7,7 @@ void SLPrint(SL* ps)
 	assert(ps);
 	// 检查是否为已销毁顺序表
 	CHECK_CAPACITY_DESTROY(ps);
+
 	for (int i = 0; i < ps->size; i++)
 	{
 		printf("%d ", ps->array[i]);
@@ -55,21 +56,17 @@ void CheckCapacity(SeqList* ps)
 // 顺序表尾部追加
 void SeqListPushBack(SeqList* ps, SLDataType x)
 {
+	/*提高代码复用*/
 	assert(ps);
-	// 检查是否为已销毁顺序表
-	CHECK_CAPACITY_DESTROY(ps);
-	CheckCapacity(ps);
-	ps->array[ps->size] = x;
-	ps->size++;
+	SeqListInsert(ps, ps->size, x);
 }
 
 // 顺序表尾删
 void SeqListPopBack(SeqList* ps)
 {
+	/*提高代码复用，这个虽然简单，但复用一下也比较好维护*/
 	assert(ps);
-	// 检查是否为已销毁顺序表
-	CHECK_CAPACITY_DESTROY(ps);
-	ps->size--;
+	SeqListErase(ps, ps->size - 1);
 }
 
 /*
@@ -79,31 +76,16 @@ void SeqListPopBack(SeqList* ps)
 // 顺序表头插
 void SeqListPushFront(SL* ps, SLDataType x)
 {
+	/*提高代码复用*/
 	assert(ps);
-	// 检查是否为已销毁顺序表
-	CHECK_CAPACITY_DESTROY(ps);
-
-	CheckCapacity(ps);
-	int SLend = ps->size - 1;
-	for ( ; SLend >= 0; --SLend)
-	{
-		ps->array[SLend + 1] = ps->array[SLend];
-	}
-	ps->array[0] = x;
-	ps->size++;
+	SeqListInsert(ps, 0, x);
 }
 // 顺序表头删
 void SeqListPopFront(SL* ps)
 {
+	/*提高代码复用*/
 	assert(ps);
-	// 检查是否为已销毁顺序表
-	CHECK_CAPACITY_DESTROY(ps);
-
-	for (int i = 0; i < ps->size - 1; ++i)
-	{
-		ps->array[i] = ps->array[i + 1];
-	}
-	ps->size--;
+	SeqListErase(ps, 0);
 }
 
 // 顺序表在pos位置插入x

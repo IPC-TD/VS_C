@@ -35,7 +35,7 @@ void CheckCapacity(SeqList* ps);
 // 顺序表尾插
 void SeqListPushBack(SeqList* ps, SLDataType x);
 
-// 顺序表尾删
+// 顺序表尾删，（pop，在计算机领域，常用来表示删除的意思）
 void SeqListPopBack(SeqList* ps);
 
 /*
@@ -58,6 +58,7 @@ int SeqListFind(SL* ps, SLDataType x);
 
 // 顺序表销毁
 void SeqListDestroy(SL* ps);
+
 
 // 检查顺序表是否已经销毁
 #define CHECK_CAPACITY_DESTROY(PS) \
