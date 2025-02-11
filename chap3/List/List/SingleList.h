@@ -33,9 +33,11 @@ void SListPopFront(SListNode** pplist);
 SListNode* SListFind(SListNode* plist, SingleListDataType x);
 
  // 单链表在pos位置之后插入x
- // 分析思考为什么不在pos位置之前插入？（回答：因为麻烦？？，还要一个指针记录前一个节点？？）
-void SListInsertAfter(SListNode** pplist, int pos, int x);
+ // 分析思考为什么不在pos位置之前插入？（答案：为了接近后续学习的内容，SQL提供的接口是这样的）
+// void SListInsertAfter(SListNode** pplist, int pos, int x); // 原先这里题目抄错了
+void SListInsertAfter(SListNode* pos, SingleListDataType x);
 
 // 单链表删除pos位置之后的值
-// 分析思考为什么不删除pos位置？（同理，双指针记录太麻烦？）
-void SListEraseAfter(SListNode** pplist, int pos);
+// 分析思考为什么不删除pos位置？(同理）
+// void SListEraseAfter(SListNode** pplist, int pos); // 原先这里题目抄错了
+void SListEraseAfter(SListNode* pos);
