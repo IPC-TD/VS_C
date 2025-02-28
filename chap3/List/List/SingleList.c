@@ -1,13 +1,13 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "SingleList.h"
 
-// 结点申请
+// 节点申请
 SListNode* BuySListNode(SLDataType x)
 {
 	SListNode* newNode = (SListNode*)malloc(sizeof(SListNode));
 	if (NULL == newNode)
 	{
-		printf("链表结点申请失败");
+		printf("链表节点申请失败");
 		exit(1);
 	}
 	else
@@ -91,7 +91,7 @@ void SListPopBack(SListNode** pplist)
 	else
 	{
 		SListNode* cur = *pplist;
-		// 只有一个结点
+		// 只有一个节点
 		if (cur->next == NULL)
 		{
 			free(*pplist);
@@ -100,7 +100,7 @@ void SListPopBack(SListNode** pplist)
 		}
 		else
 		{
-			// 有多个结点
+			// 有多个节点
 			SListNode* FrontCur = NULL;
 			while (NULL != cur->next)
 			{
@@ -230,7 +230,7 @@ SListNode* SListFind(SListNode* plist, SingleListDataType x)
 void SListInsertAfter(SListNode* pos, SingleListDataType x)
 {
 	// pos为空处理
-	// pos是尾部，pos不为尾部，在新结点后插入尾链和插入空没区别，可以合并处理
+	// pos是尾部，pos不为尾部，在新节点后插入尾链和插入空没区别，可以合并处理
 	if (NULL == pos)
 	{
 		puts("pos为空");

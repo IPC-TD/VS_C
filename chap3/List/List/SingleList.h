@@ -11,7 +11,7 @@ typedef struct SListNode
 	struct SListNode* next;
 }SListNode;
 
-// 结点申请
+// 节点申请
 SListNode* BuySListNode(SLDataType x);
 
 // 单链表打印
