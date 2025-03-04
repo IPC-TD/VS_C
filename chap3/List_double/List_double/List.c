@@ -38,6 +38,7 @@ void ListDestory(ListNode* plist)
 	if (!plist) return;
 	ListClear(plist);
 	free(plist);
+	// 指针自己外面置空，这样这些函数都是传一级指针，接口一致性比价好
 }
 // 双向链表打印
 void ListPrint(ListNode* plist)

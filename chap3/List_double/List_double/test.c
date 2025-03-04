@@ -56,6 +56,7 @@ void ListTest2()
 	ListErase(ListFind(p, 222));
 	ListPrint(p);
 	ListDestory(p);
+	p = NULL;
 }
 
 int main()
