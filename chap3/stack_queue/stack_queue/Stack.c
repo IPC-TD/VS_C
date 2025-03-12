@@ -6,7 +6,8 @@
 void StackInit(Stack* ps)
 {
 	assert(ps);
-	ps->_arr = (Stack*)malloc(sizeof(STDataType) * STACK_INIT_CAPACITY);
+	// 错误修改，申请的是数据元素大小的空间，不是栈结构体大小的空间
+	ps->_arr = (STDataType*)malloc(sizeof(STDataType) * STACK_INIT_CAPACITY);
 	ps->_capacity = STACK_INIT_CAPACITY;
 	ps->_top = 0;
 }
@@ -24,7 +25,8 @@ void CheckCapasity(Stack* ps)
 {
 	assert(ps && ps->_arr);
 	if (ps->_capacity > ps->_top) return;
-	Stack* ret = (Stack*)realloc(ps->_arr, sizeof(STDataType)*ps->_capacity * 2);
+	// 错误修改，申请的是数据元素大小的空间，不是栈结构体大小的空间
+	STDataType* ret = (STDataType*)realloc(ps->_arr, sizeof(STDataType)*ps->_capacity * 2);
 	assert(ret);
 	ps->_arr = ret;
 }

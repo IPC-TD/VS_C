@@ -21,7 +21,7 @@ void QueueDestroy(Queue* pq)
 	pq->_tail = NULL;
 }
 // 队尾入队列 
-void QueuePush(Queue* pq, STDataType x)
+void QueuePush(Queue* pq, QDataType x)
 {
 	assert(pq);
 	QueueNode* ret = (QueueNode*)malloc(sizeof(QueueNode));
@@ -59,13 +59,13 @@ void QueuePop(Queue* pq)
 	}
 }
 // 获取队列头部元素
-STDataType QueueFront(Queue* pq)
+QDataType QueueFront(Queue* pq)
 {
 	assert(pq && pq->_head);
 	return pq->_head->_data;
 }
 // 获取队列尾部元素
-STDataType QueueBack(Queue* pq)
+QDataType QueueBack(Queue* pq)
 {
 	assert(pq && pq->_tail);
 	return pq->_tail->_data;
