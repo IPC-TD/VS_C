@@ -38,5 +38,5 @@ STDataType StackTop(Stack* ps);
 // 检测栈是否为空，如果为空返回非零结果，如果不为空返回0 
 int StackEmpty(Stack* ps);
 // 检查是否需要扩容
-void CheckCapasity(Stack* ps);
+void CheckCapacity(Stack* ps);
 

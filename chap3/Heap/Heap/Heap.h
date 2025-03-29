@@ -8,7 +8,7 @@ typedef struct Heap
 {
 	HPDataType* _arr;
 	int _size;
-	int _capasity;
+	int _capacity;
 }Heap;
 
 // ≥ı ºªØ∂—

@@ -6,7 +6,7 @@ void HeapInit(Heap* php)
 {
 	assert(php);
 	php->_arr = NULL;
-	php->_capasity = 0;
+	php->_capacity = 0;
 	php->_size = 0;
 }
 // 数值交换
@@ -51,7 +51,7 @@ void HeapCreat(Heap* php, HPDataType* arr, int n)
 {
 	assert(php);
 	// 拷贝数据
-	php->_size = php->_capasity =  n;
+	php->_size = php->_capacity =  n;
 	php->_arr = (HPDataType*)malloc(sizeof(HPDataType) * n);
 	assert(php->_arr);
 	memmove(php->_arr, arr, sizeof(HPDataType) * n);
@@ -69,7 +69,7 @@ void HeapDestroy(Heap* php)
 	assert(php);
 	free(php->_arr);
 	php->_arr = NULL;
-	php->_capasity = php->_size = 0;
+	php->_capacity = php->_size = 0;
 }
 // 打印
 void HeapPrint(Heap* php)
@@ -86,10 +86,10 @@ void HeapPush(Heap* php, HPDataType x)
 {
 	assert(php);
 	// 检查是否需要增容
-	if (php->_size == php->_capasity)
+	if (php->_size == php->_capacity)
 	{
-		php->_capasity *= 2;
-		HPDataType* tmp = (HPDataType*)realloc(php->_arr, sizeof(HPDataType) * php->_capasity);
+		php->_capacity *= 2;
+		HPDataType* tmp = (HPDataType*)realloc(php->_arr, sizeof(HPDataType) * php->_capacity);
 		assert(tmp);
 		php->_arr = tmp;
 	}

@@ -21,7 +21,7 @@ void StackDestroy(Stack* ps)
 	ps->_capacity = 0;
 }
 // 检查是否需要扩容
-void CheckCapasity(Stack* ps)
+void CheckCapacity(Stack* ps)
 {
 	assert(ps && ps->_arr);
 	if (ps->_capacity > ps->_top) return;
@@ -34,7 +34,7 @@ void CheckCapasity(Stack* ps)
 void StackPush(Stack* ps, STDataType x)
 {
 	assert(ps && ps->_arr);
-	CheckCapasity(ps); // 只有入栈才需要考虑增容，不写成单独的函数也行
+	Checkcapacity(ps); // 只有入栈才需要考虑增容，不写成单独的函数也行
 	ps->_arr[ps->_top] = x;
 	ps->_top += 1;
 }
