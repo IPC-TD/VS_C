@@ -27,8 +27,25 @@ void TestHeap()
 	HeapDestroy(&hp);
 
 }
+void TestHeapPush()
+{
+	Heap hp;
+	// 初始化和堆的构建
+	HeapInit(&hp);
+	int array[] = { 27,15,19,18,28,34,65,49,25,37 };
+	HeapCreat(&hp, array, sizeof(array) / sizeof(array[0]));
+	// 输出函数
+	HeapPrint(&hp);
+	// 插入
+	HeapPush(&hp, 1);
+	HeapPrint(&hp);
+	// 销毁
+	HeapDestroy(&hp);
+
+}
 int main()
 {
 	TestHeap();
+	// TestHeapPush();
 	return 0;
 }

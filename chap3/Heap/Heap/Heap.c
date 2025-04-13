@@ -99,8 +99,12 @@ void HeapPush(Heap* php, HPDataType x)
 	// 向上调整，保持堆的性质（小堆）
 	int child = php->_size - 1;
 	int parent = (child - 1) / 2;
-	while (child > 0) // 易错点：如果用父母结点判断，当child = 0时，会出现 parent = （0 -1）/ 2 = 0，
+	while (child > 0) // 易错点：如果用父母结点判断，当child = 0时，会出现 parent = （0 -1）/ 2 = 0;
 	{
+		// 当然因为这里采用的if—else结构，所以即使上面写成while (parent >= 0)
+		// 当插入一个比小堆顶还小的数，最后的 parent = child = 0 时，while循环条件恒成立
+		// 也会因为，判断if (php->_arr[0] < php->_arr[0])失败，
+		// 执行else语句，跳出了while的死循环
 		if (php->_arr[child] < php->_arr[parent])
 		{
 			swap(&php->_arr[child], &php->_arr[parent]);
@@ -111,6 +115,9 @@ void HeapPush(Heap* php, HPDataType x)
 		{
 			break;
 		}
+		// 如果上面逻辑改成：即使父节点小于孩子节点，满足堆性质了
+		// 还继续迭代parent和child向上比较调整，
+		// 就真死循环了
 	}
 }
 // 堆的删除（删堆顶数据）

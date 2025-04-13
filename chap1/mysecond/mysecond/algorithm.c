@@ -976,3 +976,113 @@
 //
 // }
 
+//typedef struct BinaryTreeNode
+//{
+//	int val;
+//	struct BinaryTreeNode* left;
+//	struct BinaryTreeNode* right;
+//}BTNode;
+//
+//// 二叉树前序遍历 
+//void PreOrder(BTNode* root)
+//{
+//	if (root == NULL)
+//		return NULL;
+//
+//	printf("%d ", root->val);
+//	PreOrder(root->left);
+//	PreOrder(root->right);
+//}
+//// 二叉树中序遍历
+//void InOrder(BTNode* root)
+//{
+//	if (root == NULL)
+//		return NULL;
+//
+//	PreOrder(root->left);
+//
+//	printf("%d ", root->val);
+//
+//	PreOrder(root->right);
+//}
+//// 二叉树后序遍历
+//void PostOrder(BTNode* root)
+//{
+//	if (root == NULL)
+//		return NULL;
+//
+//	PreOrder(root->left);
+//	PreOrder(root->right);
+//
+//	printf("%d ", root->val);
+//}
+
+
+//typedef struct BinaryTreeNode
+//{
+//	char _data;
+//	struct BinaryTreeNode* _left;
+//	struct BinaryTreeNode* _right;
+//}BTNode;
+//
+//// 层序遍历
+//void LevelOrder(BTNode* root)
+//{
+//	if (root == NULL)
+//		return;
+//
+//	// 构建一个静态队列
+//	BTNode** result = (BTNode**)calloc(100, sizeof(BTNode*));
+//	assert(result);
+//	int front = 0;
+//	int rear = 0;
+//
+//	// 将根节点放入队列
+//	result[rear++] = root;
+//
+//	// 如果队列不为空
+//	while (front < rear)
+//	{
+//		// 队头数据出队
+//		BTNode* btFront = result[front++];
+//
+//		// 打印数据
+//		if (btFront)
+//			printf("%c ", btFront->_data);
+//		else
+//			printf("NULL ");
+//
+//		// 如果出队的数据不为空，将它的左右孩子入队
+//		if (btFront)
+//		{
+//			result[rear++] = btFront->_left;
+//			result[rear++] = btFront->_right;
+//		}
+//	}
+//	free(result);
+//}
+//// 测试
+//void Test()
+//{
+//	BTNode A = { 'A', NULL, NULL };
+//	BTNode B = { 'B', NULL, NULL};
+//	BTNode C = { 'C', NULL, NULL };
+//	BTNode D = { 'D', NULL, NULL};
+//	BTNode E = { 'E', NULL, NULL};
+//	BTNode F = { 'F', NULL, NULL};
+//	BTNode G = { 'G', NULL, NULL};
+//
+//	A._left = &B;
+//	A._right = &C;
+//	B._left = &D;
+//	C._right = &G;
+//	D._left = &E;
+//	D._right = &F;
+//
+//	LevelOrder(&A);
+//}
+//int main()
+//{
+//	Test();
+//	return 0;
+//}

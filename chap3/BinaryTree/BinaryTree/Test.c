@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <string.h>
 #include "queue.h"
 typedef char BTDataType;
 typedef struct BinaryTreeNode
@@ -22,17 +23,21 @@ BTNode* BTNodeCreate(BTDataType x)
 // 二叉树节点数量
 int TreeSize(BTNode* root)
 {
+	// 空树节点数量为零
 	if (root == NULL)
 		return 0;
+	// 一颗二叉树的节点数量，被分解为根节点+左子树节点数量+右子树节点数量
 	return 1 + TreeSize(root->_left) + TreeSize(root->_right);
 }
 // 二叉树叶子节点数量
 int TreeLeafSize(BTNode* root)
 {
-	if (root == NULL)
+	// 一颗二叉树叶子节点数 = 根节点（由可能是） + 左右子树中叶子节点的数量
+
+	if (root == NULL) // 空树无节点
 		return 0;
-	else if (!root->_left && !root->_right)
-		return 1;
+	else if (!root->_left && !root->_right) // 当左右子树均为空，则为叶子节点
+		return 1; 
 	else
 	return TreeLeafSize(root->_left) + TreeLeafSize(root->_right);
 }
@@ -45,12 +50,72 @@ int TreeDepth(BTNode* root)
 	int num2 = TreeDepth(root->_right);
 	return 1 + (num1 > num2 ? num1 : num2);
 }
-// 前序遍历
-void PrevOrder(BTNode* root);
-// 中序遍历
-void InOrder(BTNode* root);
-// 后序遍历
-void PostOrder(BTNode* root);
+// 二叉树第k层节点个数
+int BinaryTreeLevelKSize(BTNode* root, int k)
+{
+	if (root == NULL) // 空树节点数为0
+		return 0;
+
+	if (k == 1) // 如果是第k层的节点，则返回1
+		return 1;
+	
+	// 如果不是第k层，则返回左右子树的中第k层节点数之和
+	return BinaryTreeLevelKSize(root->_left, k - 1) + BinaryTreeLevelKSize(root->_right, k - 1);
+}
+// 二叉树查找值为x的节点
+BTNode* BinaryTreeFind(BTNode* root, BTDataType x)
+{
+	// 空树没有节点，返回空
+	if (root == NULL)
+		return NULL;
+
+	// 如果找到了，返回节点指针
+	if (root->_data == x)
+		return root;
+
+	// 尝试在左子树中查找
+	BTNode* ret = BinaryTreeFind(root->_left, x);
+	if (ret)
+		return ret;
+
+	// 尝试在右子树中查找
+	ret = BinaryTreeFind(root->_right, x);
+	if (ret)
+		return ret;
+
+	// 都找不到，则返回空
+	return NULL;
+}
+// 二叉树前序遍历 
+void PreOrder(BTNode* root)
+{
+	if (root == NULL)
+		return;
+
+	printf("%c ", root->_data);
+	PreOrder(root->_left);
+	PreOrder(root->_right);
+}
+// 二叉树中序遍历
+void InOrder(BTNode* root)
+{
+	if (root == NULL)
+		return;
+
+	PreOrder(root->_left);
+	printf("%c ", root->_data);
+	PreOrder(root->_right);
+}
+// 二叉树后序遍历
+void PostOrder(BTNode* root)
+{
+	if (root == NULL)
+		return;
+
+	PreOrder(root->_left);
+	PreOrder(root->_right);
+	printf("%c ", root->_data);
+}
 // 层序遍历（结合画图理解）
 void BinaryTreeLevelOrder(BTNode* root)
 {
@@ -137,6 +202,46 @@ int BinaryTreeComplete(BTNode* root)
 	// 符合完全二叉树的性质
 	return 1;
 }
+// 通过前序遍历的数组构建二叉树
+BTNode* BinaryTreeCreate(BTDataType* arr, int arrSize, int* index)
+{
+	// 如果已经超出数组的有效返回，则返回空
+	if (*index >= arrSize)
+		return NULL;
+
+	// 如果 # 号，按规则不创建节点，返回空
+	if (arr[*index] == '#')
+	{
+		++(*index);
+		return NULL;
+	}
+
+	// 创建根节点
+	BTNode* bt = BTNodeCreate(arr[*index]);
+	bt->_data = arr[*index];
+	++(*index);
+
+	// 递归创建左右子树，并赋值给根节点
+	bt->_left = BinaryTreeCreate(arr, arrSize, index);
+	bt->_right = BinaryTreeCreate(arr, arrSize, index);
+
+	// 将创建好的二叉树根节点返回
+	return bt;
+}
+
+// 二叉树销毁
+void BinaryTreeDestory(BTNode** root)
+{
+	if (*root == NULL)
+		return;
+
+	// 递归销毁左右子树
+	BinaryTreeDestory(&(*root)->_left);
+	BinaryTreeDestory(&(*root)->_right);
+
+	// 销毁根节点
+	free(*root);
+}
 void TestBT_1()
 {
 	BTNode* A = BTNodeCreate('A');
@@ -150,11 +255,25 @@ void TestBT_1()
 	B->_left = D;
 	B->_right = E;
 
-	printf("TreeSize: %d\n", TreeSize(A));
-	printf("TreeLeafSize: %d\n", TreeLeafSize(A));
-	printf("TreeDepth: %d\n", TreeDepth(A));
-}
+	// 二叉树前序遍历 
+	PreOrder(A);
+	// 二叉树中序遍历
+	InOrder(A);
+	// 二叉树后序遍历
+	PostOrder(A);
 
+	// 二叉树节点数
+	printf("TreeSize: %d\n", TreeSize(A));
+	// // 二叉树叶子节点数
+	printf("TreeLeafSize: %d\n", TreeLeafSize(A));
+	// 二叉树深度
+	printf("TreeDepth: %d\n", TreeDepth(A));
+	// 二叉树第k层节点数
+	printf("BinaryTreeLevelKSize: %d\n", BinaryTreeLevelKSize(A, 3));
+	// 二叉树查找节点
+	printf("BinaryTreeFind: %c\n", BinaryTreeFind(A, 'B')->_data);
+
+}
 void TestBT_2()
 {
 	BTNode* A = BTNodeCreate('A');
@@ -171,8 +290,25 @@ void TestBT_2()
 	BinaryTreeLevelOrder(A);
 	printf("BinaryTreeComplete：%d", BinaryTreeComplete(A));
 }
+void TestBT_3()
+{
+	BTDataType arr[] = "ABD##E#H##CF##G##";
+
+	int index = 0;
+	int arrSize = (int)strlen(arr);
+	// 创建二叉树
+	BTNode* bt = BinaryTreeCreate(arr, arrSize, &index);
+	// 以层序的方式打印
+	BinaryTreeLevelOrder(bt);
+	// 判断是否为完全二叉树
+	printf("BinaryTreeComplete：%d", BinaryTreeComplete(bt));
+	// 销毁二叉树
+	BinaryTreeDestory(&bt);
+}
 int main()
 {
 	// TestBT_1();
-	TestBT_2();
+	// TestBT_2();
+	TestBT_3();
+	return 0;
 }
