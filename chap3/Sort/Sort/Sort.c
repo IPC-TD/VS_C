@@ -4,14 +4,22 @@
 // 下面的函数，都默认排升序
 
 // 打印数组
-void Print(int* arr, int n)
+void Print(int* a, int n)
 {
-	assert(arr);
+	assert(a);
 	for (int i = 0; i < n; ++i)
 	{
-		printf("%d ", arr[i]);
+		printf("%d ", a[i]);
 	}
 	printf("\n");
+}
+// 数据交换
+void Swap(int* a, int* b)
+{
+	assert(a && b);
+	int tmp = *a;
+	*a = *b;
+	*b = tmp;
 }
 // 插入排序
 void InsertSort(int* a, int n)
@@ -74,7 +82,7 @@ void ShellSort(int* a, int n)
 			}
 			a[end + gap] = tmp;
 		}
-		Print(a, n);
+		// Print(a, n);
 	}
 
 }
@@ -105,22 +113,18 @@ void SelectSort(int* a, int n)
 			}
 		}
 		// 将最小数换到左边
-		int tmp = a[left];
-		a[left] = a[mini_i];
-		a[mini_i] = tmp;
+		Swap(&a[left], &a[mini_i]);
 		
 		// 逻辑上理解困难的，建议手动画图解决
 		// 如果max原本在left位置，会被上面换了
 		// 所以需要判断
 		// 即原本的最大值，是否被从left换到现在mini_i的位置
-		if (a[max_i] < a[mini_i])
+		if (&a[max_i] < &a[mini_i])
 		{
 			max_i = mini_i; // 更新最大值位置
 		}
 		// 将最大值放到右边
-		tmp = a[right];
-		a[right] = a[max_i];
-		a[max_i] = tmp;
+		Swap(&a[right], &a[max_i]);
 
 		++left;
 		--right;
@@ -145,9 +149,7 @@ void AdjustDwon(int* a, int n, int root)
 		// 如果孩子比父亲大，则交换
 		if (a[child] > a[parent])
 		{
-			int tmp = a[parent];
-			a[parent] = a[child];
-			a[child] = tmp;
+			Swap(&a[parent], &a[child]);
 		}
 
 		// 迭代，继续调整交换后子树，维持堆性质
@@ -161,6 +163,7 @@ void HeapSort(int* a, int n)
 {
 	assert(a);
 	// 对数组进行建堆
+	// 从最后一个非叶子节点，一开始向下调整，直到堆顶
 	int parent = (n - 1 - 1) / 2; // child = n - 1；
 	while (parent >= 0)
 	{
@@ -172,11 +175,31 @@ void HeapSort(int* a, int n)
 	{
 		// 每次取堆顶数据与堆尾元素交换，
 		// 然后排除堆尾数据，不再视为堆的部分
-		int tmp = a[i];
-		a[i] = a[0];
-		a[0] = tmp;
+		Swap(&a[0], &a[i]);
 
 		// 对堆顶数据进行向下调整
 		AdjustDwon(a, i, 0);
+	}
+}
+
+// 冒泡排序
+void BubbleSort(int* a, int n)
+{
+	assert(a);
+	// 冒泡排序，每趟遍历将一个最大值排到范围尾部
+	// 其过程是对每个元素比较，如果比后个元素大则交换，直到尾部停止
+	// 总共需要遍历 n - 1 次
+
+	// 待排序元素范围
+	for (int end = n - 1; end > 0; --end)
+	{
+		// 一趟遍历，将一个最大值换到end处
+		for (int i = 0; i < end; ++i)
+		{
+			if (a[i] > a[i + 1])
+			{
+				Swap(&a[i], &a[i + 1]);
+			}
+		}
 	}
 }
