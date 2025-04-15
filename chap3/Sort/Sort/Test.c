@@ -56,6 +56,17 @@ void TestBubbleSort()
 	Print(arr, arrSize);
 	puts("");
 }
+void TestQuickSort()
+{
+	int arr[] = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+	int arrSize = sizeof(arr) / sizeof(arr[0]);
+
+	puts("快速排序");
+	Print(arr, arrSize);
+	QuickSort(arr, 0, arrSize - 1);
+	Print(arr, arrSize);
+	puts("");
+}
 // 测试排序的性能对比
 void TestOP()
 {
@@ -126,9 +137,10 @@ int main()
 		TestSelectSort();
 		TestHeapSort();
 		TestBubbleSort();
+		TestOP();
 
 	}
+	TestQuickSort();
 
-	TestOP();
 	return 0;
 }

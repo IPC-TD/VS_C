@@ -203,3 +203,70 @@ void BubbleSort(int* a, int n)
 		}
 	}
 }
+int GetMidIndex(int* a, int left, int right)
+{
+	assert(a);
+	int mid = left + (right - left);
+	if (a[left] < a[right])
+	{
+		if (a[mid] > a[right])
+		{
+			return right;
+		}
+		else if (a[left] > a[mid])
+		{
+			return left;
+		}
+		else
+		{
+			return mid;
+		}
+	}
+	else // a[left] >= a[right]
+	{
+		if (a[mid] > a[left])
+		{
+			return left;
+		}
+		else if (a[right] > a[mid])
+		{
+			return right;
+		}
+		else
+		{
+			return mid;
+		}
+	}
+}
+// øÏÀŸ≈≈–Ú
+void QuickSort(int* a, int left, int right)
+{
+	assert(a);
+	if (right <= left)
+	{
+		return;
+	}
+	int leftTmp = left;
+	int rightTmp = right;
+	int midIndex = GetMidIndex(a, left, right);
+	Swap(&a[right], &a[midIndex]);
+	int key = right;
+	while (left < right)
+	{
+		if (a[left] <= a[key])
+		{
+			++left;
+		}
+		else if (a[right] >= a[key])
+		{
+			--right;
+		}
+		else
+		{
+			Swap(&a[left], &a[right]);
+		}
+	}
+	Swap(&a[left], &a[key]);
+	QuickSort(a, leftTmp, key - 1);
+	QuickSort(a, key+1, rightTmp);
+}

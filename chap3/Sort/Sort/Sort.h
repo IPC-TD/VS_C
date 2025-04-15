@@ -27,3 +27,6 @@ void HeapSort(int* a, int n);
 
 // ц╟ещеепР
 void BubbleSort(int* a, int n);
+
+// ©ЛкыеепР
+void QuickSort(int* a, int left, int right);
