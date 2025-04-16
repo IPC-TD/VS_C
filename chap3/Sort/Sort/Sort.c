@@ -82,7 +82,7 @@ void ShellSort(int* a, int n)
 			}
 			a[end + gap] = tmp;
 		}
-		// Print(a, n);
+		// Print(a, n); // 打印每次预排序后的的数组情况
 	}
 
 }
@@ -203,6 +203,7 @@ void BubbleSort(int* a, int n)
 		}
 	}
 }
+// 三数取中
 int GetMidIndex(int* a, int left, int right)
 {
 	assert(a);
@@ -238,35 +239,154 @@ int GetMidIndex(int* a, int left, int right)
 		}
 	}
 }
+//// 单函数版本
+//// 快速排序
+//void QuickSort(int* a, int left, int right)
+//{
+//	assert(a);
+//	// 只在范围有效时递归
+//	if (right <= left)
+//	{
+//		return;
+//	}
+//	int leftTmp = left;
+//	int rightTmp = right;
+//	// 获取中位数作为key（防止接近有序情况下选到极值）
+//	int midIndex = GetMidIndex(a, left, right);
+//	Swap(&a[right], &a[midIndex]);
+//	int key = right;
+//	// 排布成以key为中心，左小右大序列
+//	while (left < right)
+//	{
+//		if (a[left] <= a[key]) 
+//		{
+//			++left;
+//		}
+//		else if (a[right] >= a[key])
+//		{
+//			--right;
+//		}
+//		else 
+//		{
+//			Swap(&a[left], &a[right]);
+//		}
+//	}
+//	Swap(&a[left], &a[key]);
+//
+//	// 递归排序左右序列
+//	QuickSort(a, leftTmp, key - 1);
+//	QuickSort(a, key+1, rightTmp);
+//}
+// 快排分区函数（左右指针法）
+int PartSort1(int* a, int begin, int end)
+{
+	// 由主QuickSort传入的end > begin
+	assert(a);
+	int key = end;
+	// 排布成以key为中心，左小右大序列
+	while (begin < end)
+	{
+		if (a[begin] <= a[key])
+		{
+			++begin;
+		}
+		else if (a[end] >= a[key])
+		{
+			--end;
+		}
+		else // 找打左区大数，和右区的小数，执行交换
+		{
+			Swap(&a[begin], &a[end]);
+		}
+	}
+	// 停下来时，begin
+	Swap(&a[begin], &a[key]);
+
+	return begin;
+}
+// 快排分区函数（挖坑法）
+int PartSort2(int* a, int begin, int end)
+{
+	// 由主QuickSort传入的end > begin
+	assert(a);
+	int key = a[end];
+	// 排布成以key为中心，左小右大序列
+	while (begin < end)
+	{
+		// 找左分区比key大的数
+		while (begin < end && a[begin] <= key)
+		{
+			++begin;
+		}
+		// 将左区找到的大数，填充到右区的坑，左区begin位置形成新的坑
+		Swap(&a[begin], &a[end]);
+
+		// 找右分区比key小的数
+		while (begin < end && a[end] >= key)
+		{
+			--end;
+		}
+		// 将右区找到的大数，填充到左区的坑，现右区end位置重新变成坑
+		Swap(&a[begin], &a[end]);
+	}
+	// 将key填充到坑中（停下来时，begin位置必然为坑）
+	a[begin] = key;
+
+	return begin;
+}
+// 快排分区函数（前后指针法）
+int PartSort3(int* a, int begin, int end)
+{
+	// 由主QuickSort传入的end > begin
+	assert(a);
+	int key = a[end];
+	// 排布成以key为中心，左小右大序列
+	int cur = begin;
+	int prev = cur - 1;
+	while (cur <= end)
+	{
+		// cur指针负责找小于等于key的数
+		while (cur <= end && a[cur] > key)
+		{
+			++cur;
+		}
+		// 将找到的比key小的数，换到前面++prev的位置
+		if (cur <= end)
+		{
+			Swap(&a[++prev], &a[cur++]);
+		}
+	}
+	// 到这里，小于等于key都到排到左分区了
+	// 且prev位置，就是界限位置
+	return prev;
+}
 // 快速排序
 void QuickSort(int* a, int left, int right)
 {
 	assert(a);
+	// 只在范围有效时递归
 	if (right <= left)
 	{
 		return;
 	}
 	int leftTmp = left;
 	int rightTmp = right;
+	// 获取中位数作为key（防止接近有序情况下选到极值）
 	int midIndex = GetMidIndex(a, left, right);
 	Swap(&a[right], &a[midIndex]);
-	int key = right;
-	while (left < right)
-	{
-		if (a[left] <= a[key])
-		{
-			++left;
-		}
-		else if (a[right] >= a[key])
-		{
-			--right;
-		}
-		else
-		{
-			Swap(&a[left], &a[right]);
-		}
-	}
-	Swap(&a[left], &a[key]);
-	QuickSort(a, leftTmp, key - 1);
-	QuickSort(a, key+1, rightTmp);
+
+	// 分区函数
+	// 将在数组[left,right]范围内排序，
+	// 排成以a[right]值为界，左小右大的序列，并返回界限位置
+
+	//// 左右指针法
+	//int divided = PartSort1(a, left, right); 
+	//// 挖坑法
+	//int divided = PartSort2(a, left, right);
+	// 前后指针法
+	int divided = PartSort3(a, left, right);
+
+	// 递归排序左右序列
+	QuickSort(a, leftTmp, divided - 1);
+	QuickSort(a, divided + 1, rightTmp);
 }

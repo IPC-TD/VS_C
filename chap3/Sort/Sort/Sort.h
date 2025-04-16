@@ -29,4 +29,6 @@ void HeapSort(int* a, int n);
 void BubbleSort(int* a, int n);
 
 // 快速排序
+// 三数取中
+int GetMidIndex(int* a, int left, int right);
 void QuickSort(int* a, int left, int right);

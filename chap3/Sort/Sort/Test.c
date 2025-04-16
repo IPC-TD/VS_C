@@ -14,7 +14,7 @@ void TestInsertSort()
 }
 void TestShellSort()
 {
-	int arr[] = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
+	int arr[] = { 9, 8, 7, 7, 6, 5, 5, 5, 4, 3, 2, 1, 0 };
 	int arrSize = sizeof(arr) / sizeof(arr[0]);
 
 	puts("œ£∂˚≈≈–Ú");
@@ -25,7 +25,7 @@ void TestShellSort()
 }
 void TestSelectSort()
 {
-	int arr[] = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+	int arr[] = { 9, 8, 7, 7, 6, 5, 5, 5, 4, 3, 2, 1, 0 };
 	int arrSize = sizeof(arr) / sizeof(arr[0]);
 
 	puts("—°‘Ò≈≈–Ú");
@@ -36,7 +36,7 @@ void TestSelectSort()
 }
 void TestHeapSort()
 {
-	int arr[] = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+	int arr[] = { 9, 8, 7, 7, 6, 5, 5, 5, 4, 3, 2, 1, 0 };
 	int arrSize = sizeof(arr) / sizeof(arr[0]);
 
 	puts("∂—≈≈–Ú");
@@ -47,7 +47,7 @@ void TestHeapSort()
 }
 void TestBubbleSort()
 {
-	int arr[] = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+	int arr[] = { 9, 8, 7, 7, 6, 5, 5, 5, 4, 3, 2, 1, 0 };
 	int arrSize = sizeof(arr) / sizeof(arr[0]);
 
 	puts("√∞≈›≈≈–Ú");
@@ -58,7 +58,7 @@ void TestBubbleSort()
 }
 void TestQuickSort()
 {
-	int arr[] = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+	int arr[] = { 9, 8, 7, 7, 6, 5, 5, 5, 4, 3, 2, 1, 0 };
 	int arrSize = sizeof(arr) / sizeof(arr[0]);
 
 	puts("øÏÀŸ≈≈–Ú");
