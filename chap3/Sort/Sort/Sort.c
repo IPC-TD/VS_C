@@ -1,5 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "Sort.h"
+#include "Stack.h"
 
 // 下面的函数，都默认排升序
 
@@ -207,7 +208,7 @@ void BubbleSort(int* a, int n)
 int GetMidIndex(int* a, int left, int right)
 {
 	assert(a);
-	int mid = left + (right - left);
+	int mid = left + (right - left) / 2;
 	if (a[left] < a[right])
 	{
 		if (a[mid] > a[right])
@@ -277,7 +278,7 @@ int GetMidIndex(int* a, int left, int right)
 //	QuickSort(a, leftTmp, key - 1);
 //	QuickSort(a, key+1, rightTmp);
 //}
-// 快排分区函数（左右指针法）
+// 快排分区函数（左右指针法 / hoare版本）
 int PartSort1(int* a, int begin, int end)
 {
 	// 由主QuickSort传入的end > begin
@@ -340,17 +341,20 @@ int PartSort3(int* a, int begin, int end)
 	// 由主QuickSort传入的end > begin
 	assert(a);
 	int key = a[end];
+	// 前后指针法，cur将找到的左分区数，通过prev放置到左分区
 	// 排布成以key为中心，左小右大序列
 	int cur = begin;
 	int prev = cur - 1;
 	while (cur <= end)
 	{
-		// cur指针负责找小于等于key的数
-		while (cur <= end && a[cur] > key)
+		// cur指针负责找小于key的数
+		// 相等的就跳过不交换了，减少交换次数。
+		while (cur < end && a[cur] >= key) 
 		{
 			++cur;
 		}
 		// 将找到的比key小的数，换到前面++prev的位置
+		// 最后一次cur将停在key位置
 		if (cur <= end)
 		{
 			Swap(&a[++prev], &a[cur++]);
@@ -369,24 +373,76 @@ void QuickSort(int* a, int left, int right)
 	{
 		return;
 	}
-	int leftTmp = left;
-	int rightTmp = right;
-	// 获取中位数作为key（防止接近有序情况下选到极值）
-	int midIndex = GetMidIndex(a, left, right);
-	Swap(&a[right], &a[midIndex]);
+	else if (right - left > 10)
+	{
+		// 获取中位数作为key（防止接近有序情况下选到极值）
+		int midIndex = GetMidIndex(a, left, right);
+		Swap(&a[right], &a[midIndex]);
 
-	// 分区函数
-	// 将在数组[left,right]范围内排序，
-	// 排成以a[right]值为界，左小右大的序列，并返回界限位置
+		// 分区函数
+		// 将在数组[left,right]范围内排序，
+		// 排成以a[right]值为界，左小右大的序列，并返回界限位置
 
-	//// 左右指针法
-	//int divided = PartSort1(a, left, right); 
-	//// 挖坑法
-	//int divided = PartSort2(a, left, right);
-	// 前后指针法
-	int divided = PartSort3(a, left, right);
+		//// 左右指针法
+		//int divided = PartSort1(a, left, right); 
+		//// 挖坑法
+		//int divided = PartSort2(a, left, right);
+		// 前后指针法
+		int divided = PartSort3(a, left, right);
 
-	// 递归排序左右序列
-	QuickSort(a, leftTmp, divided - 1);
-	QuickSort(a, divided + 1, rightTmp);
+		// 递归排序左右序列
+		QuickSort(a, left, divided - 1);
+		QuickSort(a, divided + 1, right);
+	}
+	else
+	{
+		// 当区间较小时，递归的次数较多，代价较大
+		// 可以调用其他对于小区间的排序效果较好的函数来排
+		// 想象最好的理性情况下，满二叉树底层的节点数，
+		// 就可以知道为了排这10个数，需要调用多少次递归了，
+		// 更何况并不是每次都能取到完美中位数作为key
+		InsertSort(a + left, right - left + 1);
+	}
+}
+// 快速排序 非递归实现（问题代码，待修复）
+void QuickSortNonR(int* a, int left, int right)
+{
+	if (right <= left)
+		return;
+
+	Stack s;
+	StackInit(&s);
+	// Range r = { left, right };
+	// 这里的第二个参数，没有使用结构体变量r
+	// 而是使用“复合字面量”，创建了一个匿名结构体对象，C99起支持
+	StackPush(&s, (Range){ left, right }); 
+
+	while (!StackEmpty(&s))
+	{
+		Range r = StackTop(&s);
+		if (r._left >= r._right)
+		{
+			StackPop(&s);
+		}
+		else if (r._right - r._left > 10)
+		{
+			int mid = GetMidIndex(a, r._left, r._right);
+			Swap(&a[r._right], &a[mid]);
+			int divided = PartSort1(a, r._left, r._right);
+			StackPop(&s);
+			Range r1 = { r._left, divided - 1 };
+			Range r2 = { divided + 1, r._right };
+			printf("%d %d", r1._left, r1._right);
+			printf("%d %d", r2._left, r2._right);
+			Sleep(1000);
+			StackPush(&s, (Range){ r._left, divided - 1 }); // C99起支持
+			StackPush(&s, (Range) { divided + 1, r._right }); // C99起支持
+		}
+		else
+		{
+			InsertSort(a + r._left, r._right - r._left + 1);
+			StackPop(&s);
+		}
+	}
+	StackDestroy(&s);
 }

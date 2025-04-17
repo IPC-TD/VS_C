@@ -26,7 +26,7 @@ void CheckCapacity(Stack* ps)
 	assert(ps && ps->_arr);
 	if (ps->_capacity > ps->_top) return;
 	// 错误修改，申请的是数据元素大小的空间，不是栈结构体大小的空间
-	STDataType* ret = (STDataType*)realloc(ps->_arr, sizeof(STDataType)*ps->_capacity * 2);
+	STDataType* ret = (STDataType*)realloc(ps->_arr, sizeof(STDataType) * ps->_capacity * 2);
 	assert(ret);
 	ps->_arr = ret;
 }
