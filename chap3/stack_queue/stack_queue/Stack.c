@@ -1,5 +1,4 @@
 #define _CRT_SECURE_NO_WARNINGS
-
 #include "Stack.h"
 
 // 初始化
@@ -7,8 +6,8 @@ void StackInit(Stack* ps)
 {
 	assert(ps);
 	// 错误修改，申请的是数据元素大小的空间，不是栈结构体大小的空间
-	ps->_arr = (STDataType*)malloc(sizeof(STDataType) * STACK_INIT_CAPACITY);
-	ps->_capacity = STACK_INIT_CAPACITY;
+	ps->_arr = NULL;
+	ps->_capacity = 0;
 	ps->_top = 0;
 }
 // 销毁
@@ -23,17 +22,18 @@ void StackDestroy(Stack* ps)
 // 检查是否需要扩容
 void CheckCapacity(Stack* ps)
 {
-	assert(ps && ps->_arr);
+	assert(ps);
 	if (ps->_capacity > ps->_top) return;
+	ps->_capacity = ++(ps->_capacity) * 2; // 上一版实现在下面*2，导致忘了修改栈的容量成员
 	// 错误修改，申请的是数据元素大小的空间，不是栈结构体大小的空间
-	STDataType* ret = (STDataType*)realloc(ps->_arr, sizeof(STDataType)*ps->_capacity * 2);
+	STDataType* ret = (STDataType*)realloc(ps->_arr, sizeof(STDataType)*ps->_capacity);
 	assert(ret);
 	ps->_arr = ret;
 }
 // 入栈
 void StackPush(Stack* ps, STDataType x)
 {
-	assert(ps && ps->_arr);
+	assert(ps);
 	CheckCapacity(ps); // 只有入栈才需要考虑增容，不写成单独的函数也行
 	ps->_arr[ps->_top] = x;
 	ps->_top += 1;
@@ -41,26 +41,25 @@ void StackPush(Stack* ps, STDataType x)
 // 出栈
 void StackPop(Stack* ps)
 {
-	assert(ps && ps->_top > 0  &&ps->_arr);
+	assert(!StackEmpty(ps));
 	ps->_top -= 1;
 }
 // 获取栈中有效元素个数 
 int StackSize(Stack* ps)
 {
-	assert(ps && ps->_arr);
+	assert(ps);
 	return ps->_top;
 }
 // 获取栈顶元素
 STDataType StackTop(Stack* ps)
 {
-	assert(ps && ps->_arr);
-	assert(ps->_top > 0);
+	assert(!StackEmpty(ps));
 	return ps->_arr[ps->_top - 1];
 }
 // 检测栈是否为空，如果为空返回非零结果，如果不为空返回0 
 int StackEmpty(Stack* ps)
 {
-	assert(ps && ps->_arr);
+	assert(ps);
 	//if (ps->_top == 0)
 	//{
 	//	return 1;

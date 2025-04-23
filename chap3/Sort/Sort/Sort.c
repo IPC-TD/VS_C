@@ -305,6 +305,31 @@ int PartSort1(int* a, int begin, int end)
 
 	return begin;
 }
+//// 快排分区函数（左右指针法 / hoare版本）（调试排查用）
+//int PartSort1(int* a, int begin, int end) {
+//	assert(a);
+//	int key = end;
+//	int left = begin;
+//	int right = end - 1;  // 从end-1开始扫描，避免key自身干扰
+//
+//	while (left < right) {
+//		// 从左找第一个大于a[key]的元素
+//		while (left < right && a[left] <= a[key]) ++left;
+//		// 从右找第一个小于a[key]的元素
+//		while (left < right && a[right] >= a[key]) --right;
+//		Swap(&a[left], &a[right]);
+//	}
+//
+//	// 最终left==right，检查是否需要交换key
+//	if (a[left] > a[key]) {
+//		Swap(&a[left], &a[key]);
+//		return left;
+//	}
+//	else {
+//		// 如果左侧元素均小于key，key无需移动
+//		return key;
+//	}
+//}
 // 快排分区函数（挖坑法）
 int PartSort2(int* a, int begin, int end)
 {
@@ -404,7 +429,48 @@ void QuickSort(int* a, int left, int right)
 		InsertSort(a + left, right - left + 1);
 	}
 }
-// 快速排序 非递归实现（问题代码，待修复）
+//// 快速排序 非递归实现（可用）
+//void QuickSortNonR(int* a, int left, int right)
+//{
+//	if (right <= left)
+//		return;
+//
+//	Stack s;
+//	StackInit(&s);
+//
+//	StackPush(&s, right);
+//	StackPush(&s, left);
+//
+//	while (!StackEmpty(&s))
+//	{
+//		int begin = StackTop(&s);
+//		StackPop(&s);
+//		int end = StackTop(&s);
+//		StackPop(&s);
+//		if (begin >= end)
+//		{
+//			continue;
+//		}
+//		else if (end  - begin > 10)
+//		{
+//			int mid = GetMidIndex(a, begin, end);
+//			Swap(&a[end], &a[mid]);
+//			int divided = PartSort1(a, begin, end);
+//			StackPush(&s, end);
+//			StackPush(&s, divided + 1);
+//			StackPush(&s, divided - 1);
+//			StackPush(&s, begin);
+//		}
+//		else
+//		{
+//			InsertSort(a + begin, end - begin + 1);
+//		}
+//	}
+//	StackDestroy(&s);
+//}
+
+// 快速排序 非递归实现（问题已经排除，此代码逻辑正常，疑似此前栈代码中，扩容存在问题）
+// 现在应该重点排查为什么大数据量时（数组大小1000000），range元素的的pop出栈或者push压入栈有问题
 void QuickSortNonR(int* a, int left, int right)
 {
 	if (right <= left)
@@ -412,37 +478,82 @@ void QuickSortNonR(int* a, int left, int right)
 
 	Stack s;
 	StackInit(&s);
-	// Range r = { left, right };
+
+	Range r = { left, right };
+	StackPush(&s, (Range) { left, right });
+
 	// 这里的第二个参数，没有使用结构体变量r
 	// 而是使用“复合字面量”，创建了一个匿名结构体对象，C99起支持
-	StackPush(&s, (Range){ left, right }); 
+	// StackPush(&s, (Range) { left, right });
 
 	while (!StackEmpty(&s))
 	{
 		Range r = StackTop(&s);
+		StackPop(&s);
+		//printf("出栈数据：%d %d\n", r._left, r._right);
 		if (r._left >= r._right)
 		{
-			StackPop(&s);
+			continue;
 		}
 		else if (r._right - r._left > 10)
 		{
 			int mid = GetMidIndex(a, r._left, r._right);
 			Swap(&a[r._right], &a[mid]);
 			int divided = PartSort1(a, r._left, r._right);
-			StackPop(&s);
 			Range r1 = { r._left, divided - 1 };
 			Range r2 = { divided + 1, r._right };
-			printf("%d %d", r1._left, r1._right);
-			printf("%d %d", r2._left, r2._right);
-			Sleep(1000);
-			StackPush(&s, (Range){ r._left, divided - 1 }); // C99起支持
-			StackPush(&s, (Range) { divided + 1, r._right }); // C99起支持
+			//printf("入栈数据1：%d %d\n", r1._left, r1._right);
+			//printf("入栈数据2：%d %d\n", r2._left, r2._right);
+			//Sleep(100);
+			//StackPush(&s, (Range) { r._left, divided - 1 }); // C99起支持
+			//StackPush(&s, (Range) { divided + 1, r._right }); // C99起支持
+			StackPush(&s, r2); 
+			StackPush(&s, r1);
 		}
 		else
 		{
 			InsertSort(a + r._left, r._right - r._left + 1);
-			StackPop(&s);
 		}
 	}
 	StackDestroy(&s);
 }
+
+////（调试排查用）
+//void QuickSortNonR(int* a, int left, int right) {
+//	if (right <= left) return;
+//
+//	Stack s;
+//	StackInit(&s);
+//	StackPush(&s, (Range) { left, right });
+//
+//	while (!StackEmpty(&s)) {
+//		Range r = StackTop(&s);
+//		StackPop(&s);
+//
+//		if (r._left >= r._right) continue;
+//
+//		// 小区间使用插入排序优化
+//		if (r._right - r._left <= 10) {
+//			InsertSort(a + r._left, r._right - r._left + 1);
+//			continue;
+//		}
+//
+//		// 三数取中优化
+//		int mid = GetMidIndex(a, r._left, r._right);
+//		Swap(&a[r._right], &a[mid]);
+//
+//		int divided = PartSort1(a, r._left, r._right);
+//
+//		// 确保divided在合法范围内 [r._left, r._right-1]
+//		if (divided >= r._right) divided = r._right - 1;
+//		if (divided <= r._left) divided = r._left;
+//
+//		Range r1 = { r._left, divided - 1 };
+//		Range r2 = { divided + 1, r._right };
+//
+//		// 压栈顺序：先右后左，减少栈深度
+//		if (r2._left < r2._right) StackPush(&s, r2);
+//		if (r1._left < r1._right) StackPush(&s, r1);
+//	}
+//	StackDestroy(&s);
+//}

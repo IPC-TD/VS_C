@@ -3,14 +3,13 @@
 #include <assert.h>
 #include <stdio.h>
 
-#define STACK_INIT_CAPACITY 10
-
 typedef struct Range
 {
 	int _left;
 	int _right;
 }Range;
 typedef Range STDataType;
+//typedef int STDataType;
 
 // ¶¯Ì¬Õ»
 typedef struct Stack

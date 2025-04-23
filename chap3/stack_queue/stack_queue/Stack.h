@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <stdio.h>
-#define STACK_INIT_CAPACITY 10
 
 typedef int STDataType;
 /*

@@ -8,18 +8,32 @@ void TestStack1()
 	StackInit(&s);
 	StackPush(&s, 1);
 	StackPush(&s, 2);
-	printf("%d ", StackTop(&s));
+	printf("StackTop：%d\n", StackTop(&s));
 	StackPop(&s);
 	StackPush(&s, 3);
 	StackPush(&s, 4);
-	printf("%d ", StackSize(&s));
+	printf("StackSize：%d\n", StackSize(&s));
 	while (StackEmpty(&s) != 1)
 	{
 		printf("%d ", StackTop(&s));
 		StackPop(&s);
 	}
+	printf("\n");
 	StackDestroy(&s);
 
+	Stack s2;
+	StackInit(&s2);
+	// 大数据量操作
+	const int N = 1000;
+	for (int i = 0; StackSize(&s2) < N; ++i)
+	{
+		StackPush(&s2, i);
+	}
+	while (!StackEmpty(&s2))
+	{
+		printf("%d ", StackTop(&s2));
+		StackPop(&s2);
+	}
 }
 void TestQueue()
 {
@@ -42,7 +56,7 @@ void TestQueue()
 }
 int main()
 {
-	// TestStack1();
+	TestStack1();
 	// TestQueue();
 	return 0;
 }
