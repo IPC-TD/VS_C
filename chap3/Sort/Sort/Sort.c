@@ -470,7 +470,6 @@ void QuickSort(int* a, int left, int right)
 //}
 
 // 快速排序 非递归实现（问题已经排除，此代码逻辑正常，疑似此前栈代码中，扩容存在问题）
-// 现在应该重点排查为什么大数据量时（数组大小1000000），range元素的的pop出栈或者push压入栈有问题
 void QuickSortNonR(int* a, int left, int right)
 {
 	if (right <= left)
@@ -557,3 +556,129 @@ void QuickSortNonR(int* a, int left, int right)
 //	}
 //	StackDestroy(&s);
 //}
+
+void _MergeSort(int* a, int left, int right, int* tmp)
+{
+	assert(a && tmp);
+	if (left >= right)
+	{
+		return;
+	}
+	else if (right - left > 10)
+	{
+		int leftBegin = left;
+		int leftEnd = left + (right - left) / 2;
+		int rightBegin = leftEnd + 1;
+		int rightEnd = right;
+		_MergeSort(a, leftBegin, leftEnd, tmp);
+		_MergeSort(a, rightBegin, rightEnd, tmp);
+
+		int index = left;
+		while (leftBegin <= leftEnd && rightBegin <= rightEnd)
+		{
+			if (a[leftBegin] < a[rightBegin])
+			{
+				tmp[index++] = a[leftBegin++];
+			}
+			else
+			{
+				tmp[index++] = a[rightBegin++];
+			}
+		}
+		while (leftBegin <= leftEnd)
+		{
+			tmp[index++] = a[leftBegin++];
+		}
+		while (rightBegin <= rightEnd)
+		{
+			tmp[index++] = a[rightBegin++];
+		}
+		for (int i = left; i <= right; ++i)
+		{
+			a[i] = tmp[i];
+		}
+	}
+	else
+	{
+		InsertSort(a + left, right - left + 1);
+	}
+}
+// 归并排序递归实现
+void MergeSort(int* a, int n)
+{
+	assert(a);
+	if (n <= 1)
+		return;
+
+	int* tmp = (int*)malloc(sizeof(int) * n);
+	assert(tmp);
+	_MergeSort(a, 0, n - 1, tmp);
+	free(tmp);
+}
+
+// 函数未完成
+void _MergeSortNonR(int* a, int left, int right, int* tmp)
+{
+	assert(a && tmp);
+	if (left >= right)
+		return;
+	
+	int gap = 10;
+	for (int i = 0; i <= right; i += gap)
+	{
+		InsertSort(a + i, i + gap <= right ? gap: right - i + 1);
+	}
+
+	for (; gap <= right; gap *= 2)
+	{
+		int leftBegin = 0;
+		int leftEnd = gap - 1 <= right ? gap - 1 : right;
+		int rightBegin = leftEnd + 1;
+		int rightEnd = rightBegin + gap - 1 <= right ? right + gap - 1 : right;
+		int index = 0;
+		while (leftBegin <= right)
+		{
+			while (leftBegin <= leftEnd && rightBegin <= rightEnd)
+			{
+				if (a[leftBegin] < a[rightBegin])
+				{
+					tmp[index++] = a[leftBegin++];
+				}
+				else
+				{
+					tmp[index++] = a[rightBegin++];
+				}
+			}
+			while (leftBegin <= leftEnd)
+			{
+				tmp[index++] = a[leftBegin++];
+			}
+			while (rightBegin <= rightEnd)
+			{
+				tmp[index++] = a[rightBegin++];
+			}
+			leftBegin += rightBegin;
+			leftEnd = leftBegin + gap - 1;
+			rightBegin = leftEnd;
+			rightEnd = rightBegin + gap - 1;
+		}
+		for (int i = 0; i <= right; ++i)
+		{
+			a[i] = tmp[i];
+		}
+	}
+
+	
+}
+// 归并排序非递归实现
+void MergeSortNonR(int* a, int n)
+{
+	assert(a);
+	if (n <= 1)
+		return;
+
+	int* tmp = (int*)malloc(sizeof(int) * n);
+	assert(tmp);
+	_MergeSortNonR(a, 0, n - 1, tmp);
+	free(tmp);
+}

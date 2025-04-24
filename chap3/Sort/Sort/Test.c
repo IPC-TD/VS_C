@@ -9,7 +9,7 @@ void TestInsertSort()
 	Print(arr, arrSize);
 	InsertSort(arr, arrSize);
 	Print(arr, arrSize);
-	puts("");
+	printf("\n");
 }
 void TestShellSort()
 {
@@ -20,7 +20,7 @@ void TestShellSort()
 	Print(arr, arrSize);
 	ShellSort(arr, arrSize);
 	// Print(arr, arrSize);
-	puts("");
+	printf("\n");
 }
 void TestSelectSort()
 {
@@ -31,7 +31,7 @@ void TestSelectSort()
 	Print(arr, arrSize);
 	SelectSort(arr, arrSize);
 	Print(arr, arrSize);
-	puts("");
+	printf("\n");
 }
 void TestHeapSort()
 {
@@ -42,7 +42,7 @@ void TestHeapSort()
 	Print(arr, arrSize);
 	HeapSort(arr, arrSize);
 	Print(arr, arrSize);
-	puts("");
+	printf("\n");
 }
 void TestBubbleSort()
 {
@@ -53,7 +53,7 @@ void TestBubbleSort()
 	Print(arr, arrSize);
 	BubbleSort(arr, arrSize);
 	Print(arr, arrSize);
-	puts("");
+	printf("\n");
 }
 void TestQuickSort()
 {
@@ -64,7 +64,7 @@ void TestQuickSort()
 	Print(arr, arrSize);
 	QuickSort(arr, 0, arrSize - 1);
 	Print(arr, arrSize);
-	puts("");
+	printf("\n");
 }
 void TestQuickSortNonR()
 {
@@ -75,7 +75,51 @@ void TestQuickSortNonR()
 	Print(arr, arrSize);
 	QuickSortNonR(arr, 0, arrSize - 1);
 	Print(arr, arrSize);
-	puts("");
+	printf("\n");
+}
+void TestMergeSort()
+{
+	int arr[] = { 9, 8, 7, 7, 6, 5, 5, 5, 4, 3, 2, 1, 0 };
+	int arrSize = sizeof(arr) / sizeof(arr[0]);
+
+	puts("归并排序");
+	Print(arr, arrSize);
+	MergeSort(arr, arrSize);
+	Print(arr, arrSize);
+	printf("\n");
+	int arr2[100];
+	for (int i = 0, value = 100; i < 100; ++i, --value)
+	{
+		arr2[i] = value;
+	}
+	Print(arr2, 100);
+	printf("\n");
+	MergeSort(arr2, 100);
+	Print(arr2, 100);
+	printf("\n");
+
+}
+void TestMergeSortNonR()
+{
+	int arr[] = { 9, 8, 7, 7, 6, 5, 5, 5, 4, 3, 2, 1, 0 };
+	int arrSize = sizeof(arr) / sizeof(arr[0]);
+
+	puts("非递归归并排序");
+	Print(arr, arrSize);
+	MergeSortNonR(arr, arrSize);
+	Print(arr, arrSize);
+	printf("\n");
+	int arr2[100];
+	for (int i = 0, value = 100; i < 100; ++i, --value)
+	{
+		arr2[i] = value;
+	}
+	Print(arr2, 100);
+	printf("\n");
+	MergeSortNonR(arr2, 100);
+	Print(arr2, 100);
+	printf("\n");
+
 }
 // 测试排序的性能对比
 void TestOP()
@@ -163,9 +207,10 @@ int main()
 		TestBubbleSort();
 		TestQuickSort();
 		TestQuickSortNonR();
+		TestMergeSort();
+		TestOP();
 
 	}
-	TestOP();
-
+	TestMergeSortNonR();
 	return 0;
 }
