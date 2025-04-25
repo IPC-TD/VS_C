@@ -109,15 +109,17 @@ void TestMergeSortNonR()
 	MergeSortNonR(arr, arrSize);
 	Print(arr, arrSize);
 	printf("\n");
-	int arr2[100];
-	for (int i = 0, value = 100; i < 100; ++i, --value)
+
+	int arr2[200] = { 0 };
+	int size = sizeof(arr2) / sizeof(arr2[0]);
+	for (int i = 0, value = size; i < size; ++i, --value)
 	{
 		arr2[i] = value;
 	}
-	Print(arr2, 100);
+	Print(arr2, size);
 	printf("\n");
-	MergeSortNonR(arr2, 100);
-	Print(arr2, 100);
+	MergeSortNonR(arr2, size);
+	Print(arr2, size);
 	printf("\n");
 
 }

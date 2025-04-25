@@ -622,53 +622,69 @@ void _MergeSortNonR(int* a, int left, int right, int* tmp)
 	assert(a && tmp);
 	if (left >= right)
 		return;
-	
-	int gap = 10;
-	for (int i = 0; i <= right; i += gap)
-	{
-		InsertSort(a + i, i + gap <= right ? gap: right - i + 1);
-	}
 
+	// 先将小于10的区间用插入排序，整成（right + 1）/2 段有序数组
+	int gap = 10;
+	for (int i = 0; i <= right; i += gap) // 循环1
+	{
+		InsertSort(a + i, i + gap <= right + 1 ? gap : right + 1 - i);
+	}
+	// 再将有序区间，两两进行归并
 	for (; gap <= right; gap *= 2)
 	{
-		int leftBegin = 0;
-		int leftEnd = gap - 1 <= right ? gap - 1 : right;
-		int rightBegin = leftEnd + 1;
-		int rightEnd = rightBegin + gap - 1 <= right ? right + gap - 1 : right;
+		// 这里每段gap，其含义在于理想情况下，有序区间的长度
+		// 下面控制流，其任务在于，将目前两段gap长度的有效区间，合并为一条新的有序的区间
+		// 
+		// 举个例子：
+		// 假设right = 99，gap = 10，即数组有100个数
+		// for循环2的意义在于，将10段10长度的有序数组，归并为 5段20长度的有序数组
+		// 下一次循环 gap = 20，则会将5段20长度的有序数组，归并为2段40长度的数组+1段10长度的有序数组。
+		// 
+		// 下面的边界控制，其核心在于控制结束条件end1 和 end2 始终不超过right
+		// 执行每一步前，都判断区间是否有效
+
+		// 起始条件
+		int begin1 = 0;
+		int end1 = gap - 1 <= right ? gap - 1 : right;
+		int begin2 = end1 + 1 <= right ? end1 + 1 : right;
+		int end2 = begin2 + gap - 1 <= right ? begin2 + gap - 1 : right;
 		int index = 0;
-		while (leftBegin <= right)
+		while (begin1 <= right)
 		{
-			while (leftBegin <= leftEnd && rightBegin <= rightEnd)
+			while (begin1 <= end1 && begin2 <= end2)
 			{
-				if (a[leftBegin] < a[rightBegin])
+				if (a[begin1] < a[begin2])
 				{
-					tmp[index++] = a[leftBegin++];
+					tmp[index++] = a[begin1++];
 				}
 				else
 				{
-					tmp[index++] = a[rightBegin++];
+					tmp[index++] = a[begin2++];
 				}
 			}
-			while (leftBegin <= leftEnd)
+			while (begin1 <= end1)
 			{
-				tmp[index++] = a[leftBegin++];
+				tmp[index++] = a[begin1++];
 			}
-			while (rightBegin <= rightEnd)
+			while (begin2 <= end2)
 			{
-				tmp[index++] = a[rightBegin++];
+				tmp[index++] = a[begin2++];
 			}
-			leftBegin += rightBegin;
-			leftEnd = leftBegin + gap - 1;
-			rightBegin = leftEnd;
-			rightEnd = rightBegin + gap - 1;
+			// 迭代需要操作的区间
+			begin1 = end2 + 1;
+			end1 = begin1 + gap - 1;
+			end1 = end1 > right ? right : end1;
+
+			begin2 = end1 + 1;
+			end2 = begin2 + gap - 1;
+			end2 = end2 > right ? right : end2;
 		}
+		// 归并后的新数据，重新写回原来的数组
 		for (int i = 0; i <= right; ++i)
 		{
 			a[i] = tmp[i];
 		}
 	}
-
-	
 }
 // 归并排序非递归实现
 void MergeSortNonR(int* a, int n)
