@@ -136,6 +136,7 @@ void TestOP()
 	int* a6 = (int*)malloc(sizeof(int) * N);
 	int* a7 = (int*)malloc(sizeof(int) * N);
 	int* a8 = (int*)malloc(sizeof(int) * N);
+	int* a9 = (int*)malloc(sizeof(int) * N);
 
 	for (int i = 0; i < N; ++i)
 	{
@@ -147,6 +148,7 @@ void TestOP()
 		a6[i] = a1[i];
 		a7[i] = a1[i];
 		a8[i] = a1[i];
+		a9[i] = a1[i];
 	}
 	// 不想使用某些排序，注释下面排序函数即可
 	/*
@@ -156,37 +158,41 @@ void TestOP()
 	int end = clock();
 	*/
 	int begin1 = clock();
-	// InsertSort(a1, N);
+	//InsertSort(a1, N);
 	int end1 = clock();
 	int begin2 = clock();
-	// ShellSort(a2, N);
+	ShellSort(a2, N);
 	int end2 = clock();
 	int begin3 = clock();
-	// SelectSort(a3, N);
+	//SelectSort(a3, N);
 	int end3 = clock();
 	int begin4 = clock();
-	// HeapSort(a4, N);
+	HeapSort(a4, N);
 	int end4 = clock();
 	int begin5 = clock();
-	//QuickSort(a5, 0, N - 1);
+	//BubbleSort(a4, N);
 	int end5 = clock();
 	int begin6 = clock();
-	//MergeSort(a6, N);
+	QuickSort(a6, 0, N - 1);
 	int end6 = clock();
 	int begin7 = clock();
-	// BubbleSort(a7, N);
+	QuickSortNonR(a7, 0, N - 1);
 	int end7 = clock();
 	int begin8 = clock();
-	QuickSortNonR(a8, 0, N - 1);
+	MergeSort(a8, N);
 	int end8 = clock();
+	int begin9 = clock();
+	MergeSortNonR(a9, N);
+	int end9 = clock();
 	printf("InsertSort:%d\n", end1 - begin1);
 	printf("ShellSort:%d\n", end2 - begin2);
 	printf("SelectSort:%d\n", end3 - begin3);
 	printf("HeapSort:%d\n", end4 - begin4);
-	printf("QuickSort:%d\n", end5 - begin5);
-	printf("MergeSort:%d\n", end6 - begin6);
-	printf("BubbleSort:%d\n", end7 - begin7);
-	printf("QuickSortNonR:%d\n", end8 - begin8);
+	printf("BubbleSort:%d\n", end5 - begin5);
+	printf("QuickSort:%d\n", end6 - begin6);
+	printf("QuickSortNonR:%d\n", end7 - begin7);
+	printf("MergeSort:%d\n", end8 - begin8);
+	printf("MergeSortNonR:%d\n", end9 - begin9);
 
 	free(a1);
 	free(a2);
@@ -196,6 +202,7 @@ void TestOP()
 	free(a6);
 	free(a7);
 	free(a8);
+	free(a9);
 }
 int main()
 {
@@ -210,9 +217,9 @@ int main()
 		TestQuickSort();
 		TestQuickSortNonR();
 		TestMergeSort();
-		TestOP();
-
+		TestMergeSortNonR();
 	}
-	TestMergeSortNonR();
+	TestOP();
+
 	return 0;
 }

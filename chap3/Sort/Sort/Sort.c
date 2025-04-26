@@ -305,31 +305,6 @@ int PartSort1(int* a, int begin, int end)
 
 	return begin;
 }
-//// 快排分区函数（左右指针法 / hoare版本）（调试排查用）
-//int PartSort1(int* a, int begin, int end) {
-//	assert(a);
-//	int key = end;
-//	int left = begin;
-//	int right = end - 1;  // 从end-1开始扫描，避免key自身干扰
-//
-//	while (left < right) {
-//		// 从左找第一个大于a[key]的元素
-//		while (left < right && a[left] <= a[key]) ++left;
-//		// 从右找第一个小于a[key]的元素
-//		while (left < right && a[right] >= a[key]) --right;
-//		Swap(&a[left], &a[right]);
-//	}
-//
-//	// 最终left==right，检查是否需要交换key
-//	if (a[left] > a[key]) {
-//		Swap(&a[left], &a[key]);
-//		return left;
-//	}
-//	else {
-//		// 如果左侧元素均小于key，key无需移动
-//		return key;
-//	}
-//}
 // 快排分区函数（挖坑法）
 int PartSort2(int* a, int begin, int end)
 {
@@ -429,7 +404,7 @@ void QuickSort(int* a, int left, int right)
 		InsertSort(a + left, right - left + 1);
 	}
 }
-//// 快速排序 非递归实现（可用）
+//// 快速排序 非递归实现（可用）（使用int为栈元素）
 //void QuickSortNonR(int* a, int left, int right)
 //{
 //	if (right <= left)
@@ -469,21 +444,21 @@ void QuickSort(int* a, int left, int right)
 //	StackDestroy(&s);
 //}
 
-// 快速排序 非递归实现（问题已经排除，此代码逻辑正常，疑似此前栈代码中，扩容存在问题）
+// 快速排序 非递归实现 （使用range为栈元素）
+// （问题已经排除，此代码逻辑正常，疑似此前栈代码中，扩容存在问题）
 void QuickSortNonR(int* a, int left, int right)
 {
 	if (right <= left)
 		return;
 
+	// 创建并初始化栈
 	Stack s;
 	StackInit(&s);
-
-	Range r = { left, right };
-	StackPush(&s, (Range) { left, right });
-
+	// 将第一段区间范围入栈
 	// 这里的第二个参数，没有使用结构体变量r
+	// 	// Range r = { left, right };
 	// 而是使用“复合字面量”，创建了一个匿名结构体对象，C99起支持
-	// StackPush(&s, (Range) { left, right });
+	StackPush(&s, (Range) { left, right });
 
 	while (!StackEmpty(&s))
 	{
@@ -499,15 +474,15 @@ void QuickSortNonR(int* a, int left, int right)
 			int mid = GetMidIndex(a, r._left, r._right);
 			Swap(&a[r._right], &a[mid]);
 			int divided = PartSort1(a, r._left, r._right);
-			Range r1 = { r._left, divided - 1 };
-			Range r2 = { divided + 1, r._right };
 			//printf("入栈数据1：%d %d\n", r1._left, r1._right);
 			//printf("入栈数据2：%d %d\n", r2._left, r2._right);
 			//Sleep(100);
-			//StackPush(&s, (Range) { r._left, divided - 1 }); // C99起支持
-			//StackPush(&s, (Range) { divided + 1, r._right }); // C99起支持
-			StackPush(&s, r2); 
-			StackPush(&s, r1);
+			StackPush(&s, (Range) { r._left, divided - 1 }); // C99起支持
+			StackPush(&s, (Range) { divided + 1, r._right }); // C99起支持
+			//Range r1 = { r._left, divided - 1 };
+			//Range r2 = { divided + 1, r._right };
+			//StackPush(&s, r2); 
+			//StackPush(&s, r1);
 		}
 		else
 		{
@@ -517,89 +492,64 @@ void QuickSortNonR(int* a, int left, int right)
 	StackDestroy(&s);
 }
 
-////（调试排查用）
-//void QuickSortNonR(int* a, int left, int right) {
-//	if (right <= left) return;
-//
-//	Stack s;
-//	StackInit(&s);
-//	StackPush(&s, (Range) { left, right });
-//
-//	while (!StackEmpty(&s)) {
-//		Range r = StackTop(&s);
-//		StackPop(&s);
-//
-//		if (r._left >= r._right) continue;
-//
-//		// 小区间使用插入排序优化
-//		if (r._right - r._left <= 10) {
-//			InsertSort(a + r._left, r._right - r._left + 1);
-//			continue;
-//		}
-//
-//		// 三数取中优化
-//		int mid = GetMidIndex(a, r._left, r._right);
-//		Swap(&a[r._right], &a[mid]);
-//
-//		int divided = PartSort1(a, r._left, r._right);
-//
-//		// 确保divided在合法范围内 [r._left, r._right-1]
-//		if (divided >= r._right) divided = r._right - 1;
-//		if (divided <= r._left) divided = r._left;
-//
-//		Range r1 = { r._left, divided - 1 };
-//		Range r2 = { divided + 1, r._right };
-//
-//		// 压栈顺序：先右后左，减少栈深度
-//		if (r2._left < r2._right) StackPush(&s, r2);
-//		if (r1._left < r1._right) StackPush(&s, r1);
-//	}
-//	StackDestroy(&s);
-//}
-
+// 归并两段无间隔的升序数组
+void MergeArray(int* a, int begin1, int end1, int begin2, int end2, int* tmp)
+{
+	assert(a && tmp);
+	int index = begin1, left = begin1, right = end2;
+	// 从两端序列的左边开始遍历，选择更小的数，写入tmp数组
+	while (begin1 <= end1 && begin2 <= end2)
+	{
+		if (a[begin1] < a[begin2])
+		{
+			tmp[index++] = a[begin1++];
+		}
+		else
+		{
+			tmp[index++] = a[begin2++];
+		}
+	}
+	// 到这说明其他一段序列已经被完全写入，则将剩下的另一组写入即可
+	while (begin1 <= end1)
+	{
+		tmp[index++] = a[begin1++];
+	}
+	while (begin2 <= end2)
+	{
+		tmp[index++] = a[begin2++];
+	}
+	// 将存储在tmp数组中归并好的数据，写回到原数组中
+	for (int i = left; i <= right; ++i)
+	{
+		a[i] = tmp[i];
+	}
+}
 void _MergeSort(int* a, int left, int right, int* tmp)
 {
 	assert(a && tmp);
+	// 排除无效区间
 	if (left >= right)
 	{
 		return;
 	}
+	// 将大端的区间进行递归归并
 	else if (right - left > 10)
 	{
-		int leftBegin = left;
-		int leftEnd = left + (right - left) / 2;
-		int rightBegin = leftEnd + 1;
-		int rightEnd = right;
-		_MergeSort(a, leftBegin, leftEnd, tmp);
-		_MergeSort(a, rightBegin, rightEnd, tmp);
-
-		int index = left;
-		while (leftBegin <= leftEnd && rightBegin <= rightEnd)
-		{
-			if (a[leftBegin] < a[rightBegin])
-			{
-				tmp[index++] = a[leftBegin++];
-			}
-			else
-			{
-				tmp[index++] = a[rightBegin++];
-			}
-		}
-		while (leftBegin <= leftEnd)
-		{
-			tmp[index++] = a[leftBegin++];
-		}
-		while (rightBegin <= rightEnd)
-		{
-			tmp[index++] = a[rightBegin++];
-		}
-		for (int i = left; i <= right; ++i)
-		{
-			a[i] = tmp[i];
-		}
+		// 将区间分割成左右对称区间后
+		int begin1 = left;
+		int end1 = left + (right - left) / 2;
+		int begin2 = end1 + 1;
+		int end2 = right;
+		// 递归排序左右区间
+		_MergeSort(a, begin1, end1, tmp);
+		_MergeSort(a, begin2, end2, tmp);
+		// 此时左右区间都为升序，函数将两端有序区间合并成完整的一段有序区间
+		MergeArray(a, begin1, end1, begin2, end2, tmp);
 	}
+	// 小区间用插入排序，减少递归次数（二叉树后面几层节点数多，也表示递归次数多）
 	else
 	{
+		// 直接插入排序函数期望获得，数组的起点和元素个数
 		InsertSort(a + left, right - left + 1);
 	}
 }
@@ -607,16 +557,19 @@ void _MergeSort(int* a, int left, int right, int* tmp)
 void MergeSort(int* a, int n)
 {
 	assert(a);
+	// 0个和1个数，符合有序定义
 	if (n <= 1)
 		return;
 
+	// 开辟一段数组，用于合并两端有序区间时的临时存储
+	// 这里开好，里面递归时，就不同频繁malloc，减少内存碎片
 	int* tmp = (int*)malloc(sizeof(int) * n);
 	assert(tmp);
 	_MergeSort(a, 0, n - 1, tmp);
 	free(tmp);
 }
 
-// 函数未完成
+// 原本的归并函数实现（非递归）
 void _MergeSortNonR(int* a, int left, int right, int* tmp)
 {
 	assert(a && tmp);
@@ -644,6 +597,7 @@ void _MergeSortNonR(int* a, int left, int right, int* tmp)
 		// 执行每一步前，都判断区间是否有效
 
 		// 起始条件
+		// 这段夹杂太多判断条件，不利于CPU的运算，不如下面的那种
 		int begin1 = 0;
 		int end1 = gap - 1 <= right ? gap - 1 : right;
 		int begin2 = end1 + 1 <= right ? end1 + 1 : right;
@@ -651,25 +605,8 @@ void _MergeSortNonR(int* a, int left, int right, int* tmp)
 		int index = 0;
 		while (begin1 <= right)
 		{
-			while (begin1 <= end1 && begin2 <= end2)
-			{
-				if (a[begin1] < a[begin2])
-				{
-					tmp[index++] = a[begin1++];
-				}
-				else
-				{
-					tmp[index++] = a[begin2++];
-				}
-			}
-			while (begin1 <= end1)
-			{
-				tmp[index++] = a[begin1++];
-			}
-			while (begin2 <= end2)
-			{
-				tmp[index++] = a[begin2++];
-			}
+			// 将两端有序区间，合并成一段有序区间
+			MergeArray(a, begin1, end1, begin2, end2, tmp);
 			// 迭代需要操作的区间
 			begin1 = end2 + 1;
 			end1 = begin1 + gap - 1;
@@ -679,22 +616,53 @@ void _MergeSortNonR(int* a, int left, int right, int* tmp)
 			end2 = begin2 + gap - 1;
 			end2 = end2 > right ? right : end2;
 		}
-		// 归并后的新数据，重新写回原来的数组
-		for (int i = 0; i <= right; ++i)
-		{
-			a[i] = tmp[i];
-		}
 	}
 }
 // 归并排序非递归实现
 void MergeSortNonR(int* a, int n)
 {
 	assert(a);
+	// 0个和1个数，符合有序定义
 	if (n <= 1)
 		return;
 
 	int* tmp = (int*)malloc(sizeof(int) * n);
 	assert(tmp);
-	_MergeSortNonR(a, 0, n - 1, tmp);
+
+	//_MergeSortNonR(a, 0, n - 1, tmp);
+
+	int insetGap = 10;
+	for (int i = 0; i < n; i += insetGap) 
+	{
+		// 直接插入函数期望接受一个待排序数组，和数组元素个数
+		// 每次传入a数组一个区间的起始地址，并控制a数组最后一段区间排序为正确的个数表示
+		InsertSort(a + i, i + insetGap < n ? insetGap : n - i);
+	}
+	for (int gap = insetGap; gap < n; gap *= 2)
+	{
+		int begin1 = 0, end1 = 0;
+		int begin2 = 0, end2 = 0;
+		for (int i = 0; i < n; i += 2 * gap)
+		{
+			begin1 = i;
+			end1 = i + gap - 1;
+			begin2 = i + gap;
+			end2 = i + 2 * gap - 1;
+			// 如果begin2不存在，则说明归并的第二段区间不存在
+			// 第一段已为有序区间，不用归并，结束本次gap间隔的两两归并
+			if (begin2 >= n)
+			{
+				break;
+			}
+			// 到这里说明第二代区间存在，那么第二代区间结束条件
+			// 需要控制在有效范围
+			if (end2 >= n)
+			{
+				end2 = n - 1;
+			}
+			// 将需要归并的两端区间，交给归并函数
+			MergeArray(a, begin1, end1, begin2, end2, tmp);
+		}
+	}
 	free(tmp);
 }
