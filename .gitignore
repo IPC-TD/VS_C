@@ -365,3 +365,5 @@ FodyWeavers.xsd
 /chap1/myfirst/myfirst/test.txt
 /chap1/myfirst/myfirst/test.bin
 /chap2/contact/contact/Contact_data.txt
+/chap3/Sort/Sort/sub
+/chap3/Sort/Sort/dataFile.txt
