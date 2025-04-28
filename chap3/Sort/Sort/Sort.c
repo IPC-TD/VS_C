@@ -666,3 +666,217 @@ void MergeSortNonR(int* a, int n)
 	}
 	free(tmp);
 }
+void createDirectory(const char* dirName)
+{
+	// 创建子目录存放分割出的文件
+	// 若失败且错误码不是EEXIST（目录已存在），才报错退出。
+	if (_mkdir("sub") != 0 && errno != EEXIST) {
+		printf("无法创建sub目录！失败原因：%s\n", strerror(errno));
+		exit(-1);
+	}
+}
+// 将数组内容写入sub目录下的子文件
+void writeFile(int* arr, int size, int* partNumber)
+{
+	// 创建文件夹（如果没有的话）
+	createDirectory("sub");
+
+	char subFileName[30];
+	sprintf(subFileName, "sub\\dataSegment%d.txt", (*partNumber)++);
+
+	FILE* outputFilePtr = fopen(subFileName, "w");
+	if (outputFilePtr == NULL)
+	{
+		printf("子文件打开失败！失败原因：%s\n", strerror(errno));
+		exit(-1);
+	}
+	for (int i = 0; i < size; ++i)
+	{
+		fprintf(outputFilePtr, "%d\n", arr[i]);
+	}
+	fclose(outputFilePtr); // 关闭文件，将缓冲区内容写入；
+}
+// 归并排序实现（外排）
+char* MergeSortFile(const char* file)
+{
+	assert(file);
+	// 先打开数据文件
+	FILE* inputFilePtr = fopen(file, "r");
+	if (inputFilePtr == NULL)
+	{
+		printf("子文件打开失败！失败原因：%s\n", strerror(errno));
+		exit(-1);
+	}
+
+	int gap = 10; // 将数据分割成 n / gap 份
+	int num = 0;
+	int* arr = (int*)malloc(sizeof(int) * gap);
+	assert(arr);
+	int size = 0;
+	int partNumber = 0; // 每个子文件的名字后缀
+	// 分gap间距，读取数据文件，放到数组中，并在内存中完成排序
+	// 排序后将结果写入子文件
+	for (int i = 0; fscanf(inputFilePtr, "%d\n", &num) != EOF; ++i)
+	{
+		if (i < gap - 1)
+		{
+			arr[size++] = num;
+		}
+		else
+		{
+			arr[size++] = num;
+			QuickSort(arr, 0, size - 1);
+
+			writeFile(arr, size, &partNumber);
+			i = -1, size = 0;
+		}
+	}
+	// 处理最后一段数据（如果有）
+	if (size != 0)
+	{
+		QuickSort(arr, 0, size - 1);
+		writeFile(arr, size, &partNumber);
+	}
+	free(arr);
+	// 检查是什么原因结束的数据文件读取
+	if (feof(inputFilePtr))
+	{
+		printf("数据文件读取完毕！\n");
+	}
+	else if (ferror(inputFilePtr))
+	{
+		printf("数据文件读取错误而结束！\n");
+	}
+	fclose(inputFilePtr);
+
+	// 将 partNumber 份文件进行归并排序
+	createDirectory("sub"); // 创建文件夹（如果没有的话）
+	char* tmpFileName = "sub\\tmpFile.txt";
+	char* fileName = (char*)malloc(sizeof(char) * 30);
+	for (int i = 0; i < partNumber; ++i) // 总共有partNumber个数据文件需要归并
+	{
+		FILE* tmpFilePtr = fopen(tmpFileName, "w"); // 临时存储文件归并结果
+		if (tmpFilePtr == NULL) printf("tmpFilePtr文件打开失败！原因：%s", strerror(errno));
+
+		// 打开第i号文件
+		sprintf(fileName, "sub\\dataSegment%d.txt", i);
+		FILE* inputFilePtr1 = fopen(fileName, "r");
+		if (inputFilePtr1 == NULL) printf("第%d号文件打开失败！原因：%s", i, strerror(errno));
+
+		// 打开第i+1号文件
+		sprintf(fileName, "sub\\dataSegment%d.txt", i + 1);
+		FILE* inputFilePtr2 = fopen(fileName, "r");
+		if (inputFilePtr2 == NULL)
+		{
+			if (i == partNumber - 1)
+			{
+				FILE* inputFilePtr1 = fopen(fileName, "w");
+				if (inputFilePtr1 == NULL) printf("第%d号文件打开失败！原因：%s", i, strerror(errno));
+			}
+			else
+			{
+				printf("第%d号文件打开失败！原因：%s", i + 1, strerror(errno));
+
+			}
+		}
+
+		int num1, num2;
+		int ret1 = fscanf(inputFilePtr1, "%d\n", &num1) != EOF;
+		int ret2 = fscanf(inputFilePtr2, "%d\n", &num2) != EOF;
+		// 归并两个文件的数据
+		while (ret1 && ret2)
+		{
+			if (num1 < num2)
+			{
+				fprintf(tmpFilePtr, "%d\n", num1);
+				ret1 = fscanf(inputFilePtr1, "%d\n", &num1) != EOF;
+			}
+			else
+			{
+				fprintf(tmpFilePtr, "%d\n", num2);
+				ret2 = fscanf(inputFilePtr2, "%d\n", &num2) != EOF;
+			}
+		}
+		// 将还有剩余数据的文件内容继续写入
+		if (ret1)
+		{
+			fprintf(tmpFilePtr, "%d\n", num1);
+			while (fscanf(inputFilePtr1, "%d\n", &num1) != EOF)
+				fprintf(tmpFilePtr, "%d\n", num1);
+		}
+		if (ret2)
+		{
+			fprintf(tmpFilePtr, "%d\n", num2);
+			while (fscanf(inputFilePtr2, "%d\n", &num2) != EOF)
+				fprintf(tmpFilePtr, "%d\n", num2);
+		}
+		// 检查是有读取失败的结束
+		if (ferror(inputFilePtr1))
+		{
+			printf("%s的前一个文件未正常读取结束", fileName);
+		}
+		if (ferror(inputFilePtr1))
+		{
+			printf("%s文件未正常读取结束", fileName);
+		}
+		fclose(inputFilePtr1);
+		fclose(inputFilePtr2); // 关闭，待会要以“w模式”写入归并好的数据
+		fclose(tmpFilePtr); // 关闭，将缓冲区内容写入
+
+		// 只读模式打开刚才写好的临时数据文件
+		tmpFilePtr = fopen(tmpFileName, "r"); 
+		if (tmpFilePtr == NULL) printf("tmpFilePtr文件打开失败！原因：%s", strerror(errno));
+
+		// 写入当前循环的“i + 1”号目标文件，
+		// 这个文件将作为下次循环的，inputFilePtr1被打开，用于下次归并
+		inputFilePtr2 = fopen(fileName, "w"); 
+		if (inputFilePtr2 == NULL) printf("第%d号文件打开失败！原因：%s", i + 1, strerror(errno));
+
+		// 将临时文件的内容写回原“i + 1”号文件
+		int num3;
+		while (fscanf(tmpFilePtr, "%d\n", &num3) != EOF)
+		{
+			fprintf(inputFilePtr2, "%d\n", num3);
+		}
+		// 关闭两个文件
+		fclose(tmpFilePtr); // 下次循环将以“w”模式打开，里面内容会被消除，无脏数据
+		fclose(inputFilePtr2); // 缓冲区的内容将被真正写入
+	}
+	return fileName;
+}
+
+// 计数排序
+void CountSort(int* a, int n)
+{
+	assert(a);
+	if (n <= 1)
+		return;
+
+	int maxValue = a[0];
+	int minValue = a[0];
+	for (int i = 0; i < n; ++i)
+	{
+		if (a[i] > maxValue)
+			maxValue = a[i];
+		if (a[i] < minValue)
+			minValue = a[i];
+	}
+	int size = maxValue - minValue + 1;
+	int* tmpArr = (int*)malloc(sizeof(int) * size);
+	assert(tmpArr);
+	memset(tmpArr, 0, sizeof(int) * size);
+	for (int i = 0, index = 0; i < n; ++i)
+	{
+		index = a[i] - minValue;
+		++tmpArr[index];
+	}
+	for (int i = 0, index = 0; i < size; ++i)
+	{
+		while (tmpArr[i] != 0)
+		{
+			a[index++] = i + minValue;
+			--tmpArr[i];
+		}
+	}
+	free(tmpArr);
+}

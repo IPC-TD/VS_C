@@ -123,10 +123,52 @@ void TestMergeSortNonR()
 	printf("\n");
 
 }
+void TestMergeSortFile()
+{
+	srand((unsigned)time(0));
+	const int N = 100;
+	const char* fileName = "dataFile.txt";
+	FILE* filePtr = fopen(fileName, "w");
+	if (filePtr == NULL)
+	{
+		printf("%s文件打开错误，原因是：%s", fileName, strerror(errno));
+		exit(-1);
+	}
+	for (int i = 0; i < N; ++i)
+	{
+		fprintf(filePtr, "%d\n", rand());
+	}
+	fclose(filePtr); // 关闭文件，将缓冲区内容写入文件。
+	char* retFileName = MergeSortFile(fileName);
+	printf("结果文件在：%s", retFileName);
+	free(retFileName);
+}
+void TestCountSort()
+{
+	int arr[] = { 9, 8, 7, 7, 6, 5, 5, 5, 4, 3, 2, 1, 0 };
+	int arrSize = sizeof(arr) / sizeof(arr[0]);
+
+	puts("计数排序");
+	Print(arr, arrSize);
+	CountSort(arr, arrSize);
+	Print(arr, arrSize);
+	printf("\n");
+	int arr2[100];
+	for (int i = 0, value = 100; i < 100; ++i, --value)
+	{
+		arr2[i] = value;
+	}
+	Print(arr2, 100);
+	printf("\n");
+	CountSort(arr2, 100);
+	Print(arr2, 100);
+	printf("\n");
+
+}
 // 测试排序的性能对比
 void TestOP()
 {
-	srand(time(0));
+	srand((unsigned)time(0));
 	const int N = 1000000;
 	int* a1 = (int*)malloc(sizeof(int) * N);
 	int* a2 = (int*)malloc(sizeof(int) * N);
@@ -137,7 +179,7 @@ void TestOP()
 	int* a7 = (int*)malloc(sizeof(int) * N);
 	int* a8 = (int*)malloc(sizeof(int) * N);
 	int* a9 = (int*)malloc(sizeof(int) * N);
-
+	assert(a1 && a2 && a3 && a4 && a5 && a6 && a7 && a8 && a9);
 	for (int i = 0; i < N; ++i)
 	{
 		a1[i] = rand();
@@ -218,8 +260,10 @@ int main()
 		TestQuickSortNonR();
 		TestMergeSort();
 		TestMergeSortNonR();
-	}
-	TestOP();
+		TestMergeSortFile();
+		TestOP();
 
+	}
+	TestCountSort();
 	return 0;
 }

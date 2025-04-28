@@ -2,8 +2,10 @@
 #include <stdio.h>
 #include <assert.h>
 #include <stdlib.h>
-#include <time.h>
-#include <windows.h>
+#include <time.h> 
+#include <windows.h> 
+#include <direct.h> // Windows下使用_mkdir
+#include <errno.h>
 
 // 下面的函数，都默认排升序
 
@@ -48,3 +50,9 @@ void QuickSortNonR(int* a, int left, int right);
 void MergeSort(int* a, int n);
 // 归并排序非递归实现
 void MergeSortNonR(int* a, int n);
+
+// 归并排序实现（外排）
+char* MergeSortFile(const char* file);
+
+// 计数排序
+void CountSort(int* a, int n);
