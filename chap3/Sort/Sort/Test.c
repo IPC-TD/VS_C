@@ -2,7 +2,7 @@
 #include "Sort.h"
 void TestInsertSort()
 {
-	int arr[] = { 1, 6, 3, 2, 5, 7, 4, 8 };
+	int arr[] = { 4, 6, 3, 2, 5, 7, 1, 8 };
 	int arrSize = sizeof(arr) / sizeof(arr[0]);
 
 	puts("直接插入排序");
@@ -19,7 +19,7 @@ void TestShellSort()
 	puts("希尔排序");
 	Print(arr, arrSize);
 	ShellSort(arr, arrSize);
-	// Print(arr, arrSize);
+	Print(arr, arrSize);
 	printf("\n");
 }
 void TestSelectSort()
@@ -31,6 +31,13 @@ void TestSelectSort()
 	Print(arr, arrSize);
 	SelectSort(arr, arrSize);
 	Print(arr, arrSize);
+	printf("\n");
+
+	int arr2[] = { 7, 8, 7, 7, 6, 5, 5, 5, 4, 3, 2, 1, 0 };
+	int arrSize2 = sizeof(arr) / sizeof(arr[0]);
+	Print(arr2, arrSize2);
+	SelectSort(arr2, arrSize2);
+	Print(arr2, arrSize2);
 	printf("\n");
 }
 void TestHeapSort()
@@ -57,7 +64,8 @@ void TestBubbleSort()
 }
 void TestQuickSort()
 {
-	int arr[] = { 9, 8, 7, 7, 6, 5, 5, 5, 4, 3, 2, 1, 0 };
+	// int arr[] = { 9, 8, 7, 7, 6, 5, 5, 5, 4, 3, 2, 1, 0 };
+	int arr[] = { 5,2,3,1 };
 	int arrSize = sizeof(arr) / sizeof(arr[0]);
 
 	puts("快速排序");
@@ -65,6 +73,23 @@ void TestQuickSort()
 	QuickSort(arr, 0, arrSize - 1);
 	Print(arr, arrSize);
 	printf("\n");
+
+	const int N = 10;
+	int* arr2 = (int*)calloc(N , sizeof(int));
+	assert(arr2);
+	for (int i = 0; i < N; ++i)
+	{
+		arr2[i] = 2;
+	}
+	arr2[0] = 3;
+	Print(arr2, N);
+	int begin = clock();
+	QuickSort(arr2, 0, N - 1);
+	int end = clock();
+	Print(arr2, N);
+	printf("用时：%d", begin - end);
+	printf("\n");
+	free(arr2);
 }
 void TestQuickSortNonR()
 {
@@ -256,14 +281,15 @@ int main()
 		TestSelectSort();
 		TestHeapSort();
 		TestBubbleSort();
-		TestQuickSort();
 		TestQuickSortNonR();
 		TestMergeSort();
 		TestMergeSortNonR();
 		TestMergeSortFile();
+		TestCountSort();
 		TestOP();
 
 	}
-	TestCountSort();
+	TestQuickSort();
+
 	return 0;
 }
