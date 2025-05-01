@@ -14,6 +14,7 @@ void Print(int* a, int n)
 	}
 	printf("\n");
 }
+
 // 数据交换
 void Swap(int* a, int* b)
 {
@@ -22,7 +23,8 @@ void Swap(int* a, int* b)
 	*a = *b;
 	*b = tmp;
 }
-// 插入排序（填坑法）（更优，因为挪动比交换节省一些开销）
+
+// 插入排序（挪动填坑法）（更优，因为挪动比交换节省一些开销）
 void InsertSort(int* a, int n)
 {
 	assert(a);
@@ -51,7 +53,7 @@ void InsertSort(int* a, int n)
 }
 
 //// 直接插入排序（交换法）
-//void InsertSort(int* a, int n)
+//void InsertSort_1(int* a, int n)
 //{
 //	assert(a);
 //	// 从序列第二个元素开始，将不断将一个待排序元素
@@ -113,7 +115,7 @@ void ShellSort(int* a, int n)
 }
 
 //// 希尔排序（更符合直觉版本）
-//void ShellSort(int* a, int n)
+//void ShellSort_1(int* a, int n)
 //{
 //	assert(a);
 //	if (n <= 1)
@@ -156,7 +158,7 @@ void ShellSort(int* a, int n)
 //// 选择排序
 //// 能更快缩小待排序范围，对于大数据量的排序，
 //// 能更快全部加载到缓存
-//void SelectSort(int* a, int n)
+//void SelectSort_1(int* a, int n)
 //{
 //	assert(a);
 //	// 每次遍历选择出最小和最大的数
@@ -196,6 +198,7 @@ void ShellSort(int* a, int n)
 //		Swap(&a[right--], &a[max]);
 //	}
 //}
+
  //选择排序（传统实现）
  //这种逻辑条件简单，低常数因子，和更少的if，CUP分支预测更友好
  //在能一次加载n个数到缓存中时，实际的效率会更优
@@ -248,6 +251,7 @@ void AdjustDwon(int* a, int n, int root)
 	}
 
 }
+
 // 堆排序
 void HeapSort(int* a, int n)
 {
@@ -293,6 +297,7 @@ void BubbleSort(int* a, int n)
 		}
 	}
 }
+
 // 三数取中
 int GetMidIndex(int* a, int left, int right)
 {
@@ -329,44 +334,7 @@ int GetMidIndex(int* a, int left, int right)
 		}
 	}
 }
-//// 单函数版本
-//// 快速排序
-//void QuickSort(int* a, int left, int right)
-//{
-//	assert(a);
-//	// 只在范围有效时递归
-//	if (right <= left)
-//	{
-//		return;
-//	}
-//	int leftTmp = left;
-//	int rightTmp = right;
-//	// 获取中位数作为key（防止接近有序情况下选到极值）
-//	int midIndex = GetMidIndex(a, left, right);
-//	Swap(&a[right], &a[midIndex]);
-//	int key = right;
-//	// 排布成以key为中心，左小右大序列
-//	while (left < right)
-//	{
-//		if (a[left] <= a[key]) 
-//		{
-//			++left;
-//		}
-//		else if (a[right] >= a[key])
-//		{
-//			--right;
-//		}
-//		else 
-//		{
-//			Swap(&a[left], &a[right]);
-//		}
-//	}
-//	Swap(&a[left], &a[key]);
-//
-//	// 递归排序左右序列
-//	QuickSort(a, leftTmp, key - 1);
-//	QuickSort(a, key+1, rightTmp);
-//}
+
 // 快排分区函数（左右指针法 / hoare版本）
 int Partition1(int* a, int begin, int end)
 {
@@ -394,6 +362,7 @@ int Partition1(int* a, int begin, int end)
 
 	return begin;
 }
+
 // 快排分区函数（挖坑法）
 int Partition2(int* a, int begin, int end)
 {
@@ -424,69 +393,73 @@ int Partition2(int* a, int begin, int end)
 
 	return begin;
 }
-//// 快排分区函数（前后指针法）
-//int Partition3(int* a, int begin, int end)
-//{
-//	// 由主QuickSort传入的end > begin
-//	assert(a);
-//
-//	// 请注意下面代码和笔记写的思路一致，但细节处理不同
-//
-//	int key = a[end];
-//	// 前后指针法，cur将找到的左分区数，通过prev放置到左分区
-//	// 排布成以key为中心，左小右大序列
-//	int cur = begin;
-//	int prev = cur - 1;
-//	while (cur <= end)
-//	{
-//		// cur指针负责找小于key的数
-//		// 相等的就跳过不交换了，减少交换次数。
-//		while (cur < end && a[cur] >= key) 
-//		{
-//			++cur;
-//		}
-//		// 将找到的比key小的数，换到前面++prev的位置
-//		// 最后一次cur将停在key位置
-//		if (cur <= end)
-//		{
-//			Swap(&a[++prev], &a[cur++]);
-//		}
-//	}
-//	// 到这里，小于等于key都到排到左分区了
-//	// 且prev位置，就是界限位置
-//	return prev;
-//}
-// 快排分区函数（前后指针法）（采用笔记一致思路）
+
+// 快排分区函数（前后指针法）（采用++prev放置思路）
 int Partition3(int* a, int begin, int end)
 {
 	// 由主QuickSort传入的end > begin
 	assert(a);
 
+	// 请注意下面代码和笔记写的思路一致，但细节处理不同
+
 	int key = a[end];
 	// 前后指针法，cur将找到的左分区数，通过prev放置到左分区
 	// 排布成以key为中心，左小右大序列
 	int cur = begin;
-	int prev = begin;
+	int prev = cur - 1;
 	while (cur <= end)
 	{
 		// cur指针负责找小于key的数
-		while (cur < end && a[cur] >= key)
+		// 相等的就跳过不交换了，减少交换次数。
+		while (cur < end && a[cur] >= key) 
 		{
 			++cur;
 		}
-		// 将找到的比key小的数，换到前面prev的位置
-		// 最后一次cur将停在key位置
+		// 将找到的比key小的数，换到前面++prev的位置
+		// 最后一次cur将停在key位置（必然）
 		if (cur <= end)
 		{
-			Swap(&a[prev++], &a[cur++]);
+			Swap(&a[++prev], &a[cur++]);
 		}
 	}
 	// 到这里，小于等于key都到排到左分区了
-	// 且prev - 1位置，就是界限位置
-	return prev - 1;
+	// 且prev位置，就是界限位置
+	return prev;
 }
-//// 快速排序
-//void QuickSort(int* a, int left, int right)
+
+//// 快排分区函数（前后指针法）（采用prev放置思路）
+//int Partition3_1(int* a, int begin, int end)
+//{
+//	// 由主QuickSort传入的end > begin
+//	assert(a);
+//
+//	int key = a[end];
+//	// 前后指针法，cur将找到的左分区数，通过prev放置到左分区
+//	// 排布成以key为中心，左小右大序列
+//	int cur = begin;
+//	int prev = begin;
+//	while (cur <= end)
+//	{
+//		// cur指针负责找小于key的数
+//		// 相等的就跳过不交换了，减少交换次数。
+//		while (cur < end && a[cur] >= key)
+//		{
+//			++cur;
+//		}
+//		// 将找到的比key小的数，换到前面prev的位置
+//		// 最后一次cur将停在key位置（必然）
+//		if (cur <= end)
+//		{
+//			Swap(&a[prev++], &a[cur++]);
+//		}
+//	}
+//	// 到这里，小于等于key都到排到左分区了
+//	// 且prev - 1位置，就是界限位置
+//	return prev - 1;
+//}
+
+//// 快速排序 (单函数版本)
+//void QuickSort_1(int* a, int left, int right)
 //{
 //	assert(a);
 //	// 只在范围有效时递归
@@ -494,41 +467,82 @@ int Partition3(int* a, int begin, int end)
 //	{
 //		return;
 //	}
-//	else if (right - left > 10)
+//	int leftTmp = left;
+//	int rightTmp = right;
+//	// 获取中位数作为key（防止接近有序情况下选到极值）
+//	int midIndex = GetMidIndex(a, left, right);
+//	Swap(&a[right], &a[midIndex]);
+//	int key = right;
+//	// 排布成以key为中心，左小右大序列
+//	while (left < right)
 //	{
-//		// 获取中位数作为key（防止接近有序情况下选到极值）
-//		int midIndex = GetMidIndex(a, left, right);
-//		Swap(&a[right], &a[midIndex]);
-//
-//		// 分区函数
-//		// 将在数组[left,right]范围内排序，
-//		// 排成以a[right]值(key值）为界，左小右大的序列，并返回界限位置
-//
-//		//// 左右指针法
-//		//int divided = Partition1(a, left, right); 
-//		//// 挖坑法
-//		//int divided = Partition2(a, left, right);
-//		// 前后指针法
-//		int divided = Partition3(a, left, right);
-//
-//		// 递归排序左右序列
-//		QuickSort(a, left, divided - 1);
-//		QuickSort(a, divided + 1, right);
+//		if (a[left] <= a[key])
+//		{
+//			++left;
+//		}
+//		else if (a[right] >= a[key])
+//		{
+//			--right;
+//		}
+//		else
+//		{
+//			Swap(&a[left], &a[right]);
+//		}
 //	}
-//	else
-//	{
-//		// 当区间较小时，递归的次数较多，代价较大
-//		// 可以调用其他对于小区间的排序效果较好的函数来排
-//		// 想象最好的理性情况下，满二叉树底层的节点数，
-//		// 就可以知道为了排这10个数，需要调用多少次递归了，
-//		// 更何况并不是每次都能取到完美中位数作为key
-//		InsertSort(a + left, right - left + 1);
-//	}
+//	Swap(&a[left], &a[key]);
+//
+//	// 递归排序左右序列
+//	QuickSort(a, leftTmp, key - 1);
+//	QuickSort(a, key + 1, rightTmp);
 //}
 
+void _QuickSort(int* a, int left, int right, int depth)
+{
+	assert(a);
+	// 只在范围有效时递归
+	if (right <= left)
+	{
+		return;
+	}
+	else if (depth == 0)
+	{
+		// 当递归深度超过阈值时，调用堆排序，避免最坏情况
+		HeapSort(a + left, right - left + 1);
+	}
+	else if (right - left < 10)
+	{
+		// 当区间较小时，递归的次数较多，代价较大
+		// 可以调用其他对于小区间的排序效果较好的函数来排
+		// 想象最好的理性情况下，满二叉树底层的节点数，
+		// 就可以知道为了排这10个数，需要调用多少次递归了，
+		// 更何况并不是每次都能取到完美中位数作为key
+		InsertSort(a + left, right - left + 1);
 
+	}
+	else
+	{
+		// 获取中位数作为key（防止接近有序情况下选到极值）
+		int midIndex = GetMidIndex(a, left, right);
+		Swap(&a[right], &a[midIndex]);
 
-// 快速排序
+		// 分区函数
+		// 将在数组[left,right]范围内排序，
+		// 排成以a[right]值(key值）为界，左小右大的序列，并返回界限位置
+
+		//// 左右指针法
+		//int divided = Partition1(a, left, right); 
+		//// 挖坑法
+		//int divided = Partition2(a, left, right);
+		// 前后指针法
+		int divided = Partition3(a, left, right);
+
+		// 递归排序左右序列
+		_QuickSort(a, left, divided - 1, depth - 1);
+		_QuickSort(a, divided + 1, right, depth - 1);
+	}
+}
+
+// 快速排序（优化版本实现，采用三数取中，和混合排序）
 void QuickSort(int* a, int left, int right)
 {
 	assert(a);
@@ -537,22 +551,35 @@ void QuickSort(int* a, int left, int right)
 	{
 		return;
 	}
-	// 分区函数
-	// 将在数组[left,right]范围内排序，
-	// 排成以a[right]值(key值）为界，左小右大的序列，并返回界限位置
+	int maxDepth =  2 * (int)log2(right - left);
 
-	//// 左右指针法
-	//int divided = Partition1(a, left, right); 
-	//// 挖坑法
-	//int divided = Partition2(a, left, right);
-	// 前后指针法
-	int divided = Partition3(a, left, right);
-
-	// 递归排序左右序列
-	QuickSort(a, left, divided - 1);
-	QuickSort(a, divided + 1, right);
+	_QuickSort(a, left, right, maxDepth);
 }
 
+//// 快速排序（无优化的标准实现）
+//void QuickSortStandard(int* a, int left, int right)
+//{
+//	assert(a);
+//	// 只在范围有效时递归
+//	if (right <= left)
+//	{
+//		return;
+//	}
+//	// 分区函数
+//	// 将在数组[left,right]范围内排序，
+//	// 排成以a[right]值(key值）为界，左小右大的序列，并返回界限位置
+//
+//	//// 左右指针法
+//	//int divided = Partition1(a, left, right); 
+//	//// 挖坑法
+//	//int divided = Partition2(a, left, right);
+//	// 前后指针法
+//	int divided = Partition3(a, left, right);
+//
+//	// 递归排序左右序列
+//	QuickSortStandard(a, left, divided - 1);
+//	QuickSortStandard(a, divided + 1, right);
+//}
 
 //// 快速排序 非递归实现（可用）（使用int为栈元素）
 //void QuickSortNonR(int* a, int left, int right)

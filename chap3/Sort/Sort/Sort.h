@@ -6,6 +6,7 @@
 #include <windows.h> 
 #include <direct.h> // Windows下使用_mkdir
 #include <errno.h>
+#include <math.h>
 
 // 下面的函数，都默认排升序
 
