@@ -24,7 +24,9 @@ void CheckCapacity(Stack* ps)
 {
 	assert(ps);
 	if (ps->_capacity > ps->_top) return;
-	ps->_capacity = ++(ps->_capacity) * 2; // 上一版实现在下面*2，导致忘了修改栈的容量成员
+	// 之前的实现直接在realloc下面*2，导致忘了更新栈的容量
+	// 现在，初始容量为0时给4容量空间，如果不是则扩容2倍
+	ps->_capacity = ps->_capacity == 0 ? 4 : ps->_capacity * 2;
 	// 错误修改，申请的是数据元素大小的空间，不是栈结构体大小的空间
 	STDataType* ret = (STDataType*)realloc(ps->_arr, sizeof(STDataType) * ps->_capacity);
 	assert(ret);

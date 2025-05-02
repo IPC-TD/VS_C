@@ -551,7 +551,7 @@ void QuickSort(int* a, int left, int right)
 	{
 		return;
 	}
-	int maxDepth =  2 * (int)log2(right - left);
+	int maxDepth =  2 * (int)log2(right - left + 1);
 
 	_QuickSort(a, left, right, maxDepth);
 }
@@ -622,11 +622,13 @@ void QuickSort(int* a, int left, int right)
 //}
 
 // 快速排序 非递归实现 （使用range为栈元素）
-// （问题已经排除，此代码逻辑正常，疑似此前栈代码中，扩容存在问题）
 void QuickSortNonR(int* a, int left, int right)
 {
 	if (right <= left)
 		return;
+
+	// 当栈元素很多时，也就是常规快排递归很深时，说明快排遇到最坏场景了
+	int maxStackDepth = 2 * (int)log(right - left + 1);
 
 	// 创建并初始化栈
 	Stack s;
@@ -646,16 +648,25 @@ void QuickSortNonR(int* a, int left, int right)
 		{
 			continue;
 		}
+		else if (StackSize(&s) > maxStackDepth)
+		{
+			// 调用堆排解决基准值key一直取到极值的场景，
+			// 该场景可能是存在大量相同元素，此时分区通常比较大，因此不会触发直接插入排序。
+			// HeapSort(a + r._left, r._right - r._left + 1);
+
+			// 或者这种大量重复值的场景调用直接插入排序也能很好的解决？因为接近O（N）复杂度？
+			InsertSort(a + r._left, r._right - r._left + 1);
+		}
 		else if (r._right - r._left > 10)
 		{
 			int mid = GetMidIndex(a, r._left, r._right);
 			Swap(&a[r._right], &a[mid]);
-			int divided = Partition1(a, r._left, r._right);
+			int divided = Partition3(a, r._left, r._right);
 			//printf("入栈数据1：%d %d\n", r1._left, r1._right);
 			//printf("入栈数据2：%d %d\n", r2._left, r2._right);
 			//Sleep(100);
-			StackPush(&s, (Range) { r._left, divided - 1 }); // C99起支持
 			StackPush(&s, (Range) { divided + 1, r._right }); // C99起支持
+			StackPush(&s, (Range) { r._left, divided - 1 }); // C99起支持
 			//Range r1 = { r._left, divided - 1 };
 			//Range r2 = { divided + 1, r._right };
 			//StackPush(&s, r2); 
@@ -730,6 +741,31 @@ void _MergeSort(int* a, int left, int right, int* tmp)
 		InsertSort(a + left, right - left + 1);
 	}
 }
+void _MergeSort(int* a, int left, int right, int* tmp)
+{
+	assert(a && tmp);
+	// 排除无效区间
+	if (left >= right) return;
+	// 将大端的区间进行递归归并
+	else if (right - left > 10)
+	{
+		// 将区间分割成左右对称区间后
+		int begin1 = left;
+		int end1 = left + (right - left) / 2;
+		int begin2 = end1 + 1;
+		int end2 = right;
+		// 递归排序左右区间
+		_MergeSort(a, begin1, end1, tmp);
+		_MergeSort(a, begin2, end2, tmp);
+		// 此时左右区间都为升序，函数将两端有序区间合并成完整的一段有序区间
+		MergeArray(a, begin1, end1, begin2, end2, tmp);
+	}
+	// 小区间用插入排序，减少递归次数（二叉树后面几层节点数多，也表示递归次数多）
+	else
+	{
+		InsertSort(a + left, right - left + 1);
+	}
+}
 // 归并排序递归实现
 void MergeSort(int* a, int n)
 {
@@ -739,7 +775,7 @@ void MergeSort(int* a, int n)
 		return;
 
 	// 开辟一段数组，用于合并两端有序区间时的临时存储
-	// 这里开好，里面递归时，就不同频繁malloc，减少内存碎片
+	// 这里开好，里面递归时，就不用频繁malloc和free，减少内存碎片
 	int* tmp = (int*)malloc(sizeof(int) * n);
 	assert(tmp);
 	_MergeSort(a, 0, n - 1, tmp);
