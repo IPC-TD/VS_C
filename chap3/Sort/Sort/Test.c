@@ -281,15 +281,15 @@ int main()
 		TestSelectSort();
 		TestHeapSort();
 		TestBubbleSort();
+		TestQuickSort();
 		TestQuickSortNonR();
 		TestMergeSort();
 		TestMergeSortNonR();
-		TestMergeSortFile();
 		TestCountSort();
 		TestOP();
 
 	}
-	TestQuickSort();
+	TestMergeSortFile();
 
 	return 0;
 }

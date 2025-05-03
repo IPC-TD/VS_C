@@ -741,31 +741,7 @@ void _MergeSort(int* a, int left, int right, int* tmp)
 		InsertSort(a + left, right - left + 1);
 	}
 }
-void _MergeSort(int* a, int left, int right, int* tmp)
-{
-	assert(a && tmp);
-	// 排除无效区间
-	if (left >= right) return;
-	// 将大端的区间进行递归归并
-	else if (right - left > 10)
-	{
-		// 将区间分割成左右对称区间后
-		int begin1 = left;
-		int end1 = left + (right - left) / 2;
-		int begin2 = end1 + 1;
-		int end2 = right;
-		// 递归排序左右区间
-		_MergeSort(a, begin1, end1, tmp);
-		_MergeSort(a, begin2, end2, tmp);
-		// 此时左右区间都为升序，函数将两端有序区间合并成完整的一段有序区间
-		MergeArray(a, begin1, end1, begin2, end2, tmp);
-	}
-	// 小区间用插入排序，减少递归次数（二叉树后面几层节点数多，也表示递归次数多）
-	else
-	{
-		InsertSort(a + left, right - left + 1);
-	}
-}
+
 // 归并排序递归实现
 void MergeSort(int* a, int n)
 {
@@ -879,9 +855,9 @@ void MergeSortNonR(int* a, int n)
 	}
 	free(tmp);
 }
+// 检查是否有xxx文件夹，没有的话就创建
 void createDirectory(const char* dirName)
 {
-	// 创建子目录存放分割出的文件
 	// 若失败且错误码不是EEXIST（目录已存在），才报错退出。
 	if (_mkdir("sub") != 0 && errno != EEXIST) {
 		printf("无法创建sub目录！失败原因：%s\n", strerror(errno));
@@ -891,7 +867,8 @@ void createDirectory(const char* dirName)
 // 将数组内容写入sub目录下的子文件
 void writeFile(int* arr, int size, int* partNumber)
 {
-	// 创建文件夹（如果没有的话）
+	// 创建子目录存放分割出的文件
+	// 函数将检查是否有"sub"这个文件夹，没有的话就创建
 	createDirectory("sub");
 
 	char subFileName[30];
@@ -908,6 +885,56 @@ void writeFile(int* arr, int size, int* partNumber)
 		fprintf(outputFilePtr, "%d\n", arr[i]);
 	}
 	fclose(outputFilePtr); // 关闭文件，将缓冲区内容写入；
+}
+// 归并两个文件里的数据到tmpFilePtr这个临时文件
+void _MergeSortFile(FILE* inputFilePtr1, FILE* inputFilePtr2, FILE* tmpFilePtr)
+{
+	int num1, num2;
+	int ret1 = fscanf(inputFilePtr1, "%d\n", &num1) != EOF;
+	int ret2 = fscanf(inputFilePtr2, "%d\n", &num2) != EOF;
+	// 归并两个文件的数据
+	while (ret1 && ret2)
+	{
+		if (num1 < num2)
+		{
+			fprintf(tmpFilePtr, "%d\n", num1);
+			ret1 = fscanf(inputFilePtr1, "%d\n", &num1) != EOF;
+		}
+		else
+		{
+			fprintf(tmpFilePtr, "%d\n", num2);
+			ret2 = fscanf(inputFilePtr2, "%d\n", &num2) != EOF;
+		}
+	}
+	// 将还有剩余数据的文件内容继续写入
+	if (ret1)
+	{
+		fprintf(tmpFilePtr, "%d\n", num1);
+		while (fscanf(inputFilePtr1, "%d\n", &num1) != EOF)
+			fprintf(tmpFilePtr, "%d\n", num1);
+	}
+	if (ret2)
+	{
+		fprintf(tmpFilePtr, "%d\n", num2);
+		while (fscanf(inputFilePtr2, "%d\n", &num2) != EOF)
+			fprintf(tmpFilePtr, "%d\n", num2);
+	}
+
+	fclose(inputFilePtr1); // 关闭
+	fclose(inputFilePtr2); // 关闭，待会要以“w模式”写入归并好的数据
+	fclose(tmpFilePtr); // 关闭，将缓冲区内容写入
+}
+// 检查文件读取结束的原因
+void CheckFileReadEndReason(FILE* FilePtr)
+{
+	if (feof(FilePtr))
+	{
+		printf("数据文件读取完毕！\n");
+	}
+	else if (ferror(FilePtr))
+	{
+		printf("数据文件读取错误而结束！\n");
+	}
 }
 // 归并排序实现（外排）
 char* MergeSortFile(const char* file)
@@ -952,21 +979,16 @@ char* MergeSortFile(const char* file)
 	}
 	free(arr);
 	// 检查是什么原因结束的数据文件读取
-	if (feof(inputFilePtr))
-	{
-		printf("数据文件读取完毕！\n");
-	}
-	else if (ferror(inputFilePtr))
-	{
-		printf("数据文件读取错误而结束！\n");
-	}
-	fclose(inputFilePtr);
+	CheckFileReadEndReason(inputFilePtr);
+	fclose(inputFilePtr); // 使用结束关闭文件
+
 
 	// 将 partNumber 份文件进行归并排序
 	createDirectory("sub"); // 创建文件夹（如果没有的话）
 	char* tmpFileName = "sub\\tmpFile.txt";
 	char* fileName = (char*)malloc(sizeof(char) * 30);
-	for (int i = 0; i < partNumber; ++i) // 总共有partNumber个数据文件需要归并
+	assert(fileName);
+	for (int i = 0; i < partNumber - 1; ++i) // 总共有partNumber个数据文件需要归并
 	{
 		FILE* tmpFilePtr = fopen(tmpFileName, "w"); // 临时存储文件归并结果
 		if (tmpFilePtr == NULL) printf("tmpFilePtr文件打开失败！原因：%s", strerror(errno));
@@ -979,68 +1001,16 @@ char* MergeSortFile(const char* file)
 		// 打开第i+1号文件
 		sprintf(fileName, "sub\\dataSegment%d.txt", i + 1);
 		FILE* inputFilePtr2 = fopen(fileName, "r");
-		if (inputFilePtr2 == NULL)
-		{
-			if (i == partNumber - 1)
-			{
-				FILE* inputFilePtr1 = fopen(fileName, "w");
-				if (inputFilePtr1 == NULL) printf("第%d号文件打开失败！原因：%s", i, strerror(errno));
-			}
-			else
-			{
-				printf("第%d号文件打开失败！原因：%s", i + 1, strerror(errno));
+		if (inputFilePtr2 == NULL) printf("第%d号文件打开失败！原因：%s", i + 1, strerror(errno));
 
-			}
-		}
-
-		int num1, num2;
-		int ret1 = fscanf(inputFilePtr1, "%d\n", &num1) != EOF;
-		int ret2 = fscanf(inputFilePtr2, "%d\n", &num2) != EOF;
-		// 归并两个文件的数据
-		while (ret1 && ret2)
-		{
-			if (num1 < num2)
-			{
-				fprintf(tmpFilePtr, "%d\n", num1);
-				ret1 = fscanf(inputFilePtr1, "%d\n", &num1) != EOF;
-			}
-			else
-			{
-				fprintf(tmpFilePtr, "%d\n", num2);
-				ret2 = fscanf(inputFilePtr2, "%d\n", &num2) != EOF;
-			}
-		}
-		// 将还有剩余数据的文件内容继续写入
-		if (ret1)
-		{
-			fprintf(tmpFilePtr, "%d\n", num1);
-			while (fscanf(inputFilePtr1, "%d\n", &num1) != EOF)
-				fprintf(tmpFilePtr, "%d\n", num1);
-		}
-		if (ret2)
-		{
-			fprintf(tmpFilePtr, "%d\n", num2);
-			while (fscanf(inputFilePtr2, "%d\n", &num2) != EOF)
-				fprintf(tmpFilePtr, "%d\n", num2);
-		}
-		// 检查是有读取失败的结束
-		if (ferror(inputFilePtr1))
-		{
-			printf("%s的前一个文件未正常读取结束", fileName);
-		}
-		if (ferror(inputFilePtr1))
-		{
-			printf("%s文件未正常读取结束", fileName);
-		}
-		fclose(inputFilePtr1);
-		fclose(inputFilePtr2); // 关闭，待会要以“w模式”写入归并好的数据
-		fclose(tmpFilePtr); // 关闭，将缓冲区内容写入
+		// 将inputFilePtr1和inputFilePtr2文件的数据，归并入tmpFilePtr文件中
+		_MergeSortFile(inputFilePtr1, inputFilePtr2, tmpFilePtr);
 
 		// 只读模式打开刚才写好的临时数据文件
 		tmpFilePtr = fopen(tmpFileName, "r"); 
 		if (tmpFilePtr == NULL) printf("tmpFilePtr文件打开失败！原因：%s", strerror(errno));
 
-		// 写入当前循环的“i + 1”号目标文件，
+		// 写入当前循环的“i + 1”号目标文件，（原有的内容将被完全覆盖）
 		// 这个文件将作为下次循环的，inputFilePtr1被打开，用于下次归并
 		inputFilePtr2 = fopen(fileName, "w"); 
 		if (inputFilePtr2 == NULL) printf("第%d号文件打开失败！原因：%s", i + 1, strerror(errno));
@@ -1055,6 +1025,10 @@ char* MergeSortFile(const char* file)
 		fclose(tmpFilePtr); // 下次循环将以“w”模式打开，里面内容会被消除，无脏数据
 		fclose(inputFilePtr2); // 缓冲区的内容将被真正写入
 	}
+	if (partNumber == 0)
+	{
+		sprintf(fileName, "所给文件数据格式有误"); // 注意，字符串长度超了，sprintf行为属于标准未定义
+	}
 	return fileName;
 }
 
@@ -1065,6 +1039,7 @@ void CountSort(int* a, int n)
 	if (n <= 1)
 		return;
 
+	// 找出待排序序列的最大最小值
 	int maxValue = a[0];
 	int minValue = a[0];
 	for (int i = 0; i < n; ++i)
@@ -1074,15 +1049,19 @@ void CountSort(int* a, int n)
 		if (a[i] < minValue)
 			minValue = a[i];
 	}
+	// 开辟能相对表示该范围大小的统计数组
 	int size = maxValue - minValue + 1;
 	int* tmpArr = (int*)malloc(sizeof(int) * size);
 	assert(tmpArr);
+	// 统计数组元素置0
 	memset(tmpArr, 0, sizeof(int) * size);
+	// 遍历序列，将值统计到数组中
 	for (int i = 0, index = 0; i < n; ++i)
 	{
 		index = a[i] - minValue;
 		++tmpArr[index];
 	}
+	// 根据统计数组的结果，将值写回原序列
 	for (int i = 0, index = 0; i < size; ++i)
 	{
 		while (tmpArr[i] != 0)
@@ -1091,5 +1070,5 @@ void CountSort(int* a, int n)
 			--tmpArr[i];
 		}
 	}
-	free(tmpArr);
+	free(tmpArr); // 释放统计数组
 }
